@@ -9,6 +9,14 @@ import (
 type Service interface {
 	// 获取商品相关接口
 	GetGoodsService() GoodsService
+	// 获取优惠卷相关接口
+	GetCouponService() CouponService
+	// 获取推广相关接口
+	GetPromoteService() PromoteService
+	SetGoodsService(service GoodsService)
+	SetCouponService(service CouponService)
+	SetPromoteService(service PromoteService)
+
 	// 获取配置
 	GetConfig() *Config
 	// 设置配置
@@ -68,6 +76,26 @@ func (s *ServiceImpl) PostFor(v interface{}, url string, contentType string, dat
 
 func (s *ServiceImpl) GetGoodsService() GoodsService {
 	return s.goodsService
+}
+
+func (s *ServiceImpl) GetCouponService() CouponService {
+	return s.couponService
+}
+
+func (s *ServiceImpl) GetPromoteService() PromoteService {
+	return s.promoteService
+}
+
+func (s *ServiceImpl) SetGoodsService(service GoodsService) {
+	s.goodsService = service
+}
+
+func (s *ServiceImpl) SetCouponService(service CouponService) {
+	s.couponService = service
+}
+
+func (s *ServiceImpl) SetPromoteService(service PromoteService) {
+	s.promoteService = service
 }
 
 func (s *ServiceImpl) GetConfig() *Config {
