@@ -1,5 +1,140 @@
 package jd
 
+type GoodsJingfenQueryRequest struct {
+	// 必填 ...
+
+	EliteId uint64 `json:"eliteId"` // 频道ID:1-好券商品,2-精选卖场,10-9.9包邮,15-京东配送,22-实时热销榜,23-为你推荐,24-数码家电,25-超市,26-母婴玩具,27-家具日用,28-美妆穿搭,30-图书文具,31-今日必推,32-京东好物,33-京东秒杀,34-拼购商品,40-高收益榜,41-自营热卖榜,108-秒杀进行中,109-新品首发,110-自营,112-京东爆品,125-首购商品,129-高佣榜单,130-视频商品,153-历史最低价商品榜
+	// 非必填 ...
+
+	PageIndex   uint64 `json:"pageIndex"`   // 页码，默认1
+	PageSize    uint64 `json:"pageSize"`    // 每页数量，默认20，上限50，建议20
+	SortName    string `json:"sortName"`    // 排序字段(price：单价, commissionShare：佣金比例, commission：佣金， inOrderCount30DaysSku：sku维度30天引单量，comments：评论数，goodComments：好评数)
+	Sort        string `json:"sort"`        // asc,desc升降序,默认降序
+	Pid         string `json:"pid"`         // 联盟id_应用id_推广位id，三段式
+	Fields      string `json:"fields"`      // 支持出参数据筛选，逗号','分隔，目前可用：videoInfo,documentInfo
+	ForbidTypes string `json:"forbidTypes"` // 10微信京东购物小程序禁售，11微信京喜小程序禁售
+}
+
+type GoodsJingfenQueryResult struct {
+	JdUnionOpenGoodsJingfenQueryResponse struct {
+		QueryResult struct {
+			Message    string `json:"message"`
+			TotalCount string `json:"totalCount"`
+			Data       struct {
+				JfGoodsResp struct {
+					CategoryInfo struct {
+						Cid3     string `json:"cid3"`
+						Cid2Name string `json:"cid2Name"`
+						Cid2     string `json:"cid2"`
+						Cid3Name string `json:"cid3Name"`
+						Cid1Name string `json:"cid1Name"`
+						Cid1     string `json:"cid1"`
+					} `json:"categoryInfo"`
+					Spuid        string `json:"spuid"`
+					ResourceInfo struct {
+						EliteID   string `json:"eliteId"`
+						EliteName string `json:"eliteName"`
+					} `json:"resourceInfo"`
+					MaterialURL string `json:"materialUrl"`
+					SeckillInfo struct {
+						SeckillEndTime   string `json:"seckillEndTime"`
+						SeckillPrice     string `json:"seckillPrice"`
+						SeckillOriPrice  string `json:"seckillOriPrice"`
+						SeckillStartTime string `json:"seckillStartTime"`
+					} `json:"seckillInfo"`
+					BookInfo struct {
+						Isbn string `json:"isbn"`
+					} `json:"bookInfo"`
+					VideoInfo struct {
+						VideoList struct {
+							Video struct {
+								PlayURL   string `json:"playUrl"`
+								Duration  string `json:"duration"`
+								ImageURL  string `json:"imageUrl"`
+								Width     string `json:"width"`
+								PlayType  string `json:"playType"`
+								High      string `json:"high"`
+								VideoType string `json:"videoType"`
+							} `json:"video"`
+						} `json:"videoList"`
+					} `json:"videoInfo"`
+					DocumentInfo struct {
+						Document string `json:"document"`
+						Discount string `json:"discount"`
+					} `json:"documentInfo"`
+					BrandName string `json:"brandName"`
+					ImageInfo struct {
+						ImageList struct {
+							URLInfo struct {
+								URL string `json:"url"`
+							} `json:"urlInfo"`
+						} `json:"imageList"`
+						WhiteImage string `json:"whiteImage"`
+					} `json:"imageInfo"`
+					BrandCode      string `json:"brandCode"`
+					SkuID          string `json:"skuId"`
+					CommissionInfo struct {
+						StartTime           string `json:"startTime"`
+						CommissionShare     string `json:"commissionShare"`
+						CouponCommission    string `json:"couponCommission"`
+						PlusCommissionShare string `json:"plusCommissionShare"`
+						EndTime             string `json:"endTime"`
+						Commission          string `json:"commission"`
+						IsLock              string `json:"isLock"`
+					} `json:"commissionInfo"`
+					JxFlags            string `json:"jxFlags"`
+					InOrderCount30Days string `json:"inOrderCount30Days"`
+					CouponInfo         struct {
+						CouponList struct {
+							Coupon struct {
+								GetEndTime   string `json:"getEndTime"`
+								GetStartTime string `json:"getStartTime"`
+								Quota        string `json:"quota"`
+								PlatformType string `json:"platformType"`
+								UseEndTime   string `json:"useEndTime"`
+								UseStartTime string `json:"useStartTime"`
+								BindType     string `json:"bindType"`
+								IsBest       string `json:"isBest"`
+								Link         string `json:"link"`
+								HotValue     string `json:"hotValue"`
+								Discount     string `json:"discount"`
+							} `json:"coupon"`
+						} `json:"couponList"`
+					} `json:"couponInfo"`
+					InOrderCount30DaysSku string `json:"inOrderCount30DaysSku"`
+					PinGouInfo            struct {
+						PingouTmCount   string `json:"pingouTmCount"`
+						PingouURL       string `json:"pingouUrl"`
+						PingouEndTime   string `json:"pingouEndTime"`
+						PingouPrice     string `json:"pingouPrice"`
+						PingouStartTime string `json:"pingouStartTime"`
+					} `json:"pinGouInfo"`
+					DeliveryType string `json:"deliveryType"`
+					ForbidTypes  string `json:"forbidTypes"`
+					SkuName      string `json:"skuName"`
+					IsHot        string `json:"isHot"`
+					PriceInfo    struct {
+						Price             string `json:"price"`
+						HistoryPriceDay   string `json:"historyPriceDay"`
+						LowestCouponPrice string `json:"lowestCouponPrice"`
+						LowestPriceType   string `json:"lowestPriceType"`
+						LowestPrice       string `json:"lowestPrice"`
+					} `json:"priceInfo"`
+					ShopInfo struct {
+						ShopID    string `json:"shopId"`
+						ShopName  string `json:"shopName"`
+						ShopLevel string `json:"shopLevel"`
+					} `json:"shopInfo"`
+					Owner             string `json:"owner"`
+					GoodCommentsShare string `json:"goodCommentsShare"`
+					Comments          string `json:"comments"`
+				} `json:"jfGoodsResp"`
+			} `json:"data"`
+			Code string `json:"code"`
+		} `json:"queryResult"`
+	} `json:"jd_union_open_goods_jingfen_query_response"`
+}
+
 // 关键词商品查询接口
 type GoodsQueryRequest struct {
 	// 必填 ...
@@ -23,7 +158,7 @@ type GoodsQueryRequest struct {
 	IsPG                 string   `json:"isPG,omitempty"`                 // 是否是拼购商品，1：拼购商品，0：非拼购商品
 	PingouPriceStart     float64  `json:"pingouPriceStart,omitempty"`     // 拼购价格区间开始
 	PingouPriceEnd       float64  `json:"pingouPriceEnd,omitempty"`       // 拼购价格区间结束
-	IsHot                uint64   `json:"-,omitempty"`                    // Deprecated: 已废弃，请勿使用
+	IsHot                uint64   `json:"-"`                              // Deprecated: 已废弃，请勿使用
 	BrandCode            string   `json:"brandCode,omitempty"`            // 品牌code
 	ShopId               uint64   `json:"shopId,omitempty"`               // 店铺Id
 	HasContent           uint64   `json:"hasContent,omitempty"`           // 1：查询内容商品；其他值过滤掉此入参条件。
@@ -38,131 +173,184 @@ type GoodsQueryRequest struct {
 }
 
 type GoodsQueryResult struct {
-	Message        string `json:"message"`
-	SimilarSkuList string `json:"similarSkuList"`
-	TotalCount     string `json:"totalCount"`
-	Data           struct {
-		GoodsResp struct {
-			CategoryInfo struct {
-				Cid3     string `json:"cid3"`
-				Cid2Name string `json:"cid2Name"`
-				Cid2     string `json:"cid2"`
-				Cid3Name string `json:"cid3Name"`
-				Cid1Name string `json:"cid1Name"`
-				Cid1     string `json:"cid1"`
-			} `json:"categoryInfo"`
-			Spuid       string `json:"spuid"`
-			IsJdSale    string `json:"isJdSale"`
-			MaterialURL string `json:"materialUrl"`
-			BookInfo    struct {
-				Isbn string `json:"isbn"`
-			} `json:"bookInfo"`
-			VideoInfo struct {
-				VideoList struct {
-					Video struct {
-						PlayURL   string `json:"playUrl"`
-						Duration  string `json:"duration"`
-						ImageURL  string `json:"imageUrl"`
-						Width     string `json:"width"`
-						PlayType  string `json:"playType"`
-						High      string `json:"high"`
-						VideoType string `json:"videoType"`
-					} `json:"video"`
-				} `json:"videoList"`
-			} `json:"videoInfo"`
-			DocumentInfo struct {
-				Document string `json:"document"`
-				Discount string `json:"discount"`
-			} `json:"documentInfo"`
-			BrandName string `json:"brandName"`
-			ImageInfo struct {
-				ImageList struct {
-					URLInfo struct {
-						URL string `json:"url"`
-					} `json:"urlInfo"`
-				} `json:"imageList"`
-				WhiteImage string `json:"whiteImage"`
-			} `json:"imageInfo"`
-			BrandCode      string `json:"brandCode"`
-			SkuID          string `json:"skuId"`
-			CommissionInfo struct {
-				StartTime           string `json:"startTime"`
-				CommissionShare     string `json:"commissionShare"`
-				CouponCommission    string `json:"couponCommission"`
-				PlusCommissionShare string `json:"plusCommissionShare"`
-				EndTime             string `json:"endTime"`
-				Commission          string `json:"commission"`
-				IsLock              string `json:"isLock"`
-			} `json:"commissionInfo"`
-			JxFlags            string `json:"jxFlags"`
-			InOrderCount30Days string `json:"inOrderCount30Days"`
-			CouponInfo         struct {
-				CouponList struct {
-					Coupon struct {
-						GetEndTime   string `json:"getEndTime"`
-						GetStartTime string `json:"getStartTime"`
-						Quota        string `json:"quota"`
-						PlatformType string `json:"platformType"`
-						UseEndTime   string `json:"useEndTime"`
-						UseStartTime string `json:"useStartTime"`
-						BindType     string `json:"bindType"`
-						IsBest       string `json:"isBest"`
-						Link         string `json:"link"`
-						HotValue     string `json:"hotValue"`
-						Discount     string `json:"discount"`
-					} `json:"coupon"`
-				} `json:"couponList"`
-			} `json:"couponInfo"`
-			SpecInfo struct {
-				Spec     string `json:"spec"`
-				SpecName string `json:"specName"`
-				Color    string `json:"color"`
-				Size     string `json:"size"`
-			} `json:"specInfo"`
-			PinGouInfo struct {
-				PingouTmCount   string `json:"pingouTmCount"`
-				PingouURL       string `json:"pingouUrl"`
-				PingouEndTime   string `json:"pingouEndTime"`
-				PingouPrice     string `json:"pingouPrice"`
-				PingouStartTime string `json:"pingouStartTime"`
-			} `json:"pinGouInfo"`
-			DeliveryType string `json:"deliveryType"`
-			ForbidTypes  string `json:"forbidTypes"`
-			SkuName      string `json:"skuName"`
-			IsHot        string `json:"isHot"`
-			PriceInfo    struct {
-				Price             string `json:"price"`
-				HistoryPriceDay   string `json:"historyPriceDay"`
-				LowestCouponPrice string `json:"lowestCouponPrice"`
-				LowestPriceType   string `json:"lowestPriceType"`
-				LowestPrice       string `json:"lowestPrice"`
-			} `json:"priceInfo"`
-			ShopInfo struct {
-				ShopID    string `json:"shopId"`
-				ShopName  string `json:"shopName"`
-				ShopLevel string `json:"shopLevel"`
-			} `json:"shopInfo"`
-			Owner             string `json:"owner"`
-			GoodCommentsShare string `json:"goodCommentsShare"`
-			Comments          string `json:"comments"`
-			CommentInfo       struct {
-				CommentList struct {
-					Content   string `json:"content"`
-					ImageList struct {
-						URLInfo struct {
-							URL string `json:"url"`
-						} `json:"urlInfo"`
-					} `json:"imageList"`
-				} `json:"commentList"`
-			} `json:"commentInfo"`
-		} `json:"goodsResp"`
-	} `json:"data"`
-	Code     string `json:"code"`
-	HotWords string `json:"hotWords"`
+	JdUnionOpenGoodsQueryResponse struct {
+		QueryResult struct {
+			Message        string `json:"message"`
+			SimilarSkuList string `json:"similarSkuList"`
+			TotalCount     string `json:"totalCount"`
+			Data           struct {
+				GoodsResp struct {
+					CategoryInfo struct {
+						Cid3     string `json:"cid3"`
+						Cid2Name string `json:"cid2Name"`
+						Cid2     string `json:"cid2"`
+						Cid3Name string `json:"cid3Name"`
+						Cid1Name string `json:"cid1Name"`
+						Cid1     string `json:"cid1"`
+					} `json:"categoryInfo"`
+					Spuid       string `json:"spuid"`
+					IsJdSale    string `json:"isJdSale"`
+					MaterialURL string `json:"materialUrl"`
+					BookInfo    struct {
+						Isbn string `json:"isbn"`
+					} `json:"bookInfo"`
+					VideoInfo struct {
+						VideoList struct {
+							Video struct {
+								PlayURL   string `json:"playUrl"`
+								Duration  string `json:"duration"`
+								ImageURL  string `json:"imageUrl"`
+								Width     string `json:"width"`
+								PlayType  string `json:"playType"`
+								High      string `json:"high"`
+								VideoType string `json:"videoType"`
+							} `json:"video"`
+						} `json:"videoList"`
+					} `json:"videoInfo"`
+					DocumentInfo struct {
+						Document string `json:"document"`
+						Discount string `json:"discount"`
+					} `json:"documentInfo"`
+					BrandName string `json:"brandName"`
+					ImageInfo struct {
+						ImageList struct {
+							URLInfo struct {
+								URL string `json:"url"`
+							} `json:"urlInfo"`
+						} `json:"imageList"`
+						WhiteImage string `json:"whiteImage"`
+					} `json:"imageInfo"`
+					BrandCode      string `json:"brandCode"`
+					SkuID          string `json:"skuId"`
+					CommissionInfo struct {
+						StartTime           string `json:"startTime"`
+						CommissionShare     string `json:"commissionShare"`
+						CouponCommission    string `json:"couponCommission"`
+						PlusCommissionShare string `json:"plusCommissionShare"`
+						EndTime             string `json:"endTime"`
+						Commission          string `json:"commission"`
+						IsLock              string `json:"isLock"`
+					} `json:"commissionInfo"`
+					JxFlags            string `json:"jxFlags"`
+					InOrderCount30Days string `json:"inOrderCount30Days"`
+					CouponInfo         struct {
+						CouponList struct {
+							Coupon struct {
+								GetEndTime   string `json:"getEndTime"`
+								GetStartTime string `json:"getStartTime"`
+								Quota        string `json:"quota"`
+								PlatformType string `json:"platformType"`
+								UseEndTime   string `json:"useEndTime"`
+								UseStartTime string `json:"useStartTime"`
+								BindType     string `json:"bindType"`
+								IsBest       string `json:"isBest"`
+								Link         string `json:"link"`
+								HotValue     string `json:"hotValue"`
+								Discount     string `json:"discount"`
+							} `json:"coupon"`
+						} `json:"couponList"`
+					} `json:"couponInfo"`
+					SpecInfo struct {
+						Spec     string `json:"spec"`
+						SpecName string `json:"specName"`
+						Color    string `json:"color"`
+						Size     string `json:"size"`
+					} `json:"specInfo"`
+					PinGouInfo struct {
+						PingouTmCount   string `json:"pingouTmCount"`
+						PingouURL       string `json:"pingouUrl"`
+						PingouEndTime   string `json:"pingouEndTime"`
+						PingouPrice     string `json:"pingouPrice"`
+						PingouStartTime string `json:"pingouStartTime"`
+					} `json:"pinGouInfo"`
+					DeliveryType string `json:"deliveryType"`
+					ForbidTypes  string `json:"forbidTypes"`
+					SkuName      string `json:"skuName"`
+					IsHot        string `json:"isHot"`
+					PriceInfo    struct {
+						Price             string `json:"price"`
+						HistoryPriceDay   string `json:"historyPriceDay"`
+						LowestCouponPrice string `json:"lowestCouponPrice"`
+						LowestPriceType   string `json:"lowestPriceType"`
+						LowestPrice       string `json:"lowestPrice"`
+					} `json:"priceInfo"`
+					ShopInfo struct {
+						ShopID    string `json:"shopId"`
+						ShopName  string `json:"shopName"`
+						ShopLevel string `json:"shopLevel"`
+					} `json:"shopInfo"`
+					Owner             string `json:"owner"`
+					GoodCommentsShare string `json:"goodCommentsShare"`
+					Comments          string `json:"comments"`
+					CommentInfo       struct {
+						CommentList struct {
+							Content   string `json:"content"`
+							ImageList struct {
+								URLInfo struct {
+									URL string `json:"url"`
+								} `json:"urlInfo"`
+							} `json:"imageList"`
+						} `json:"commentList"`
+					} `json:"commentInfo"`
+				} `json:"goodsResp"`
+			} `json:"data"`
+			Code     string `json:"code"`
+			HotWords string `json:"hotWords"`
+		} `json:"queryResult"`
+	} `json:"jd_union_open_goods_query_response"`
 }
 
-type AutoGenerated struct {
-	JdUnionOpenGoodsQueryResponse struct {
-		QueryResult interface{} `json:"queryResult"`
-	} `json:"jd_union_open_goods_query_response"`
+type PromoteCommonGetRequest struct {
+	// 必填 ...
+
+	MaterialId string `json:"materialId"` //	推广物料url，例如活动链接、商品链接等；不支持仅传入skuid
+	SiteId     string `json:"siteId"`     // 网站ID/APP ID，入口：京东联盟-推广管理-网站管理/APP管理-查看网站ID/APP ID（1、接口禁止使用导购媒体id入参；2、投放链接的网址或应用必须与传入的网站ID/AppID备案一致，否则订单会判“无效-来源与备案网址不符”）
+	// 非必填 ...
+
+	PositionId    uint64 `json:"positionId"`    // 推广位id
+	SubUnionId    string `json:"subUnionId"`    // 子渠道标识，您可自定义传入字母、数字或下划线，最多支持80个字符，该参数会在订单行查询接口中展示（需申请权限，申请方法请见https://union.jd.com/helpcenter/13246-13247-46301）
+	Ext1          string `json:"ext1"`          // 系统扩展参数（需申请权限，申请方法请见https://union.jd.com/helpcenter/13246-13247-46301），最多支持40字符，参数会在订单行查询接口中展示
+	Protocol      uint64 `json:"-"`             // Deprecated:【已废弃】请勿再使用
+	Pid           string `json:"pid"`           // 联盟子推客身份标识（不能传入接口调用者自己的pid）
+	CouponUrl     string `json:"couponUrl"`     // 优惠券领取链接，在使用优惠券、商品二合一功能时入参，且materialId须为商品详情页链接
+	GiftCouponKey string `json:"giftCouponKey"` // 礼金批次号
+}
+
+type PromoteCommonGetResult struct {
+	JdUnionOpenPromotionCommonGetResponse struct {
+		GetResult struct {
+			Message string `json:"message"`
+			Data    struct {
+				ClickURL string `json:"clickURL"`
+			} `json:"data"`
+			Code string `json:"code"`
+		} `json:"getResult"`
+	} `json:"jd_union_open_promotion_common_get_response"`
+}
+
+type CouponQueryRequest struct {
+}
+
+type CouponQueryResult struct {
+	JdUnionOpenCouponQueryResponse struct {
+		QueryResult struct {
+			Message string `json:"message"`
+			Data    struct {
+				CouponResp struct {
+					RemainNum     string `json:"remainNum"`
+					Platform      string `json:"platform"`
+					Quota         string `json:"quota"`
+					Num           string `json:"num"`
+					TakeBeginTime string `json:"takeBeginTime"`
+					TakeEndTime   string `json:"takeEndTime"`
+					Link          string `json:"link"`
+					BeginTime     string `json:"beginTime"`
+					Yn            string `json:"yn"`
+					EndTime       string `json:"endTime"`
+					Discount      string `json:"discount"`
+				} `json:"couponResp"`
+			} `json:"data"`
+			Code string `json:"code"`
+		} `json:"queryResult"`
+	} `json:"jd_union_open_coupon_query_response"`
 }

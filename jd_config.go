@@ -31,13 +31,8 @@ func NewConfig(appKey, secretKey string) *Config {
 	}
 }
 
-// 参数封装
-type Parameter struct {
-	Config
-}
-
 // 检查必选参数
-func (p *Parameter) CheckRequiredParams() error {
+func (p *Config) CheckRequiredParams() error {
 	if "" == p.AppKey || "" == p.SecretKey {
 		return fmt.Errorf("AppKey and SecretKey must be set")
 	}

@@ -1,13 +1,12 @@
 package jd
 
 import (
+	"encoding/json"
 	"github.com/cliod/jd-go/common"
 	"strings"
 )
 
 type Service interface {
-	common.Service
-
 	// 获取商品相关接口
 	GetGoodsService() GoodsService
 	// 获取配置
@@ -16,19 +15,30 @@ type Service interface {
 	SetConfig(config *Config)
 	// 设置http请求
 	SetHttpService(service common.Service)
+
+	// 执行Get操作
+	DoGet(v interface{}, method Method, param map[string]string) error
+	// 执行Post操作
+	DoPost(v interface{}, method Method, param map[string]string) error
 }
 
 type ServiceImpl struct {
 	service common.Service
 	config  *Config
 
-	goodsService GoodsService
+	goodsService   GoodsService
+	promoteService PromoteService
+	couponService  CouponService
 }
 
 func NewJdService(appKet, secretKey string) Service {
 	impl := &ServiceImpl{}
 	impl.SetConfig(NewConfig(appKet, secretKey))
 	impl.SetHttpService(common.NewService())
+
+	impl.goodsService = newGoodsService(impl)
+	impl.promoteService = newPromoteService(impl)
+	impl.couponService = newCouponService(impl)
 	return impl
 }
 
@@ -41,11 +51,19 @@ func (s *ServiceImpl) Post(url string, contentType string, data interface{}, arg
 }
 
 func (s *ServiceImpl) GetFor(v interface{}, url string, args ...interface{}) error {
-	return s.service.GetFor(v, url, args...)
+	res, err := s.Get(url, args...)
+	if err != nil {
+		return err
+	}
+	return json.Unmarshal(res, v)
 }
 
 func (s *ServiceImpl) PostFor(v interface{}, url string, contentType string, data interface{}, args ...interface{}) error {
-	return s.service.PostFor(v, url, contentType, data, args...)
+	res, err := s.Post(url, contentType, data, args...)
+	if err != nil {
+		return err
+	}
+	return json.Unmarshal(res, v)
 }
 
 func (s *ServiceImpl) GetGoodsService() GoodsService {
@@ -86,10 +104,13 @@ func (s *ServiceImpl) SignGet(method Method, param map[string]string) string {
 	return strings.TrimRight(suffix, "&")
 }
 
-func (s *ServiceImpl) DoGet(v interface{}, url string) {
-
+func (s *ServiceImpl) DoGet(v interface{}, method Method, param map[string]string) error {
+	url := "" + string(method) + s.SignGet(method, param)
+	return s.GetFor(v, url)
 }
 
-func (s *ServiceImpl) DoPost(v interface{}, url string) {
-
+func (s *ServiceImpl) DoPost(v interface{}, method Method, param map[string]string) error {
+	data := s.Sign(method, param)
+	url := "" + string(method)
+	return s.PostFor(v, url, "application/json", data)
 }
