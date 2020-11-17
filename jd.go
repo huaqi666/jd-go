@@ -3,7 +3,6 @@ package jd
 import (
 	"encoding/json"
 	"github.com/cliod/jd-go/common"
-	"strings"
 )
 
 type Service interface {
@@ -25,9 +24,7 @@ type Service interface {
 	SetHttpService(service common.Service)
 
 	// 执行Get操作
-	DoGet(v interface{}, method Method, param map[string]string) error
-	// 执行Post操作
-	DoPost(v interface{}, method Method, param map[string]string) error
+	Do(v interface{}, method Method, param map[string]interface{}) error
 }
 
 type ServiceImpl struct {
@@ -50,24 +47,12 @@ func NewJdService(appKet, secretKey string) Service {
 	return impl
 }
 
-func (s *ServiceImpl) Get(url string, args ...interface{}) ([]byte, error) {
-	return s.service.Get(url, args...)
+func (s *ServiceImpl) Get(url string, args interface{}) ([]byte, error) {
+	return s.service.Get(url, args)
 }
 
-func (s *ServiceImpl) Post(url string, contentType string, data interface{}, args ...interface{}) ([]byte, error) {
-	return s.service.Post(url, contentType, data, args...)
-}
-
-func (s *ServiceImpl) GetFor(v interface{}, url string, args ...interface{}) error {
-	res, err := s.Get(url, args...)
-	if err != nil {
-		return err
-	}
-	return json.Unmarshal(res, v)
-}
-
-func (s *ServiceImpl) PostFor(v interface{}, url string, contentType string, data interface{}, args ...interface{}) error {
-	res, err := s.Post(url, contentType, data, args...)
+func (s *ServiceImpl) GetFor(v interface{}, url string, args *Param) error {
+	res, err := s.Get(url, args)
 	if err != nil {
 		return err
 	}
@@ -110,35 +95,26 @@ func (s *ServiceImpl) SetHttpService(service common.Service) {
 	s.service = service
 }
 
-func (s *ServiceImpl) Sign(method Method, param map[string]string) map[string]interface{} {
+func (s *ServiceImpl) Sign(method Method, param map[string]interface{}) *Param {
 	c := s.GetConfig()
 	c.Method = method
-	parameter := common.ToMap(c)
-
-	for k, v := range param {
-		parameter[k] = v
+	parameter := NewParameter(c, param)
+	parameter.attachSign()
+	return &Param{
+		ParamJson: parameter.getParamString(),
+		Config: Config{
+			AppKey:      parameter.AppKey,
+			Method:      parameter.Method,
+			AccessToken: parameter.AccessToken,
+			Timestamp:   parameter.Timestamp,
+			Format:      parameter.Format,
+			Version:     parameter.Version,
+			SignMethod:  parameter.SignMethod,
+			Sign:        parameter.Sign,
+		},
 	}
-
-	parameter["sign"] = common.Sign(parameter, c.SecretKey, "sign")
-	return parameter
 }
 
-func (s *ServiceImpl) SignGet(method Method, param map[string]string) string {
-	parameter := s.Sign(method, param)
-	suffix := ""
-	for k, v := range parameter {
-		suffix += k + "=" + v.(string) + "&"
-	}
-	return strings.TrimRight(suffix, "&")
-}
-
-func (s *ServiceImpl) DoGet(v interface{}, method Method, param map[string]string) error {
-	url := "" + string(method) + s.SignGet(method, param)
-	return s.GetFor(v, url)
-}
-
-func (s *ServiceImpl) DoPost(v interface{}, method Method, param map[string]string) error {
-	data := s.Sign(method, param)
-	url := "" + string(method)
-	return s.PostFor(v, url, "application/json", data)
+func (s *ServiceImpl) Do(v interface{}, method Method, param map[string]interface{}) error {
+	return s.GetFor(v, BaseUrl, s.Sign(method, param))
 }

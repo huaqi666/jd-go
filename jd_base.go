@@ -1,138 +1,111 @@
 package jd
 
+import "encoding/json"
+
 type GoodsJingfenQueryRequest struct {
 	// 必填 ...
 
-	EliteId uint64 `json:"eliteId"` // 频道ID:1-好券商品,2-精选卖场,10-9.9包邮,15-京东配送,22-实时热销榜,23-为你推荐,24-数码家电,25-超市,26-母婴玩具,27-家具日用,28-美妆穿搭,30-图书文具,31-今日必推,32-京东好物,33-京东秒杀,34-拼购商品,40-高收益榜,41-自营热卖榜,108-秒杀进行中,109-新品首发,110-自营,112-京东爆品,125-首购商品,129-高佣榜单,130-视频商品,153-历史最低价商品榜
+	EliteId string `json:"eliteId"` // 频道ID:1-好券商品,2-精选卖场,10-9.9包邮,15-京东配送,22-实时热销榜,23-为你推荐,24-数码家电,25-超市,26-母婴玩具,27-家具日用,28-美妆穿搭,30-图书文具,
+	// 31-今日必推,32-京东好物,33-京东秒杀,34-拼购商品,40-高收益榜,41-自营热卖榜,108-秒杀进行中,109-新品首发,110-自营,112-京东爆品,125-首购商品,129-高佣榜单,130-视频商品,153-历史最低价商品榜
 	// 非必填 ...
 
-	PageIndex   uint64 `json:"pageIndex"`   // 页码，默认1
-	PageSize    uint64 `json:"pageSize"`    // 每页数量，默认20，上限50，建议20
-	SortName    string `json:"sortName"`    // 排序字段(price：单价, commissionShare：佣金比例, commission：佣金， inOrderCount30DaysSku：sku维度30天引单量，comments：评论数，goodComments：好评数)
-	Sort        string `json:"sort"`        // asc,desc升降序,默认降序
-	Pid         string `json:"pid"`         // 联盟id_应用id_推广位id，三段式
-	Fields      string `json:"fields"`      // 支持出参数据筛选，逗号','分隔，目前可用：videoInfo,documentInfo
-	ForbidTypes string `json:"forbidTypes"` // 10微信京东购物小程序禁售，11微信京喜小程序禁售
+	PageIndex   uint64 `json:"pageIndex,omitempty"`   // 页码，默认1
+	PageSize    uint64 `json:"pageSize,omitempty"`    // 每页数量，默认20，上限50，建议20
+	SortName    string `json:"sortName,omitempty"`    // 排序字段(price：单价, commissionShare：佣金比例, commission：佣金， inOrderCount30DaysSku：sku维度30天引单量，comments：评论数，goodComments：好评数)
+	Sort        string `json:"sort,omitempty"`        // asc,desc升降序,默认降序
+	Pid         string `json:"pid,omitempty"`         // 联盟id_应用id_推广位id，三段式
+	Fields      string `json:"fields,omitempty"`      // 支持出参数据筛选，逗号','分隔，目前可用：videoInfo,documentInfo
+	ForbidTypes string `json:"forbidTypes,omitempty"` // 10微信京东购物小程序禁售，11微信京喜小程序禁售
 }
 
 type GoodsJingfenQueryResult struct {
 	JdUnionOpenGoodsJingfenQueryResponse struct {
-		QueryResult struct {
-			Message    string `json:"message"`
-			TotalCount string `json:"totalCount"`
-			Data       struct {
-				JfGoodsResp struct {
-					CategoryInfo struct {
-						Cid3     string `json:"cid3"`
-						Cid2Name string `json:"cid2Name"`
-						Cid2     string `json:"cid2"`
-						Cid3Name string `json:"cid3Name"`
-						Cid1Name string `json:"cid1Name"`
-						Cid1     string `json:"cid1"`
-					} `json:"categoryInfo"`
-					Spuid        string `json:"spuid"`
-					ResourceInfo struct {
-						EliteID   string `json:"eliteId"`
-						EliteName string `json:"eliteName"`
-					} `json:"resourceInfo"`
-					MaterialURL string `json:"materialUrl"`
-					SeckillInfo struct {
-						SeckillEndTime   string `json:"seckillEndTime"`
-						SeckillPrice     string `json:"seckillPrice"`
-						SeckillOriPrice  string `json:"seckillOriPrice"`
-						SeckillStartTime string `json:"seckillStartTime"`
-					} `json:"seckillInfo"`
-					BookInfo struct {
-						Isbn string `json:"isbn"`
-					} `json:"bookInfo"`
-					VideoInfo struct {
-						VideoList struct {
-							Video struct {
-								PlayURL   string `json:"playUrl"`
-								Duration  string `json:"duration"`
-								ImageURL  string `json:"imageUrl"`
-								Width     string `json:"width"`
-								PlayType  string `json:"playType"`
-								High      string `json:"high"`
-								VideoType string `json:"videoType"`
-							} `json:"video"`
-						} `json:"videoList"`
-					} `json:"videoInfo"`
-					DocumentInfo struct {
-						Document string `json:"document"`
-						Discount string `json:"discount"`
-					} `json:"documentInfo"`
-					BrandName string `json:"brandName"`
-					ImageInfo struct {
-						ImageList struct {
-							URLInfo struct {
-								URL string `json:"url"`
-							} `json:"urlInfo"`
-						} `json:"imageList"`
-						WhiteImage string `json:"whiteImage"`
-					} `json:"imageInfo"`
-					BrandCode      string `json:"brandCode"`
-					SkuID          string `json:"skuId"`
-					CommissionInfo struct {
-						StartTime           string `json:"startTime"`
-						CommissionShare     string `json:"commissionShare"`
-						CouponCommission    string `json:"couponCommission"`
-						PlusCommissionShare string `json:"plusCommissionShare"`
-						EndTime             string `json:"endTime"`
-						Commission          string `json:"commission"`
-						IsLock              string `json:"isLock"`
-					} `json:"commissionInfo"`
-					JxFlags            string `json:"jxFlags"`
-					InOrderCount30Days string `json:"inOrderCount30Days"`
-					CouponInfo         struct {
-						CouponList struct {
-							Coupon struct {
-								GetEndTime   string `json:"getEndTime"`
-								GetStartTime string `json:"getStartTime"`
-								Quota        string `json:"quota"`
-								PlatformType string `json:"platformType"`
-								UseEndTime   string `json:"useEndTime"`
-								UseStartTime string `json:"useStartTime"`
-								BindType     string `json:"bindType"`
-								IsBest       string `json:"isBest"`
-								Link         string `json:"link"`
-								HotValue     string `json:"hotValue"`
-								Discount     string `json:"discount"`
-							} `json:"coupon"`
-						} `json:"couponList"`
-					} `json:"couponInfo"`
-					InOrderCount30DaysSku string `json:"inOrderCount30DaysSku"`
-					PinGouInfo            struct {
-						PingouTmCount   string `json:"pingouTmCount"`
-						PingouURL       string `json:"pingouUrl"`
-						PingouEndTime   string `json:"pingouEndTime"`
-						PingouPrice     string `json:"pingouPrice"`
-						PingouStartTime string `json:"pingouStartTime"`
-					} `json:"pinGouInfo"`
-					DeliveryType string `json:"deliveryType"`
-					ForbidTypes  string `json:"forbidTypes"`
-					SkuName      string `json:"skuName"`
-					IsHot        string `json:"isHot"`
-					PriceInfo    struct {
-						Price             string `json:"price"`
-						HistoryPriceDay   string `json:"historyPriceDay"`
-						LowestCouponPrice string `json:"lowestCouponPrice"`
-						LowestPriceType   string `json:"lowestPriceType"`
-						LowestPrice       string `json:"lowestPrice"`
-					} `json:"priceInfo"`
-					ShopInfo struct {
-						ShopID    string `json:"shopId"`
-						ShopName  string `json:"shopName"`
-						ShopLevel string `json:"shopLevel"`
-					} `json:"shopInfo"`
-					Owner             string `json:"owner"`
-					GoodCommentsShare string `json:"goodCommentsShare"`
-					Comments          string `json:"comments"`
-				} `json:"jfGoodsResp"`
-			} `json:"data"`
-			Code string `json:"code"`
-		} `json:"queryResult"`
+		Result string `json:"result"`
+		Code   string `json:"code"`
 	} `json:"jd_union_open_goods_jingfen_query_response"`
+}
+
+func (r *GoodsJingfenQueryResult) GetResult() *GoodsJingfenQueryResultInner {
+	str := r.JdUnionOpenGoodsJingfenQueryResponse.Result
+	var data GoodsJingfenQueryResultInner
+	if str != "" {
+
+	}
+	_ = json.Unmarshal([]byte(str), &data)
+	return &data
+}
+
+type GoodsJingfenQueryResultInner struct {
+	Code int `json:"code"`
+	Data []struct {
+		BrandCode    string `json:"brandCode"`
+		BrandName    string `json:"brandName"`
+		CategoryInfo struct {
+			Cid1     int    `json:"cid1"`
+			Cid1Name string `json:"cid1Name"`
+			Cid2     int    `json:"cid2"`
+			Cid2Name string `json:"cid2Name"`
+			Cid3     int    `json:"cid3"`
+			Cid3Name string `json:"cid3Name"`
+		} `json:"categoryInfo"`
+		Comments       int `json:"comments"`
+		CommissionInfo struct {
+			Commission          float64 `json:"commission"`
+			CommissionShare     int     `json:"commissionShare"`
+			EndTime             int64   `json:"endTime"`
+			IsLock              int     `json:"isLock"`
+			PlusCommissionShare int     `json:"plusCommissionShare"`
+			StartTime           int64   `json:"startTime"`
+		} `json:"commissionInfo"`
+		CouponInfo struct {
+			CouponList []interface{} `json:"couponList"`
+		} `json:"couponInfo"`
+		DeliveryType      int   `json:"deliveryType"`
+		ForbidTypes       []int `json:"forbidTypes"`
+		GoodCommentsShare int   `json:"goodCommentsShare"`
+		ImageInfo         struct {
+			ImageList []struct {
+				URL string `json:"url"`
+			} `json:"imageList"`
+			WhiteImage string `json:"whiteImage"`
+		} `json:"imageInfo"`
+		InOrderCount30Days    int    `json:"inOrderCount30Days"`
+		InOrderCount30DaysSku int    `json:"inOrderCount30DaysSku"`
+		IsHot                 int    `json:"isHot"`
+		MaterialURL           string `json:"materialUrl"`
+		Owner                 string `json:"owner"`
+		PinGouInfo            struct {
+		} `json:"pinGouInfo"`
+		PriceInfo struct {
+			LowestPrice     int `json:"lowestPrice"`
+			LowestPriceType int `json:"lowestPriceType"`
+			Price           int `json:"price"`
+		} `json:"priceInfo"`
+		ResourceInfo struct {
+			EliteID   int    `json:"eliteId"`
+			EliteName string `json:"eliteName"`
+		} `json:"resourceInfo"`
+		SeckillInfo struct {
+			SeckillEndTime   int64 `json:"seckillEndTime"`
+			SeckillOriPrice  int   `json:"seckillOriPrice"`
+			SeckillPrice     int   `json:"seckillPrice"`
+			SeckillStartTime int64 `json:"seckillStartTime"`
+		} `json:"seckillInfo"`
+		ShopInfo struct {
+			ShopID    int     `json:"shopId"`
+			ShopLevel float64 `json:"shopLevel"`
+			ShopName  string  `json:"shopName"`
+		} `json:"shopInfo"`
+		SkuID    int    `json:"skuId"`
+		SkuName  string `json:"skuName"`
+		Spuid    int    `json:"spuid"`
+		BookInfo struct {
+			Isbn string `json:"isbn"`
+		} `json:"bookInfo,omitempty"`
+	} `json:"data"`
+	Message    string `json:"message"`
+	RequestID  string `json:"requestId"`
+	TotalCount int    `json:"totalCount"`
 }
 
 // 关键词商品查询接口

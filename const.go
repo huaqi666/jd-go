@@ -43,3 +43,7 @@ const (
 	ActivityQuery            Method = "jd.union.open.activity.query"             // 活动查询接口
 	StatisticsRedpacketQuery Method = "jd.union.open.statistics.redpacket.query" // 京享红包效果数据
 )
+
+const (
+	BaseUrl = "https://router.jd.com/api"
+)

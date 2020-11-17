@@ -1,8 +1,6 @@
 // jd联盟go-sdk
 package jd
 
-import "encoding/json"
-
 type PromoteService interface {
 	// 网站/APP获取推广链接接口
 	CommonGet(*PromoteCommonGetRequest) (*PromoteCommonGetResult, error)
@@ -19,13 +17,9 @@ func newPromoteService(service Service) PromoteService {
 }
 
 func (p *PromoteServiceImpl) CommonGet(request *PromoteCommonGetRequest) (*PromoteCommonGetResult, error) {
-	param := map[string]string{}
-	b, err := json.Marshal(request)
-	if err != nil {
-		return nil, err
-	}
-	param["promotionCodeReq"] = string(b)
+	param := map[string]interface{}{}
+	param["promotionCodeReq"] = request
 	var res PromoteCommonGetResult
-	err = p.service.DoGet(&res, PromotionCommonGet, param)
+	err := p.service.Do(&res, PromotionCommonGet, param)
 	return &res, err
 }

@@ -1,19 +1,17 @@
 package common
 
 import (
-	"bytes"
-	"encoding/json"
 	"fmt"
+	"github.com/google/go-querystring/query"
 	"io/ioutil"
 	"net/http"
+	"net/url"
 )
 
 // http请求接口
 type Service interface {
 	// 执行Get请求
-	Get(url string, args ...interface{}) ([]byte, error)
-	// 执行Post请求
-	Post(url string, contentType string, data interface{}, args ...interface{}) ([]byte, error)
+	Get(url string, args interface{}) ([]byte, error)
 }
 
 // http请求默认实现(json传参)
@@ -21,31 +19,40 @@ type ServiceImpl struct {
 	client *http.Client
 }
 
-func (s *ServiceImpl) Get(url string, args ...interface{}) ([]byte, error) {
-	uri := fmt.Sprintf(url, args...)
-	res, err := s.client.Get(uri)
+func (s *ServiceImpl) Get(address string, v interface{}) ([]byte, error) {
+	urlVal, err := url.Parse(address)
 	if err != nil {
 		return nil, err
 	}
-	return ioutil.ReadAll(res.Body)
-}
+	values, _ := query.Values(v)
+	urlVal.RawQuery = values.Encode()
 
-func (s *ServiceImpl) Post(url string, contentType string, data interface{}, args ...interface{}) ([]byte, error) {
-	uri := fmt.Sprintf(url, args...)
-	body, err := json.Marshal(data)
-	res, err := s.client.Post(uri, contentType, bytes.NewReader(body))
+	req, err := http.NewRequest("GET", urlVal.String(), nil)
 	if err != nil {
 		return nil, err
 	}
-	return ioutil.ReadAll(res.Body)
+	a := req.URL.RequestURI()
+	fmt.Println("URI:", a)
+	resp, err := s.client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+
+	statusCode := resp.StatusCode
+	if statusCode != 200 {
+		return nil, fmt.Errorf("statusCode: %d", statusCode)
+	}
+
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	return body, nil
 }
 
 func NewService() Service {
-	return NewServiceFor(http.DefaultClient)
-}
-
-func NewServiceFor(client *http.Client) Service {
 	return &ServiceImpl{
-		client: client,
+		client: &http.Client{},
 	}
 }
