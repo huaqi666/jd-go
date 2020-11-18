@@ -15,20 +15,20 @@ func TestServiceImpl(t *testing.T) {
 	j := NewJdService(c.AppKey, c.SecretKey)
 	g := j.GetGoodsService()
 	res, err := g.GoodsJingfenQuery(&GoodsJingfenQueryRequest{
-		EliteId: "33",
+		EliteId: 33,
 	})
 	t.Log(res, err)
 	if err != nil {
 		return
 	}
-	t.Log(res.GetResult().RequestID, err)
+	t.Log(res.GetResult(), err)
 }
 
 func TestParameter_AttachSign(t *testing.T) {
 	c := GetConfig()
 	param := map[string]interface{}{}
 	param["goodsReq"] = &GoodsJingfenQueryRequest{
-		EliteId: "33",
+		EliteId: 33,
 	}
 	p := NewParameter(NewConfig(c.AppKey, c.SecretKey), param)
 	p.Method = "jd.union.open.goods.jingfen.query"
