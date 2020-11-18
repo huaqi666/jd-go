@@ -19,7 +19,7 @@ type Config struct {
 	Version     string `json:"v" url:"v"`                                 // API协议版本，可选值：2.0，请根据API具体版本号传入此参数，一般为1.0
 	SignMethod  string `json:"sign_method" url:"sign_method"`             // 签名的摘要算法， md5
 	Sign        string `json:"sign" url:"sign"`                           // API输入参数签名结果
-	SecretKey   string `json:"-"`                                         // api秘钥
+	SecretKey   string `json:"-" url:"-"`                                 // api秘钥
 }
 
 func NewConfig(appKey, secretKey string) *Config {

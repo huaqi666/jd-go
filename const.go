@@ -7,7 +7,7 @@ const (
 	GoodsJingfenQuery            Method = "jd.union.open.goods.jingfen.query"            // 精选商品查询
 	GoodsQuery                   Method = "jd.union.open.goods.query"                    // 关键词商品查询接口【申请】
 	GoodsPromotiongoodsinfoQuery Method = "jd.union.open.goods.promotiongoodsinfo.query" // 根据skuid查询商品信息接口
-	CategoryGoodsQuery           Method = "jd.union.open.category.goods.get"             // 商品类目查询接口
+	CategoryGoodsGetQuery        Method = "jd.union.open.category.goods.get"             // 商品类目查询接口
 	GoodsGigfieldQuery           Method = "jd.union.open.goods.bigfield.query"           // 商品详情查询接口【申请】
 )
 

@@ -11,7 +11,7 @@ type GoodsService interface {
 	  （非常重要 请大家关注：如果输入的sk串中某个skuID的商品不在推广中[就是没有佣金]，返回结果中不会包含这个商品的信息） */
 	GoodsPromotiongoodsinfoQuery(skuIds string) (*GoodsPromotiongoodsinfoResult, error)
 	// 商品类目查询接口
-	CategoryGoodsQuery(*CategoryGoodsRequest) (*CategoryGoodsResult, error)
+	CategoryGoodsGetQuery(*CategoryGoodsGetRequest) (*CategoryGoodsGetResult, error)
 	// 商品详情查询接口【申请】
 	GoodsGigfieldQuery(*GoodsGigfieldRequest) (*GoodsGigfieldResult, error)
 }
@@ -52,12 +52,12 @@ func (g *GoodsServiceImpl) GoodsPromotiongoodsinfoQuery(skuIds string) (*GoodsPr
 	return &res, err
 }
 
-func (g *GoodsServiceImpl) CategoryGoodsQuery(request *CategoryGoodsRequest) (*CategoryGoodsResult, error) {
+func (g *GoodsServiceImpl) CategoryGoodsGetQuery(request *CategoryGoodsGetRequest) (*CategoryGoodsGetResult, error) {
 	//goodsReqDTO
 	param := map[string]interface{}{}
 	param["req"] = request
-	var res CategoryGoodsResult
-	err := g.service.Do(&res, CategoryGoodsQuery, param)
+	var res CategoryGoodsGetResult
+	err := g.service.Do(&res, CategoryGoodsGetQuery, param)
 	return &res, err
 }
 

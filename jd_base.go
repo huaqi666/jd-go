@@ -1,5 +1,19 @@
 package jd
 
+import "encoding/json"
+
+type BaseResult struct {
+	ErrorResponse struct {
+		Code   string `json:"code"`
+		ZhDesc string `json:"zh_desc"`
+		EnDesc string `json:"en_desc"`
+	} `json:"error_response"`
+}
+
+func (b *BaseResult) GetResult() ([]byte, error) {
+	return json.Marshal(b.ErrorResponse)
+}
+
 type GoodsJingfenQueryRequest struct {
 	// 必填 ...
 
@@ -17,6 +31,7 @@ type GoodsJingfenQueryRequest struct {
 }
 
 type GoodsJingfenQueryResult struct {
+	BaseResult
 	JdUnionOpenGoodsJingfenQueryResponse struct {
 		Result string `json:"result"`
 		Code   string `json:"code"`
@@ -140,144 +155,34 @@ type GoodsQueryRequest struct {
 }
 
 type GoodsQueryResult struct {
+	BaseResult
 	JdUnionOpenGoodsQueryResponse struct {
-		QueryResult struct {
-			Message        string `json:"message"`
-			SimilarSkuList string `json:"similarSkuList"`
-			TotalCount     string `json:"totalCount"`
-			Data           struct {
-				GoodsResp struct {
-					CategoryInfo struct {
-						Cid3     string `json:"cid3"`
-						Cid2Name string `json:"cid2Name"`
-						Cid2     string `json:"cid2"`
-						Cid3Name string `json:"cid3Name"`
-						Cid1Name string `json:"cid1Name"`
-						Cid1     string `json:"cid1"`
-					} `json:"categoryInfo"`
-					Spuid       string `json:"spuid"`
-					IsJdSale    string `json:"isJdSale"`
-					MaterialURL string `json:"materialUrl"`
-					BookInfo    struct {
-						Isbn string `json:"isbn"`
-					} `json:"bookInfo"`
-					VideoInfo struct {
-						VideoList struct {
-							Video struct {
-								PlayURL   string `json:"playUrl"`
-								Duration  string `json:"duration"`
-								ImageURL  string `json:"imageUrl"`
-								Width     string `json:"width"`
-								PlayType  string `json:"playType"`
-								High      string `json:"high"`
-								VideoType string `json:"videoType"`
-							} `json:"video"`
-						} `json:"videoList"`
-					} `json:"videoInfo"`
-					DocumentInfo struct {
-						Document string `json:"document"`
-						Discount string `json:"discount"`
-					} `json:"documentInfo"`
-					BrandName string `json:"brandName"`
-					ImageInfo struct {
-						ImageList struct {
-							URLInfo struct {
-								URL string `json:"url"`
-							} `json:"urlInfo"`
-						} `json:"imageList"`
-						WhiteImage string `json:"whiteImage"`
-					} `json:"imageInfo"`
-					BrandCode      string `json:"brandCode"`
-					SkuID          string `json:"skuId"`
-					CommissionInfo struct {
-						StartTime           string `json:"startTime"`
-						CommissionShare     string `json:"commissionShare"`
-						CouponCommission    string `json:"couponCommission"`
-						PlusCommissionShare string `json:"plusCommissionShare"`
-						EndTime             string `json:"endTime"`
-						Commission          string `json:"commission"`
-						IsLock              string `json:"isLock"`
-					} `json:"commissionInfo"`
-					JxFlags            string `json:"jxFlags"`
-					InOrderCount30Days string `json:"inOrderCount30Days"`
-					CouponInfo         struct {
-						CouponList struct {
-							Coupon struct {
-								GetEndTime   string `json:"getEndTime"`
-								GetStartTime string `json:"getStartTime"`
-								Quota        string `json:"quota"`
-								PlatformType string `json:"platformType"`
-								UseEndTime   string `json:"useEndTime"`
-								UseStartTime string `json:"useStartTime"`
-								BindType     string `json:"bindType"`
-								IsBest       string `json:"isBest"`
-								Link         string `json:"link"`
-								HotValue     string `json:"hotValue"`
-								Discount     string `json:"discount"`
-							} `json:"coupon"`
-						} `json:"couponList"`
-					} `json:"couponInfo"`
-					SpecInfo struct {
-						Spec     string `json:"spec"`
-						SpecName string `json:"specName"`
-						Color    string `json:"color"`
-						Size     string `json:"size"`
-					} `json:"specInfo"`
-					PinGouInfo struct {
-						PingouTmCount   string `json:"pingouTmCount"`
-						PingouURL       string `json:"pingouUrl"`
-						PingouEndTime   string `json:"pingouEndTime"`
-						PingouPrice     string `json:"pingouPrice"`
-						PingouStartTime string `json:"pingouStartTime"`
-					} `json:"pinGouInfo"`
-					DeliveryType string `json:"deliveryType"`
-					ForbidTypes  string `json:"forbidTypes"`
-					SkuName      string `json:"skuName"`
-					IsHot        string `json:"isHot"`
-					PriceInfo    struct {
-						Price             string `json:"price"`
-						HistoryPriceDay   string `json:"historyPriceDay"`
-						LowestCouponPrice string `json:"lowestCouponPrice"`
-						LowestPriceType   string `json:"lowestPriceType"`
-						LowestPrice       string `json:"lowestPrice"`
-					} `json:"priceInfo"`
-					ShopInfo struct {
-						ShopID    string `json:"shopId"`
-						ShopName  string `json:"shopName"`
-						ShopLevel string `json:"shopLevel"`
-					} `json:"shopInfo"`
-					Owner             string `json:"owner"`
-					GoodCommentsShare string `json:"goodCommentsShare"`
-					Comments          string `json:"comments"`
-					CommentInfo       struct {
-						CommentList struct {
-							Content   string `json:"content"`
-							ImageList struct {
-								URLInfo struct {
-									URL string `json:"url"`
-								} `json:"urlInfo"`
-							} `json:"imageList"`
-						} `json:"commentList"`
-					} `json:"commentInfo"`
-				} `json:"goodsResp"`
-			} `json:"data"`
-			Code     string `json:"code"`
-			HotWords string `json:"hotWords"`
-		} `json:"queryResult"`
+		Result string `json:"result"`
+		Code   string `json:"code"`
 	} `json:"jd_union_open_goods_query_response"`
 }
 
 type GoodsPromotiongoodsinfoResult struct {
+	BaseResult
+	JdUnionOpenGoodsPromotiongoodsinfoQueryResponse struct {
+		Result string `json:"result"`
+		Code   string `json:"code"`
+	} `json:"jd_union_open_goods_promotiongoodsinfo_query_response"`
 }
 
-type CategoryGoodsRequest struct {
+type CategoryGoodsGetRequest struct {
 	// 必填 ...
 
 	ParentId uint64 `json:"parentId"` // 父类目id(一级父类目为0)
 	Grade    uint64 `json:"grade"`    // 类目级别(类目级别 0，1，2 代表一、二、三级类目)
 }
 
-type CategoryGoodsResult struct {
+type CategoryGoodsGetResult struct {
+	BaseResult
+	JdUnionOpenCategoryGoodsGetResponse struct {
+		Result string `json:"result"`
+		Code   string `json:"code"`
+	}
 }
 
 type GoodsGigfieldRequest struct {
@@ -290,6 +195,11 @@ type GoodsGigfieldRequest struct {
 }
 
 type GoodsGigfieldResult struct {
+	BaseResult
+	JdUnionOpenGoodsBigfieldQueryResponse struct {
+		Result string `json:"result"`
+		Code   string `json:"code"`
+	} `json:"jd_union_open_goods_bigfield_query_response"`
 }
 
 type PromoteCommonGetRequest struct {
@@ -309,8 +219,10 @@ type PromoteCommonGetRequest struct {
 }
 
 type PromoteCommonGetResult struct {
+	BaseResult
 	JdUnionOpenPromotionCommonGetResponse struct {
-		GetResult string `json:"getResult"`
+		Result string `json:"result"`
+		Code   string `json:"code"`
 	} `json:"jd_union_open_promotion_common_get_response"`
 }
 
@@ -329,6 +241,11 @@ type PromotionBysubunionidQueryRequest struct {
 }
 
 type PromotionBysubunionidQueryResult struct {
+	BaseResult
+	JdUnionOpenPromotionBysubunionidQueryResponse struct {
+		Result string `json:"result"`
+		Code   string `json:"code"`
+	} `json:"jd_union_open_promotion_bysubunionid_query_response"`
 }
 
 type PromotionByunionidQueryRequest struct {
@@ -346,6 +263,11 @@ type PromotionByunionidQueryRequest struct {
 }
 
 type PromotionByunionidQueryResult struct {
+	BaseResult
+	JdUnionOpenPromotionBysubunionidQueryResponse struct {
+		Result string `json:"result"`
+		Code   string `json:"code"`
+	}
 }
 
 type CouponQueryRequest struct {
@@ -355,26 +277,10 @@ type CouponQueryRequest struct {
 }
 
 type CouponQueryResult struct {
+	BaseResult
 	JdUnionOpenCouponQueryResponse struct {
-		QueryResult struct {
-			Message string `json:"message"`
-			Data    struct {
-				CouponResp struct {
-					RemainNum     string `json:"remainNum"`
-					Platform      string `json:"platform"`
-					Quota         string `json:"quota"`
-					Num           string `json:"num"`
-					TakeBeginTime string `json:"takeBeginTime"`
-					TakeEndTime   string `json:"takeEndTime"`
-					Link          string `json:"link"`
-					BeginTime     string `json:"beginTime"`
-					Yn            string `json:"yn"`
-					EndTime       string `json:"endTime"`
-					Discount      string `json:"discount"`
-				} `json:"couponResp"`
-			} `json:"data"`
-			Code string `json:"code"`
-		} `json:"queryResult"`
+		Result string `json:"result"`
+		Code   string `json:"code"`
 	} `json:"jd_union_open_coupon_query_response"`
 }
 
@@ -389,6 +295,11 @@ type PositionQueryRequest struct {
 }
 
 type PositionQueryResult struct {
+	BaseResult
+	JdUnionOpenPositionQueryResponse struct {
+		Result string `json:"result"`
+		Code   string `json:"code"`
+	} `json:"jd_union_open_position_query_response"`
 }
 
 type PositionCreateRequest struct {
@@ -405,6 +316,11 @@ type PositionCreateRequest struct {
 }
 
 type PositionCreateResult struct {
+	BaseResult
+	JdUnionOpenPositionCreateResponse struct {
+		Result string `json:"result"`
+		Code   string `json:"code"`
+	} `json:"jd_union_open_position_create_response"`
 }
 
 type UserPidGetRequest struct {
@@ -420,6 +336,11 @@ type UserPidGetRequest struct {
 }
 
 type UserPidGetResult struct {
+	BaseResult
+	JdUnionOpenUserPidGetResponse struct {
+		Result string `json:"result"`
+		Code   string `json:"code"`
+	} `json:"jd_union_open_user_pid_get_response"`
 }
 
 type ActivityQueryRequest struct {
@@ -432,9 +353,14 @@ type ActivityQueryRequest struct {
 }
 
 type ActivityQueryResult struct {
+	BaseResult
+	JdUnionOpenActivityQueryResponse struct {
+		Result string `json:"result"`
+		Code   string `json:"code"`
+	} `json:"jd_union_open_activity_query_response"`
 }
 
-type StatisticsRedpacketRequest struct {
+type StatisticsRedpacketQueryRequest struct {
 	// 必填 ...
 
 	StartDate string `json:"startDate"` // 开始日期yyyy-MM-dd，不可超出最近90天开始日期yyyy-MM-dd，不可超出最近90天
@@ -447,9 +373,15 @@ type StatisticsRedpacketRequest struct {
 	PositionId uint64 `json:"positionId,omitempty"` // 推广位ID，支持联盟后台推广位和API创建的私域推广位
 }
 
-type StatisticsRedpacketResult struct {
+type StatisticsRedpacketQueryResult struct {
+	BaseResult
+	JdUnionOpenStatisticsRedpacketQueryResponse struct {
+		Result string `json:"result"`
+		Code   string `json:"code"`
+	} `json:"jd_union_open_statistics_redpacket_query_response"`
 }
-type GiftGetRequest struct {
+
+type CouponGiftGetRequest struct {
 	// 必填 ...
 
 	SkuMaterialId    string  `json:"skuMaterialId"`    // 商品skuId或落地页地址
@@ -468,19 +400,29 @@ type GiftGetRequest struct {
 	ContentMatch  uint64 `json:"contentMatch,omitempty"`  // 是否允许通过内容平台推广，0：不允许，1：允许；默认为0
 }
 
-type GiftGetResult struct {
+type CouponGiftGetResult struct {
+	BaseResult
+	JdUnionOpenCouponGiftGetResponse struct {
+		Result string `json:"result"`
+		Code   string `json:"code"`
+	} `json:"jd_union_open_coupon_gift_get_response"`
 }
 
-type GiftStopRequest struct {
+type CouponGiftStopRequest struct {
 	// 必填 ...
 
 	GiftCouponKey string `json:"giftCouponKey"` // 礼金批次ID
 }
 
-type GiftStopResult struct {
+type CouponGiftStopResult struct {
+	BaseResult
+	JdUnionOpenCouponGiftStopResponse struct {
+		Result string `json:"result"`
+		Code   string `json:"code"`
+	} `json:"jd_union_open_coupon_gift_stop_response"`
 }
 
-type GiftStatisticRequest struct {
+type GiftStatisticCouponQueryRequest struct {
 	// 必填 ...
 
 	SkuId         uint64 `json:"skuId"`         // 查询该SKU您创建的推客礼金，以及该SKU您可推广的联盟礼金。 skuId和giftCouponKey二选一，不可同时入参。
@@ -489,7 +431,12 @@ type GiftStatisticRequest struct {
 	StartTime     string `json:"startTime"`     // 可查询此日期及以后下单的礼金效果数据，如不传则不限日期。 格式：yyyy-MM-dd
 }
 
-type GiftStatisticResult struct {
+type GiftStatisticCouponQueryResult struct {
+	BaseResult
+	JdUnionOpenGiftStatisticCouponQueryResponse struct {
+		Result string `json:"result"`
+		Code   string `json:"code"`
+	} `json:"jd_union_open_gift_statistic_coupon_query_response"`
 }
 
 type OrderQueryRequest struct {
@@ -506,6 +453,11 @@ type OrderQueryRequest struct {
 }
 
 type OrderQueryResult struct {
+	BaseResult
+	JdUnionOpenOrderQueryResponse struct {
+		Result string `json:"result"`
+		Code   string `json:"code"`
+	} `json:"jd_union_open_order_query_response"`
 }
 
 type OrderBonusRequest struct {
@@ -522,6 +474,11 @@ type OrderBonusRequest struct {
 }
 
 type OrderBonusResult struct {
+	BaseResult
+	JdUnionOpenOrderBonusResponse struct {
+		Result string `json:"result"`
+		Code   string `json:"code"`
+	} `json:"jd_union_open_order_bonus_response"`
 }
 
 type OrderRowRequest struct {
@@ -540,4 +497,9 @@ type OrderRowRequest struct {
 }
 
 type OrderRowResult struct {
+	BaseResult
+	JdUnionOpenOrderRowResponse struct {
+		Result string `json:"result"`
+		Code   string `json:"code"`
+	} `json:"jd_union_open_order_row_response"`
 }

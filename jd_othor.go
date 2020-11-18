@@ -10,7 +10,7 @@ type OtherService interface {
 	// 活动查询接口
 	ActivityQuery(*ActivityQueryRequest) (*ActivityQueryResult, error)
 	// 京享红包效果数据
-	StatisticsRedpacketQuery(*StatisticsRedpacketRequest) (*StatisticsRedpacketResult, error)
+	StatisticsRedpacketQuery(*StatisticsRedpacketQueryRequest) (*StatisticsRedpacketQueryResult, error)
 }
 
 type OtherServiceImpl struct {
@@ -55,10 +55,10 @@ func (o *OtherServiceImpl) ActivityQuery(request *ActivityQueryRequest) (*Activi
 	return &res, err
 }
 
-func (o *OtherServiceImpl) StatisticsRedpacketQuery(request *StatisticsRedpacketRequest) (*StatisticsRedpacketResult, error) {
+func (o *OtherServiceImpl) StatisticsRedpacketQuery(request *StatisticsRedpacketQueryRequest) (*StatisticsRedpacketQueryResult, error) {
 	param := map[string]interface{}{}
 	param["effectDataReq"] = request
-	var res StatisticsRedpacketResult
+	var res StatisticsRedpacketQueryResult
 	err := o.service.Do(&res, StatisticsRedpacketQuery, param)
 	return &res, err
 }

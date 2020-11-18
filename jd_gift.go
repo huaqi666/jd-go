@@ -2,11 +2,11 @@ package jd
 
 type GiftService interface {
 	// 礼金创建
-	GitGet(*GiftGetRequest) (*GiftGetResult, error)
+	CouponGiftGet(*CouponGiftGetRequest) (*CouponGiftGetResult, error)
 	// 礼金停止
-	GiftStop(*GiftStopRequest) (*GiftStopResult, error)
+	CouponGiftStop(*CouponGiftStopRequest) (*CouponGiftStopResult, error)
 	// 礼金效果数据
-	GiftStatistic(*GiftStatisticRequest) (*GiftStatisticResult, error)
+	GiftStatisticCouponQuery(*GiftStatisticCouponQueryRequest) (*GiftStatisticCouponQueryResult, error)
 }
 
 type GiftServiceImpl struct {
@@ -19,26 +19,26 @@ func newGiftService(service Service) GiftService {
 	}
 }
 
-func (p *GiftServiceImpl) GitGet(request *GiftGetRequest) (*GiftGetResult, error) {
+func (p *GiftServiceImpl) CouponGiftGet(request *CouponGiftGetRequest) (*CouponGiftGetResult, error) {
 	param := map[string]interface{}{}
 	param["couponReq"] = request
-	var res GiftGetResult
+	var res CouponGiftGetResult
 	err := p.service.Do(&res, GiftGet, param)
 	return &res, err
 }
 
-func (p *GiftServiceImpl) GiftStop(request *GiftStopRequest) (*GiftStopResult, error) {
+func (p *GiftServiceImpl) CouponGiftStop(request *CouponGiftStopRequest) (*CouponGiftStopResult, error) {
 	param := map[string]interface{}{}
 	param["couponReq"] = request
-	var res GiftStopResult
+	var res CouponGiftStopResult
 	err := p.service.Do(&res, GiftStop, param)
 	return &res, err
 }
 
-func (p *GiftServiceImpl) GiftStatistic(request *GiftStatisticRequest) (*GiftStatisticResult, error) {
+func (p *GiftServiceImpl) GiftStatisticCouponQuery(request *GiftStatisticCouponQueryRequest) (*GiftStatisticCouponQueryResult, error) {
 	param := map[string]interface{}{}
 	param["effectDataReq"] = request
-	var res GiftStatisticResult
+	var res GiftStatisticCouponQueryResult
 	err := p.service.Do(&res, GiftStatistic, param)
 	return &res, err
 }

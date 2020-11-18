@@ -12,16 +12,35 @@ func TestServiceImpl(t *testing.T) {
 
 	c := GetConfig()
 
+	// jd api
 	j := NewJdService(c.AppKey, c.SecretKey)
+
+	// goods api
 	g := j.GetGoodsService()
-	res, err := g.GoodsJingfenQuery(&GoodsJingfenQueryRequest{
-		EliteId: 33,
+
+	//res, err := g.GoodsJingfenQuery(&GoodsJingfenQueryRequest{
+	//	EliteId: 33,
+	//})
+	//t.Log(res, err)
+	//if err != nil {
+	//	return
+	//}
+	//t.Log(string(res.GetResult()), err)
+
+	res1, err := g.GoodsPromotiongoodsinfoQuery("63682765730")
+	t.Log(res1, err)
+
+	res2, err := g.CategoryGoodsGetQuery(&CategoryGoodsGetRequest{
+		ParentId: 0,
+		Grade:    0,
 	})
-	t.Log(res, err)
-	if err != nil {
-		return
-	}
-	t.Log(res.GetResult(), err)
+	t.Log(res2, err)
+
+	res3, err := g.GoodsGigfieldQuery(&GoodsGigfieldRequest{
+		SkuIds: []uint64{63682765730},
+	})
+	t.Log(res3, err)
+
 }
 
 func TestParameter_AttachSign(t *testing.T) {
