@@ -3,7 +3,9 @@ package jd
 
 type CouponService interface {
 	// 优惠券领取情况查询接口【申请】
-	CouponQuery(*CouponQueryRequest) (*CouponQueryResult, error)
+	CouponQuery([]*CouponQueryRequest) (*CouponQueryResult, error)
+	// 优惠券领取情况查询接口【申请】
+	CouponQueryByList(urls ...string) (*CouponQueryResult, error)
 }
 
 type CouponServiceImpl struct {
@@ -17,7 +19,17 @@ func newCouponService(service Service) CouponService {
 	}
 }
 
-func (c CouponServiceImpl) CouponQuery(request *CouponQueryRequest) (*CouponQueryResult, error) {
+func (c *CouponServiceImpl) CouponQueryByList(urls ...string) (*CouponQueryResult, error) {
+	var arr []*CouponQueryRequest
+	for _, url := range urls {
+		arr = append(arr, &CouponQueryRequest{
+			CouponUrl: url,
+		})
+	}
+	return c.CouponQuery(arr)
+}
+
+func (c CouponServiceImpl) CouponQuery(request []*CouponQueryRequest) (*CouponQueryResult, error) {
 	param := map[string]interface{}{}
 	param["couponUrls"] = request
 	var res CouponQueryResult

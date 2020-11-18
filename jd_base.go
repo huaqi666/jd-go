@@ -286,7 +286,7 @@ type GoodsGigfieldRequest struct {
 	SkuIds []uint64 `json:"skuIds"` // skuId集合，最多支持批量入参10个sku
 	// 非必填 ...
 
-	Fields []string `json:"fields"` // 查询域集合，不填写则查询全部，目目前支持：categoryInfo（类目信息）,imageInfo（图片信息）,baseBigFieldInfo（基础大字段信息）,bookBigFieldInfo（图书大字段信息）,videoBigFieldInfo（影音大字段信息）,detailImages（商详图）
+	Fields []string `json:"fields,omitempty"` // 查询域集合，不填写则查询全部，目目前支持：categoryInfo（类目信息）,imageInfo（图片信息）,baseBigFieldInfo（基础大字段信息）,bookBigFieldInfo（图书大字段信息）,videoBigFieldInfo（影音大字段信息）,detailImages（商详图）
 }
 
 type GoodsGigfieldResult struct {
@@ -349,6 +349,9 @@ type PromotionByunionidQueryResult struct {
 }
 
 type CouponQueryRequest struct {
+	// 必填...
+
+	CouponUrl string `json:"couponUrl"` // 优惠券链接
 }
 
 type CouponQueryResult struct {
@@ -398,7 +401,7 @@ type PositionCreateRequest struct {
 	SpaceNameList []string `json:"spaceNameList"` // 推广位名称集合，英文,分割；上限50
 	// 非必填 ...
 
-	SiteId uint64 `json:"siteId"` // 站点ID：网站的ID/app ID/snsID 。当type非4(聊天工具)时，siteId必填
+	SiteId uint64 `json:"siteId,omitempty"` // 站点ID：网站的ID/app ID/snsID 。当type非4(聊天工具)时，siteId必填
 }
 
 type PositionCreateResult struct {
@@ -413,7 +416,7 @@ type UserPidGetRequest struct {
 	MediaName     string `json:"mediaName"`     // 媒体名称，即子站长的app应用名称，推广方式为app推广时必填，且app名称必须为已存在的app名称
 	// 非必填 ...
 
-	PositionName string `json:"positionName"` // 子站长的推广位名称，如不存在则创建，不填则由联盟根据母账号信息创建
+	PositionName string `json:"positionName,omitempty"` // 子站长的推广位名称，如不存在则创建，不填则由联盟根据母账号信息创建
 }
 
 type UserPidGetResult struct {
@@ -422,10 +425,10 @@ type UserPidGetResult struct {
 type ActivityQueryRequest struct {
 	// 非必填 ...
 
-	PageIndex  uint64 `json:"pageIndex"`  // 页码，默认1
-	PageSize   uint64 `json:"pageSize"`   // 每页数量，默认20，上限50
-	PoolId     uint64 `json:"poolId"`     // 活动物料ID，1：营销日历热门会场；2：营销日历热门榜单；6：PC站长端官方活动
-	ActiveDate uint64 `json:"activeDate"` // 按单个日期查询活动，查询日期范围为过去或未来15天。建议按日期依次查询当天及未来的活动
+	PageIndex  uint64 `json:"pageIndex,omitempty"`  // 页码，默认1
+	PageSize   uint64 `json:"pageSize,omitempty"`   // 每页数量，默认20，上限50
+	PoolId     uint64 `json:"poolId,omitempty"`     // 活动物料ID，1：营销日历热门会场；2：营销日历热门榜单；6：PC站长端官方活动
+	ActiveDate uint64 `json:"activeDate,omitempty"` // 按单个日期查询活动，查询日期范围为过去或未来15天。建议按日期依次查询当天及未来的活动
 }
 
 type ActivityQueryResult struct {
@@ -440,8 +443,8 @@ type StatisticsRedpacketRequest struct {
 	PageSize  uint64 `json:"pageSize"`  // 每页数，大于等于10且小于等于100的正整数
 	// 非必填 ...
 
-	ActId      uint64 `json:"actId"`      // 京享红包活动Id，如不传则查询全部京享红包活动
-	PositionId uint64 `json:"positionId"` // 推广位ID，支持联盟后台推广位和API创建的私域推广位
+	ActId      uint64 `json:"actId,omitempty"`      // 京享红包活动Id，如不传则查询全部京享红包活动
+	PositionId uint64 `json:"positionId,omitempty"` // 推广位ID，支持联盟后台推广位和API创建的私域推广位
 }
 
 type StatisticsRedpacketResult struct {
@@ -498,8 +501,8 @@ type OrderQueryRequest struct {
 	Time     string `json:"time"`     // 查询时间，建议使用分钟级查询，格式：yyyyMMddHH、yyyyMMddHHmm或yyyyMMddHHmmss，如201811031212 的查询范围从12:12:00--12:12:59
 	// 非必填 ...
 
-	ChildUnionId uint64 `json:"childUnionId"` // 子推客unionID，传入该值可查询子推客的订单，注意不可和key同时传入。（需联系运营开通PID权限才能拿到数据）
-	Key          string `json:"key"`          // 工具商传入推客的授权key，可帮助该推客查询订单，注意不可和childUnionid同时传入。（需联系运营开通工具商权限才能拿到数据）
+	ChildUnionId uint64 `json:"childUnionId,omitempty"` // 子推客unionID，传入该值可查询子推客的订单，注意不可和key同时传入。（需联系运营开通PID权限才能拿到数据）
+	Key          string `json:"key,omitempty"`          // 工具商传入推客的授权key，可帮助该推客查询订单，注意不可和childUnionid同时传入。（需联系运营开通工具商权限才能拿到数据）
 }
 
 type OrderQueryResult struct {
@@ -514,8 +517,8 @@ type OrderBonusRequest struct {
 	PageSize  uint64 `json:"pageSize"`  // 每页数量，上限100
 	// 非必填 ...
 
-	PageNo    uint64 `json:"pageNo"`    // 页码，默认值为1
-	SortValue string `json:"sortValue"` // 时间类型按'下单'查询时，和pageSize组合使用。获取最后一条记录的sortValue，指定拉取条数（pageSize），以此方式查询数据。
+	PageNo    uint64 `json:"pageNo,omitempty"`    // 页码，默认值为1
+	SortValue string `json:"sortValue,omitempty"` // 时间类型按'下单'查询时，和pageSize组合使用。获取最后一条记录的sortValue，指定拉取条数（pageSize），以此方式查询数据。
 }
 
 type OrderBonusResult struct {
@@ -531,9 +534,9 @@ type OrderRowRequest struct {
 	EndTime   string `json:"endTime"`   // 结束时间 格式yyyy-MM-dd HH:mm:ss，与startTime间隔不超过1小时
 	// 非必填 ...
 
-	ChildUnionId uint64 `json:"childUnionId"` // 子推客unionID，传入该值可查询子推客的订单，注意不可和key同时传入。（需联系运营开通PID权限才能拿到数据）
-	Key          string `json:"key"`          // 工具商传入推客的授权key，可帮助该推客查询订单，注意不可和childUnionid同时传入。（需联系运营开通工具商权限才能拿到数据）
-	Fields       string `json:"fields"`       // 支持出参数据筛选，逗号','分隔，目前可用：goodsInfo（商品信息）,categoryInfo(类目信息）
+	ChildUnionId uint64 `json:"childUnionId,omitempty"` // 子推客unionID，传入该值可查询子推客的订单，注意不可和key同时传入。（需联系运营开通PID权限才能拿到数据）
+	Key          string `json:"key,omitempty"`          // 工具商传入推客的授权key，可帮助该推客查询订单，注意不可和childUnionid同时传入。（需联系运营开通工具商权限才能拿到数据）
+	Fields       string `json:"fields,omitempty"`       // 支持出参数据筛选，逗号','分隔，目前可用：goodsInfo（商品信息）,categoryInfo(类目信息）
 }
 
 type OrderRowResult struct {
