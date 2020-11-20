@@ -2,6 +2,7 @@ package jd
 
 import (
 	"encoding/json"
+	"fmt"
 	"github.com/cliod/jd-go/common"
 	"io/ioutil"
 	"os"
@@ -104,7 +105,7 @@ func GetConfig() LocalConfig {
 	}
 	b, err := ioutil.ReadAll(f)
 	if err != nil {
-		panic(err)
+		fmt.Println(err)
 	}
 	err = json.Unmarshal(b, &c)
 	if err != nil {
