@@ -2,10 +2,13 @@ package jd
 
 type GiftService interface {
 	// 礼金创建
+	//    文档: https://union.jd.com/openplatform/api/10446
 	CouponGiftGet(*CouponGiftGetRequest) (*CouponGiftGetResult, error)
 	// 礼金停止
+	//    文档: https://union.jd.com/openplatform/api/10440
 	CouponGiftStop(*CouponGiftStopRequest) (*CouponGiftStopResult, error)
 	// 礼金效果数据
+	//    文档: https://union.jd.com/openplatform/api/10448
 	GiftStatisticCouponQuery(*GiftStatisticCouponQueryRequest) (*GiftStatisticCouponQueryResult, error)
 }
 

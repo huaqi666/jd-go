@@ -2,10 +2,13 @@ package jd
 
 type OrderService interface {
 	// 订单查询接口
+	//    文档: https://union.jd.com/openplatform/api/10419
 	OrderQuery(*OrderQueryRequest) (*OrderQueryResult, error)
 	// 奖励订单查询接口【申请】
+	//    文档: https://union.jd.com/openplatform/api/11781
 	OrderBonusQuery(*OrderBonusRequest) (*OrderBonusResult, error)
 	// 订单行查询接口
+	//    文档: https://union.jd.com/openplatform/api/12707
 	OrderRowQuery(*OrderRowRequest) (*OrderRowResult, error)
 }
 

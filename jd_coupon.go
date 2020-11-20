@@ -3,8 +3,10 @@ package jd
 
 type CouponService interface {
 	// 优惠券领取情况查询接口【申请】
+	//    文档: https://union.jd.com/openplatform/api/10423
 	CouponQuery([]*CouponQueryRequest) (*CouponQueryResult, error)
 	// 优惠券领取情况查询接口【申请】
+	//    文档: https://union.jd.com/openplatform/api/10423
 	CouponQueryByList(urls ...string) (*CouponQueryResult, error)
 }
 

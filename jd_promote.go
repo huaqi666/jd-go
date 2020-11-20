@@ -3,10 +3,13 @@ package jd
 
 type PromotionService interface {
 	// 网站/APP获取推广链接接口
+	//    文档: https://union.jd.com/openplatform/api/10421
 	PromotionCommonGet(*PromoteCommonGetRequest) (*PromoteCommonGetResult, error)
 	// 社交媒体获取推广链接接口【申请】
+	//    文档: https://union.jd.com/openplatform/api/10424
 	PromotionBysubunionidQuery(*PromotionBysubunionidQueryRequest) (*PromotionBysubunionidQueryResult, error)
 	// 工具商获取推广链接接口【申请】
+	//    文档: https://union.jd.com/openplatform/api/10425
 	PromotionByunionidQuery(*PromotionByunionidQueryRequest) (*PromotionByunionidQueryResult, error)
 }
 
