@@ -4,7 +4,7 @@
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
 ### 使用方式
-注意：最新版本（包括测试版）为 [![GitHub release](https://img.shields.io/badge/github-releases-blue)](https://github.com/cliod/wx-go/releases)
+注意：最新版本（包括测试版）为 [![GitHub release](https://img.shields.io/badge/github-releases-blue)](https://github.com/cliod/jd-go/releases)
 
 ```shell script
 go get -u github.com/cliod/jd-go
