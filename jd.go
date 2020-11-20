@@ -144,26 +144,19 @@ func (s *ServiceImpl) SetHttpService(service common.Service) {
 	s.service = service
 }
 
-func (s *ServiceImpl) Sign(method Method, param map[string]interface{}) *Param {
+func (s *ServiceImpl) Sign(method Method, param map[string]interface{}) (*Param, error) {
 	c := s.GetConfig()
 	c.Method = method
-	parameter := NewParameter(c, param)
+	parameter := newParameter(c, param)
 	parameter.attachSign()
-	return &Param{
-		ParamJson: parameter.getParamString(),
-		Config: Config{
-			AppKey:      parameter.AppKey,
-			Method:      parameter.Method,
-			AccessToken: parameter.AccessToken,
-			Timestamp:   parameter.Timestamp,
-			Format:      parameter.Format,
-			Version:     parameter.Version,
-			SignMethod:  parameter.SignMethod,
-			Sign:        parameter.Sign,
-		},
-	}
+	err := parameter.CheckRequiredParams()
+	return NewParam(parameter), err
 }
 
 func (s *ServiceImpl) Do(v interface{}, method Method, param map[string]interface{}) error {
-	return s.GetFor(v, BaseUrl, s.Sign(method, param))
+	p, err := s.Sign(method, param)
+	if err != nil {
+		return err
+	}
+	return s.GetFor(v, BaseUrl, p)
 }

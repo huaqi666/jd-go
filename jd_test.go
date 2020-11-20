@@ -47,9 +47,13 @@ func TestServiceImpl(t *testing.T) {
 		PageNo:   1,
 		PageSize: 30,
 		TypeNum:  1,
-		Time:     time.Now().Format("yyyyMMddHHmm"),
+		Time:     time.Now().Format("200601021504"),
 	})
 	t.Log(res5, err)
+
+	ot := j.GetOtherService()
+	res6, err := ot.ActivityQuery(&ActivityQueryRequest{})
+	t.Log(res6, err)
 }
 
 func TestParameter_AttachSign(t *testing.T) {
@@ -58,7 +62,7 @@ func TestParameter_AttachSign(t *testing.T) {
 	param["goodsReq"] = &GoodsJingfenQueryRequest{
 		EliteId: 33,
 	}
-	p := NewParameter(NewConfig(c.AppKey, c.SecretKey), param)
+	p := newParameter(NewConfig(c.AppKey, c.SecretKey), param)
 	p.Method = "jd.union.open.goods.jingfen.query"
 	p.attachSign()
 

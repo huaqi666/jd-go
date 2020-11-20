@@ -29,7 +29,7 @@ func (c *CouponServiceImpl) CouponQueryByList(urls ...string) (*CouponQueryResul
 	return c.CouponQuery(arr)
 }
 
-func (c CouponServiceImpl) CouponQuery(request []*CouponQueryRequest) (*CouponQueryResult, error) {
+func (c *CouponServiceImpl) CouponQuery(request []*CouponQueryRequest) (*CouponQueryResult, error) {
 	param := map[string]interface{}{}
 	param["couponUrls"] = request
 	var res CouponQueryResult

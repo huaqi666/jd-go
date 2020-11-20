@@ -14,8 +14,11 @@ go get -u github.com/cliod/jd-go
 公众号使用例子
 ```go
 j := NewJdService("<app_key>", "<app_secret>")
+// goods api
 g := j.GetGoodsService()
-res,err := g.GoodsJingfenQuery(nil)
+res, err := g.GoodsJingfenQuery(&GoodsJingfenQueryRequest{
+    EliteId: 33,
+})
 if err != nil {
     fmt.Println(res)
 }

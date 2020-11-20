@@ -24,9 +24,8 @@ type Config struct {
 
 func NewConfig(appKey, secretKey string) *Config {
 	return &Config{
-		AppKey:    appKey,
-		Timestamp: time.Now().Local().Format("2006-01-02 15:04:05"),
-		//Timestamp:   "2020-11-17 13:20:47",
+		AppKey:      appKey,
+		Timestamp:   time.Now().Local().Format("2006-01-02 15:04:05"),
 		AccessToken: "", // 不需要授权，不用填写
 		Format:      "json",
 		SignMethod:  "md5",
@@ -48,8 +47,24 @@ type Param struct {
 	ParamJson string `json:"param_json,omitempty" url:"param_json"`
 }
 
-func NewParameter(config *Config, pj map[string]interface{}) *parameter {
+func newParameter(config *Config, pj map[string]interface{}) *parameter {
 	return &parameter{Config: *config, ParamJson: pj}
+}
+
+func NewParam(param *parameter) *Param {
+	return &Param{
+		ParamJson: param.getParamString(),
+		Config: Config{
+			AppKey:      param.AppKey,
+			Method:      param.Method,
+			AccessToken: param.AccessToken,
+			Timestamp:   param.Timestamp,
+			Format:      param.Format,
+			Version:     param.Version,
+			SignMethod:  param.SignMethod,
+			Sign:        param.Sign,
+		},
+	}
 }
 
 // 检查必选参数
