@@ -7,54 +7,63 @@ import (
 	"io/ioutil"
 	"os"
 	"testing"
-	"time"
 )
 
-func TestServiceImpl(t *testing.T) {
-
+// 获取商品列表
+func TestServiceImpl0(t *testing.T) {
 	c := GetConfig()
-
-	// jd api
 	j := NewJdService(c.AppKey, c.SecretKey)
-
-	// goods api
 	g := j.GetGoodsService()
 	res, err := g.GoodsJingfenQuery(&GoodsJingfenQueryRequest{
 		EliteId: 33,
 	})
-	t.Log(res, err)
-	res0, err := g.GoodsQuery(&GoodsQueryRequest{})
-	t.Log(res0, err)
-	res1, err := g.GoodsPromotiongoodsinfoQuery("63682765730")
-	t.Log(res1, err)
+	t.Log("=======================商品查询=====================\n", res, err)
+}
 
-	res2, err := g.CategoryGoodsGetQuery(&CategoryGoodsGetRequest{
+// 关键字获取商品（无权限）
+func TestServiceImpl1(t *testing.T) {
+	c := GetConfig()
+	j := NewJdService(c.AppKey, c.SecretKey)
+	g := j.GetGoodsService()
+	res, err := g.GoodsQuery(&GoodsQueryRequest{})
+	t.Log("=======================商品列表=====================\n", res, err)
+}
+
+// 商品类目 > fixme 无效签名??
+func TestServiceImpl2(t *testing.T) {
+	c := GetConfig()
+	j := NewJdService(c.AppKey, c.SecretKey)
+	g := j.GetGoodsService()
+
+	res, err := g.CategoryGoodsGetQuery(&CategoryGoodsGetRequest{
 		ParentId: 0,
 		Grade:    0,
 	})
-	t.Log(res2, err)
-	res3, err := g.GoodsGigfieldQuery(&GoodsGigfieldRequest{
+	t.Log("=======================商品类目=====================\n", res, err)
+}
+
+// 获取商品列表
+func TestServiceImpl3(t *testing.T) {
+	c := GetConfig()
+	j := NewJdService(c.AppKey, c.SecretKey)
+	g := j.GetGoodsService()
+	// 商品详情查询
+	res, err := g.GoodsGigfieldQuery(&GoodsGigfieldRequest{
 		SkuIds: []uint64{63682765730},
 	})
-	t.Log(res3, err)
+	t.Log("=======================商品详情=====================\n", res, err)
+}
 
-	// coupon api
-	cc := j.GetCouponService()
-	res4, err := cc.CouponQueryByList("https://coupon.m.jd.com/coupons/show.action?linkKey=AAROH_xIpeffAs_-naABEFoeRYiv3hJ69zyA-kQJMnHSr14qXhdrY5zeYZRSj6boZw2cJf-LDnD4b3HpA9b_Y_bjbeXiHA")
-	t.Log(res4, err)
-
-	o := j.GetOrderService()
-	res5, err := o.OrderQuery(&OrderQueryRequest{
-		PageNo:   1,
-		PageSize: 30,
-		TypeNum:  1,
-		Time:     time.Now().Format("200601021504"),
-	})
-	t.Log(res5, err)
-
-	ot := j.GetOtherService()
-	res6, err := ot.ActivityQuery(&ActivityQueryRequest{})
-	t.Log(res6, err)
+// 获取商品详情
+func TestServiceImpl4(t *testing.T) {
+	c := GetConfig()
+	j := NewJdService(c.AppKey, c.SecretKey)
+	g := j.GetGoodsService()
+	// 商品详情查询
+	res, err := g.GoodsPromotiongoodsinfoQuery(
+		"63682765730",
+	)
+	t.Log("=======================商品详情=====================\n", res, err)
 }
 
 func TestParameter_AttachSign(t *testing.T) {

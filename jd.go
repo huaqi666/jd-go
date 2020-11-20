@@ -5,20 +5,28 @@ import (
 	"github.com/cliod/jd-go/common"
 )
 
+// 京东联盟API
+//    文档: https://union.jd.com/openplatform/api
 type Service interface {
 	common.Service
 
 	// 获取商品相关接口
+	//    文档: https://union.jd.com/openplatform/api
 	GetGoodsService() GoodsService
 	// 获取优惠卷相关接口
+	//    文档: https://union.jd.com/openplatform/api
 	GetCouponService() CouponService
 	// 获取推广相关接口
+	//    文档: https://union.jd.com/openplatform/api
 	GetPromoteService() PromotionService
 	// 获取礼金相关接口
+	//    文档: https://union.jd.com/openplatform/api
 	GetGiftService() GiftService
 	// 获取订单相关接口
+	//    文档: https://union.jd.com/openplatform/api
 	GetOrderService() OrderService
 	// 获取其他相关接口
+	//    文档: https://union.jd.com/openplatform/api
 	GetOtherService() OtherService
 
 	// 设置商品(自定义)相关接口
