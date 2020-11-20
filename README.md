@@ -11,7 +11,7 @@ go get -u github.com/cliod/jd-go
 ```
 
 ### 使用Demo
-公众号使用例子
+使用例子
 ```go
 j := NewJdService("<app_key>", "<app_secret>")
 // goods api
