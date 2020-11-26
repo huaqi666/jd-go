@@ -58,86 +58,19 @@ func (r *GoodsJingfenQueryResult) String() string {
 	return string(r.GetResult())
 }
 
+func (r *GoodsJingfenQueryResult) Error() string {
+	if !r.BaseResult.IsSuccess() {
+		return r.BaseResult.Error()
+	}
+	return string(r.GetResult())
+}
+
 func (r *GoodsJingfenQueryResult) GetResult() []byte {
 	str := r.JdUnionOpenGoodsJingfenQueryResponse.Result
 	if str == "" {
 		return r.BaseResult.GetResult()
 	}
 	return []byte(str)
-}
-
-// Deprecated: 弃用
-type GoodsJingfenQueryResultInner struct {
-	Code int `json:"code"`
-	Data []struct {
-		BrandCode    string `json:"brandCode"`
-		BrandName    string `json:"brandName"`
-		CategoryInfo struct {
-			Cid1     int    `json:"cid1"`
-			Cid1Name string `json:"cid1Name"`
-			Cid2     int    `json:"cid2"`
-			Cid2Name string `json:"cid2Name"`
-			Cid3     int    `json:"cid3"`
-			Cid3Name string `json:"cid3Name"`
-		} `json:"categoryInfo"`
-		Comments       int `json:"comments"`
-		CommissionInfo struct {
-			Commission          float64 `json:"commission"`
-			CommissionShare     int     `json:"commissionShare"`
-			EndTime             int64   `json:"endTime"`
-			IsLock              int     `json:"isLock"`
-			PlusCommissionShare int     `json:"plusCommissionShare"`
-			StartTime           int64   `json:"startTime"`
-		} `json:"commissionInfo"`
-		CouponInfo struct {
-			CouponList []interface{} `json:"couponList"`
-		} `json:"couponInfo"`
-		DeliveryType      int   `json:"deliveryType"`
-		ForbidTypes       []int `json:"forbidTypes"`
-		GoodCommentsShare int   `json:"goodCommentsShare"`
-		ImageInfo         struct {
-			ImageList []struct {
-				URL string `json:"url"`
-			} `json:"imageList"`
-			WhiteImage string `json:"whiteImage"`
-		} `json:"imageInfo"`
-		InOrderCount30Days    int    `json:"inOrderCount30Days"`
-		InOrderCount30DaysSku int    `json:"inOrderCount30DaysSku"`
-		IsHot                 int    `json:"isHot"`
-		MaterialURL           string `json:"materialUrl"`
-		Owner                 string `json:"owner"`
-		PinGouInfo            struct {
-		} `json:"pinGouInfo"`
-		PriceInfo struct {
-			LowestPrice     int `json:"lowestPrice"`
-			LowestPriceType int `json:"lowestPriceType"`
-			Price           int `json:"price"`
-		} `json:"priceInfo"`
-		ResourceInfo struct {
-			EliteID   int    `json:"eliteId"`
-			EliteName string `json:"eliteName"`
-		} `json:"resourceInfo"`
-		SeckillInfo struct {
-			SeckillEndTime   int64 `json:"seckillEndTime"`
-			SeckillOriPrice  int   `json:"seckillOriPrice"`
-			SeckillPrice     int   `json:"seckillPrice"`
-			SeckillStartTime int64 `json:"seckillStartTime"`
-		} `json:"seckillInfo"`
-		ShopInfo struct {
-			ShopID    int     `json:"shopId"`
-			ShopLevel float64 `json:"shopLevel"`
-			ShopName  string  `json:"shopName"`
-		} `json:"shopInfo"`
-		SkuID    int    `json:"skuId"`
-		SkuName  string `json:"skuName"`
-		Spuid    int    `json:"spuid"`
-		BookInfo struct {
-			Isbn string `json:"isbn"`
-		} `json:"bookInfo,omitempty"`
-	} `json:"data"`
-	Message    string `json:"message"`
-	RequestID  string `json:"requestId"`
-	TotalCount int    `json:"totalCount"`
 }
 
 // 关键词商品查询接口
@@ -189,6 +122,13 @@ func (r *GoodsQueryResult) String() string {
 	return string(r.GetResult())
 }
 
+func (r *GoodsQueryResult) Error() string {
+	if !r.BaseResult.IsSuccess() {
+		return r.BaseResult.Error()
+	}
+	return string(r.GetResult())
+}
+
 func (r *GoodsQueryResult) GetResult() []byte {
 	str := r.JdUnionOpenGoodsQueryResponse.Result
 	if str == "" {
@@ -197,7 +137,7 @@ func (r *GoodsQueryResult) GetResult() []byte {
 	return []byte(str)
 }
 
-type GoodsPromotiongoodsinfoResult struct {
+type GoodsPromotiongoodsinfoQueryResult struct {
 	BaseResult
 	JdUnionOpenGoodsPromotiongoodsinfoQueryResponse struct {
 		Result string `json:"result"`
@@ -205,11 +145,18 @@ type GoodsPromotiongoodsinfoResult struct {
 	} `json:"jd_union_open_goods_promotiongoodsinfo_query_response"`
 }
 
-func (r *GoodsPromotiongoodsinfoResult) String() string {
+func (r *GoodsPromotiongoodsinfoQueryResult) String() string {
 	return string(r.GetResult())
 }
 
-func (r *GoodsPromotiongoodsinfoResult) GetResult() []byte {
+func (r *GoodsPromotiongoodsinfoQueryResult) Error() string {
+	if !r.BaseResult.IsSuccess() {
+		return r.BaseResult.Error()
+	}
+	return string(r.GetResult())
+}
+
+func (r *GoodsPromotiongoodsinfoQueryResult) GetResult() []byte {
 	str := r.JdUnionOpenGoodsPromotiongoodsinfoQueryResponse.Result
 	if str == "" {
 		return r.BaseResult.GetResult()
@@ -236,6 +183,13 @@ func (r *CategoryGoodsGetResult) String() string {
 	return string(r.GetResult())
 }
 
+func (r *CategoryGoodsGetResult) Error() string {
+	if !r.BaseResult.IsSuccess() {
+		return r.BaseResult.Error()
+	}
+	return string(r.GetResult())
+}
+
 func (r *CategoryGoodsGetResult) GetResult() []byte {
 	str := r.JdUnionOpenCategoryGoodsGetResponse.Result
 	if str == "" {
@@ -244,7 +198,7 @@ func (r *CategoryGoodsGetResult) GetResult() []byte {
 	return []byte(str)
 }
 
-type GoodsGigfieldRequest struct {
+type GoodsGigFieldQueryRequest struct {
 	// 必填 ...
 
 	SkuIds []uint64 `json:"skuIds"` // skuId集合，最多支持批量入参10个sku
@@ -253,7 +207,7 @@ type GoodsGigfieldRequest struct {
 	Fields []string `json:"fields,omitempty"` // 查询域集合，不填写则查询全部，目目前支持：categoryInfo（类目信息）,imageInfo（图片信息）,baseBigFieldInfo（基础大字段信息）,bookBigFieldInfo（图书大字段信息）,videoBigFieldInfo（影音大字段信息）,detailImages（商详图）
 }
 
-type GoodsGigfieldResult struct {
+type GoodsGigFieldQueryResult struct {
 	BaseResult
 	JdUnionOpenGoodsBigfieldQueryResponse struct {
 		Result string `json:"result"`
@@ -261,11 +215,18 @@ type GoodsGigfieldResult struct {
 	} `json:"jd_union_open_goods_bigfield_query_response"`
 }
 
-func (r *GoodsGigfieldResult) String() string {
+func (r *GoodsGigFieldQueryResult) String() string {
 	return string(r.GetResult())
 }
 
-func (r *GoodsGigfieldResult) GetResult() []byte {
+func (r *GoodsGigFieldQueryResult) Error() string {
+	if !r.BaseResult.IsSuccess() {
+		return r.BaseResult.Error()
+	}
+	return string(r.GetResult())
+}
+
+func (r *GoodsGigFieldQueryResult) GetResult() []byte {
 	str := r.JdUnionOpenGoodsBigfieldQueryResponse.Result
 	if str == "" {
 		return r.BaseResult.GetResult()
@@ -301,6 +262,13 @@ func (r *PromoteCommonGetResult) String() string {
 	return string(r.GetResult())
 }
 
+func (r *PromoteCommonGetResult) Error() string {
+	if !r.BaseResult.IsSuccess() {
+		return r.BaseResult.Error()
+	}
+	return string(r.GetResult())
+}
+
 func (r *PromoteCommonGetResult) GetResult() []byte {
 	str := r.JdUnionOpenPromotionCommonGetResponse.Result
 	if str == "" {
@@ -309,7 +277,7 @@ func (r *PromoteCommonGetResult) GetResult() []byte {
 	return []byte(str)
 }
 
-type PromotionBysubunionidQueryRequest struct {
+type PromotionBysubunionidGetRequest struct {
 	// 必填 ...
 
 	MaterialId string `json:"materialId"` // 推广物料url，例如活动链接、商品链接等；不支持仅传入skuid
@@ -323,7 +291,7 @@ type PromotionBysubunionidQueryRequest struct {
 	GiftCouponKey string `json:"giftCouponKey,omitempty"` // 礼金批次号
 }
 
-type PromotionBysubunionidQueryResult struct {
+type PromotionBysubunionidGetResult struct {
 	BaseResult
 	JdUnionOpenPromotionBysubunionidQueryResponse struct {
 		Result string `json:"result"`
@@ -331,11 +299,18 @@ type PromotionBysubunionidQueryResult struct {
 	} `json:"jd_union_open_promotion_bysubunionid_query_response"`
 }
 
-func (r *PromotionBysubunionidQueryResult) String() string {
+func (r *PromotionBysubunionidGetResult) String() string {
 	return string(r.GetResult())
 }
 
-func (r *PromotionBysubunionidQueryResult) GetResult() []byte {
+func (r *PromotionBysubunionidGetResult) Error() string {
+	if !r.BaseResult.IsSuccess() {
+		return r.BaseResult.Error()
+	}
+	return string(r.GetResult())
+}
+
+func (r *PromotionBysubunionidGetResult) GetResult() []byte {
 	str := r.JdUnionOpenPromotionBysubunionidQueryResponse.Result
 	if str == "" {
 		return r.BaseResult.GetResult()
@@ -343,7 +318,7 @@ func (r *PromotionBysubunionidQueryResult) GetResult() []byte {
 	return []byte(str)
 }
 
-type PromotionByunionidQueryRequest struct {
+type PromotionByunionidGetRequest struct {
 	// 必填 ...
 
 	MaterialId string `json:"materialId"` // 推广物料url，例如活动链接、商品链接等；不支持仅传入skuid
@@ -357,7 +332,7 @@ type PromotionByunionidQueryRequest struct {
 	ChainType  uint64 `json:"chainType,omitempty"`  // 转链类型，1：长链， 2 ：短链 ，3： 长链+短链，默认短链，短链有效期60天
 }
 
-type PromotionByunionidQueryResult struct {
+type PromotionByunionidGetResult struct {
 	BaseResult
 	JdUnionOpenPromotionBysubunionidQueryResponse struct {
 		Result string `json:"result"`
@@ -365,11 +340,18 @@ type PromotionByunionidQueryResult struct {
 	}
 }
 
-func (r *PromotionByunionidQueryResult) String() string {
+func (r *PromotionByunionidGetResult) String() string {
 	return string(r.GetResult())
 }
 
-func (r *PromotionByunionidQueryResult) GetResult() []byte {
+func (r *PromotionByunionidGetResult) Error() string {
+	if !r.BaseResult.IsSuccess() {
+		return r.BaseResult.Error()
+	}
+	return string(r.GetResult())
+}
+
+func (r *PromotionByunionidGetResult) GetResult() []byte {
 	str := r.JdUnionOpenPromotionBysubunionidQueryResponse.Result
 	if str == "" {
 		return r.BaseResult.GetResult()
@@ -392,6 +374,13 @@ type CouponQueryResult struct {
 }
 
 func (r *CouponQueryResult) String() string {
+	return string(r.GetResult())
+}
+
+func (r *CouponQueryResult) Error() string {
+	if !r.BaseResult.IsSuccess() {
+		return r.BaseResult.Error()
+	}
 	return string(r.GetResult())
 }
 
@@ -422,6 +411,13 @@ type PositionQueryResult struct {
 }
 
 func (r *PositionQueryResult) String() string {
+	return string(r.GetResult())
+}
+
+func (r *PositionQueryResult) Error() string {
+	if !r.BaseResult.IsSuccess() {
+		return r.BaseResult.Error()
+	}
 	return string(r.GetResult())
 }
 
@@ -458,6 +454,13 @@ func (r *PositionCreateResult) String() string {
 	return string(r.GetResult())
 }
 
+func (r *PositionCreateResult) Error() string {
+	if !r.BaseResult.IsSuccess() {
+		return r.BaseResult.Error()
+	}
+	return string(r.GetResult())
+}
+
 func (r *PositionCreateResult) GetResult() []byte {
 	str := r.JdUnionOpenPositionCreateResponse.Result
 	if str == "" {
@@ -490,6 +493,13 @@ func (r *UserPidGetResult) String() string {
 	return string(r.GetResult())
 }
 
+func (r *UserPidGetResult) Error() string {
+	if !r.BaseResult.IsSuccess() {
+		return r.BaseResult.Error()
+	}
+	return string(r.GetResult())
+}
+
 func (r *UserPidGetResult) GetResult() []byte {
 	str := r.JdUnionOpenUserPidGetResponse.Result
 	if str == "" {
@@ -516,6 +526,13 @@ type ActivityQueryResult struct {
 }
 
 func (r *ActivityQueryResult) String() string {
+	return string(r.GetResult())
+}
+
+func (r *ActivityQueryResult) Error() string {
+	if !r.BaseResult.IsSuccess() {
+		return r.BaseResult.Error()
+	}
 	return string(r.GetResult())
 }
 
@@ -549,6 +566,13 @@ type StatisticsRedpacketQueryResult struct {
 }
 
 func (r *StatisticsRedpacketQueryResult) String() string {
+	return string(r.GetResult())
+}
+
+func (r *StatisticsRedpacketQueryResult) Error() string {
+	if !r.BaseResult.IsSuccess() {
+		return r.BaseResult.Error()
+	}
 	return string(r.GetResult())
 }
 
@@ -591,6 +615,13 @@ func (r *CouponGiftGetResult) String() string {
 	return string(r.GetResult())
 }
 
+func (r *CouponGiftGetResult) Error() string {
+	if !r.BaseResult.IsSuccess() {
+		return r.BaseResult.Error()
+	}
+	return string(r.GetResult())
+}
+
 func (r *CouponGiftGetResult) GetResult() []byte {
 	str := r.JdUnionOpenCouponGiftGetResponse.Result
 	if str == "" {
@@ -617,6 +648,13 @@ func (r *CouponGiftStopResult) String() string {
 	return string(r.GetResult())
 }
 
+func (r *CouponGiftStopResult) Error() string {
+	if !r.BaseResult.IsSuccess() {
+		return r.BaseResult.Error()
+	}
+	return string(r.GetResult())
+}
+
 func (r *CouponGiftStopResult) GetResult() []byte {
 	str := r.JdUnionOpenCouponGiftStopResponse.Result
 	if str == "" {
@@ -625,7 +663,7 @@ func (r *CouponGiftStopResult) GetResult() []byte {
 	return []byte(str)
 }
 
-type GiftStatisticCouponQueryRequest struct {
+type StatisticGiftCouponQueryRequest struct {
 	// 必填 ...
 
 	SkuId         uint64 `json:"skuId"`         // 查询该SKU您创建的推客礼金，以及该SKU您可推广的联盟礼金。 skuId和giftCouponKey二选一，不可同时入参。
@@ -634,7 +672,7 @@ type GiftStatisticCouponQueryRequest struct {
 	StartTime     string `json:"startTime"`     // 可查询此日期及以后下单的礼金效果数据，如不传则不限日期。 格式：yyyy-MM-dd
 }
 
-type GiftStatisticCouponQueryResult struct {
+type StatisticGiftCouponQueryResult struct {
 	BaseResult
 	JdUnionOpenGiftStatisticCouponQueryResponse struct {
 		Result string `json:"result"`
@@ -642,11 +680,18 @@ type GiftStatisticCouponQueryResult struct {
 	} `json:"jd_union_open_gift_statistic_coupon_query_response"`
 }
 
-func (r *GiftStatisticCouponQueryResult) String() string {
+func (r *StatisticGiftCouponQueryResult) String() string {
 	return string(r.GetResult())
 }
 
-func (r *GiftStatisticCouponQueryResult) GetResult() []byte {
+func (r *StatisticGiftCouponQueryResult) Error() string {
+	if !r.BaseResult.IsSuccess() {
+		return r.BaseResult.Error()
+	}
+	return string(r.GetResult())
+}
+
+func (r *StatisticGiftCouponQueryResult) GetResult() []byte {
 	str := r.JdUnionOpenGiftStatisticCouponQueryResponse.Result
 	if str == "" {
 		return r.BaseResult.GetResult()
@@ -679,6 +724,13 @@ func (r *OrderQueryResult) String() string {
 	return string(r.GetResult())
 }
 
+func (r *OrderQueryResult) Error() string {
+	if !r.BaseResult.IsSuccess() {
+		return r.BaseResult.Error()
+	}
+	return string(r.GetResult())
+}
+
 func (r *OrderQueryResult) GetResult() []byte {
 	str := r.JdUnionOpenOrderQueryResponse.Result
 	if str == "" {
@@ -687,7 +739,7 @@ func (r *OrderQueryResult) GetResult() []byte {
 	return []byte(str)
 }
 
-type OrderBonusRequest struct {
+type OrderBonusQueryRequest struct {
 	// 必填 ...
 
 	OptType   uint64 `json:"optType"`   // 时间类型（1.下单时间拉取、2.更新时间拉取）
@@ -700,7 +752,7 @@ type OrderBonusRequest struct {
 	SortValue string `json:"sortValue,omitempty"` // 时间类型按'下单'查询时，和pageSize组合使用。获取最后一条记录的sortValue，指定拉取条数（pageSize），以此方式查询数据。
 }
 
-type OrderBonusResult struct {
+type OrderBonusQueryResult struct {
 	BaseResult
 	JdUnionOpenOrderBonusResponse struct {
 		Result string `json:"result"`
@@ -708,11 +760,18 @@ type OrderBonusResult struct {
 	} `json:"jd_union_open_order_bonus_response"`
 }
 
-func (r *OrderBonusResult) String() string {
+func (r *OrderBonusQueryResult) String() string {
 	return string(r.GetResult())
 }
 
-func (r *OrderBonusResult) GetResult() []byte {
+func (r *OrderBonusQueryResult) Error() string {
+	if !r.BaseResult.IsSuccess() {
+		return r.BaseResult.Error()
+	}
+	return string(r.GetResult())
+}
+
+func (r *OrderBonusQueryResult) GetResult() []byte {
 	str := r.JdUnionOpenOrderBonusResponse.Result
 	if str == "" {
 		return r.BaseResult.GetResult()
@@ -720,7 +779,7 @@ func (r *OrderBonusResult) GetResult() []byte {
 	return []byte(str)
 }
 
-type OrderRowRequest struct {
+type OrderRowQueryRequest struct {
 	// 必填 ...
 
 	PageIndex uint64 `json:"pageIndex"` // 页码
@@ -735,7 +794,7 @@ type OrderRowRequest struct {
 	Fields       string `json:"fields,omitempty"`       // 支持出参数据筛选，逗号','分隔，目前可用：goodsInfo（商品信息）,categoryInfo(类目信息）
 }
 
-type OrderRowResult struct {
+type OrderRowQueryResult struct {
 	BaseResult
 	JdUnionOpenOrderRowResponse struct {
 		Result string `json:"result"`
@@ -743,11 +802,18 @@ type OrderRowResult struct {
 	} `json:"jd_union_open_order_row_response"`
 }
 
-func (r *OrderRowResult) String() string {
+func (r *OrderRowQueryResult) String() string {
 	return string(r.GetResult())
 }
 
-func (r *OrderRowResult) GetResult() []byte {
+func (r *OrderRowQueryResult) Error() string {
+	if !r.BaseResult.IsSuccess() {
+		return r.BaseResult.Error()
+	}
+	return string(r.GetResult())
+}
+
+func (r *OrderRowQueryResult) GetResult() []byte {
 	str := r.JdUnionOpenOrderRowResponse.Result
 	if str == "" {
 		return r.BaseResult.GetResult()

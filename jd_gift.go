@@ -7,9 +7,12 @@ type GiftService interface {
 	// 礼金停止
 	//    文档: https://union.jd.com/openplatform/api/10440
 	CouponGiftStop(*CouponGiftStopRequest) (*CouponGiftStopResult, error)
+	// 礼金停止
+	//    文档: https://union.jd.com/openplatform/api/10440
+	CouponGiftStopBy(giftCouponKey string) (*CouponGiftStopResult, error)
 	// 礼金效果数据
-	//    文档: https://union.jd.com/openplatform/api/10448
-	GiftStatisticCouponQuery(*GiftStatisticCouponQueryRequest) (*GiftStatisticCouponQueryResult, error)
+	//    文档: https://union.jd.com/openplatform/api/12248
+	StatisticGiftCouponQuery(*StatisticGiftCouponQueryRequest) (*StatisticGiftCouponQueryResult, error)
 }
 
 type GiftServiceImpl struct {
@@ -38,10 +41,16 @@ func (p *GiftServiceImpl) CouponGiftStop(request *CouponGiftStopRequest) (*Coupo
 	return &res, err
 }
 
-func (p *GiftServiceImpl) GiftStatisticCouponQuery(request *GiftStatisticCouponQueryRequest) (*GiftStatisticCouponQueryResult, error) {
+func (p *GiftServiceImpl) CouponGiftStopBy(giftCouponKey string) (*CouponGiftStopResult, error) {
+	return p.CouponGiftStop(&CouponGiftStopRequest{
+		GiftCouponKey: giftCouponKey,
+	})
+}
+
+func (p *GiftServiceImpl) StatisticGiftCouponQuery(request *StatisticGiftCouponQueryRequest) (*StatisticGiftCouponQueryResult, error) {
 	param := map[string]interface{}{}
 	param["effectDataReq"] = request
-	var res GiftStatisticCouponQueryResult
+	var res StatisticGiftCouponQueryResult
 	err := p.service.Do(&res, GiftStatistic, param)
 	return &res, err
 }

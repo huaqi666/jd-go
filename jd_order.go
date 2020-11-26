@@ -6,10 +6,10 @@ type OrderService interface {
 	OrderQuery(*OrderQueryRequest) (*OrderQueryResult, error)
 	// 奖励订单查询接口【申请】
 	//    文档: https://union.jd.com/openplatform/api/11781
-	OrderBonusQuery(*OrderBonusRequest) (*OrderBonusResult, error)
+	OrderBonusQuery(*OrderBonusQueryRequest) (*OrderBonusQueryResult, error)
 	// 订单行查询接口
 	//    文档: https://union.jd.com/openplatform/api/12707
-	OrderRowQuery(*OrderRowRequest) (*OrderRowResult, error)
+	OrderRowQuery(*OrderRowQueryRequest) (*OrderRowQueryResult, error)
 }
 
 type OrderServiceImpl struct {
@@ -30,18 +30,18 @@ func (p *OrderServiceImpl) OrderQuery(request *OrderQueryRequest) (*OrderQueryRe
 	return &res, err
 }
 
-func (p *OrderServiceImpl) OrderBonusQuery(request *OrderBonusRequest) (*OrderBonusResult, error) {
+func (p *OrderServiceImpl) OrderBonusQuery(request *OrderBonusQueryRequest) (*OrderBonusQueryResult, error) {
 	param := map[string]interface{}{}
 	param["orderReq"] = request
-	var res OrderBonusResult
+	var res OrderBonusQueryResult
 	err := p.service.Do(&res, OrderBonusQuery, param)
 	return &res, err
 }
 
-func (p *OrderServiceImpl) OrderRowQuery(request *OrderRowRequest) (*OrderRowResult, error) {
+func (p *OrderServiceImpl) OrderRowQuery(request *OrderRowQueryRequest) (*OrderRowQueryResult, error) {
 	param := map[string]interface{}{}
 	param["orderReq"] = request
-	var res OrderRowResult
+	var res OrderRowQueryResult
 	err := p.service.Do(&res, OrderRowQuery, param)
 	return &res, err
 }
