@@ -1,6 +1,9 @@
 package jd
 
-import "encoding/json"
+import (
+	"encoding/json"
+	"fmt"
+)
 
 type BaseResult struct {
 	ErrorResponse struct {
@@ -8,6 +11,18 @@ type BaseResult struct {
 		ZhDesc string `json:"zh_desc"`
 		EnDesc string `json:"en_desc"`
 	} `json:"error_response"`
+}
+
+func (b *BaseResult) Error() string {
+	return fmt.Sprintf("[京东联盟]: 错误码：%s，错误描述：%s(%s)", b.ErrorResponse.Code, b.ErrorResponse.EnDesc, b.ErrorResponse.ZhDesc)
+}
+
+func (b *BaseResult) IsSuccess() bool {
+	return b.ErrorResponse.Code == ""
+}
+
+func (b *BaseResult) String() string {
+	return string(b.GetResult())
 }
 
 func (b *BaseResult) GetResult() []byte {
@@ -37,6 +52,10 @@ type GoodsJingfenQueryResult struct {
 		Result string `json:"result"`
 		Code   string `json:"code"`
 	} `json:"jd_union_open_goods_jingfen_query_response"`
+}
+
+func (r *GoodsJingfenQueryResult) String() string {
+	return string(r.GetResult())
 }
 
 func (r *GoodsJingfenQueryResult) GetResult() []byte {
@@ -166,6 +185,10 @@ type GoodsQueryResult struct {
 	} `json:"jd_union_open_goods_query_response"`
 }
 
+func (r *GoodsQueryResult) String() string {
+	return string(r.GetResult())
+}
+
 func (r *GoodsQueryResult) GetResult() []byte {
 	str := r.JdUnionOpenGoodsQueryResponse.Result
 	if str == "" {
@@ -180,6 +203,10 @@ type GoodsPromotiongoodsinfoResult struct {
 		Result string `json:"result"`
 		Code   string `json:"code"`
 	} `json:"jd_union_open_goods_promotiongoodsinfo_query_response"`
+}
+
+func (r *GoodsPromotiongoodsinfoResult) String() string {
+	return string(r.GetResult())
 }
 
 func (r *GoodsPromotiongoodsinfoResult) GetResult() []byte {
@@ -205,6 +232,10 @@ type CategoryGoodsGetResult struct {
 	}
 }
 
+func (r *CategoryGoodsGetResult) String() string {
+	return string(r.GetResult())
+}
+
 func (r *CategoryGoodsGetResult) GetResult() []byte {
 	str := r.JdUnionOpenCategoryGoodsGetResponse.Result
 	if str == "" {
@@ -228,6 +259,10 @@ type GoodsGigfieldResult struct {
 		Result string `json:"result"`
 		Code   string `json:"code"`
 	} `json:"jd_union_open_goods_bigfield_query_response"`
+}
+
+func (r *GoodsGigfieldResult) String() string {
+	return string(r.GetResult())
 }
 
 func (r *GoodsGigfieldResult) GetResult() []byte {
@@ -262,6 +297,10 @@ type PromoteCommonGetResult struct {
 	} `json:"jd_union_open_promotion_common_get_response"`
 }
 
+func (r *PromoteCommonGetResult) String() string {
+	return string(r.GetResult())
+}
+
 func (r *PromoteCommonGetResult) GetResult() []byte {
 	str := r.JdUnionOpenPromotionCommonGetResponse.Result
 	if str == "" {
@@ -290,6 +329,10 @@ type PromotionBysubunionidQueryResult struct {
 		Result string `json:"result"`
 		Code   string `json:"code"`
 	} `json:"jd_union_open_promotion_bysubunionid_query_response"`
+}
+
+func (r *PromotionBysubunionidQueryResult) String() string {
+	return string(r.GetResult())
 }
 
 func (r *PromotionBysubunionidQueryResult) GetResult() []byte {
@@ -322,6 +365,10 @@ type PromotionByunionidQueryResult struct {
 	}
 }
 
+func (r *PromotionByunionidQueryResult) String() string {
+	return string(r.GetResult())
+}
+
 func (r *PromotionByunionidQueryResult) GetResult() []byte {
 	str := r.JdUnionOpenPromotionBysubunionidQueryResponse.Result
 	if str == "" {
@@ -342,6 +389,10 @@ type CouponQueryResult struct {
 		Result string `json:"result"`
 		Code   string `json:"code"`
 	} `json:"jd_union_open_coupon_query_response"`
+}
+
+func (r *CouponQueryResult) String() string {
+	return string(r.GetResult())
 }
 
 func (r *CouponQueryResult) GetResult() []byte {
@@ -368,6 +419,10 @@ type PositionQueryResult struct {
 		Result string `json:"result"`
 		Code   string `json:"code"`
 	} `json:"jd_union_open_position_query_response"`
+}
+
+func (r *PositionQueryResult) String() string {
+	return string(r.GetResult())
 }
 
 func (r *PositionQueryResult) GetResult() []byte {
@@ -399,6 +454,10 @@ type PositionCreateResult struct {
 	} `json:"jd_union_open_position_create_response"`
 }
 
+func (r *PositionCreateResult) String() string {
+	return string(r.GetResult())
+}
+
 func (r *PositionCreateResult) GetResult() []byte {
 	str := r.JdUnionOpenPositionCreateResponse.Result
 	if str == "" {
@@ -427,6 +486,10 @@ type UserPidGetResult struct {
 	} `json:"jd_union_open_user_pid_get_response"`
 }
 
+func (r *UserPidGetResult) String() string {
+	return string(r.GetResult())
+}
+
 func (r *UserPidGetResult) GetResult() []byte {
 	str := r.JdUnionOpenUserPidGetResponse.Result
 	if str == "" {
@@ -450,6 +513,10 @@ type ActivityQueryResult struct {
 		Result string `json:"result"`
 		Code   string `json:"code"`
 	} `json:"jd_union_open_activity_query_response"`
+}
+
+func (r *ActivityQueryResult) String() string {
+	return string(r.GetResult())
 }
 
 func (r *ActivityQueryResult) GetResult() []byte {
@@ -479,6 +546,10 @@ type StatisticsRedpacketQueryResult struct {
 		Result string `json:"result"`
 		Code   string `json:"code"`
 	} `json:"jd_union_open_statistics_redpacket_query_response"`
+}
+
+func (r *StatisticsRedpacketQueryResult) String() string {
+	return string(r.GetResult())
 }
 
 func (r *StatisticsRedpacketQueryResult) GetResult() []byte {
@@ -516,6 +587,10 @@ type CouponGiftGetResult struct {
 	} `json:"jd_union_open_coupon_gift_get_response"`
 }
 
+func (r *CouponGiftGetResult) String() string {
+	return string(r.GetResult())
+}
+
 func (r *CouponGiftGetResult) GetResult() []byte {
 	str := r.JdUnionOpenCouponGiftGetResponse.Result
 	if str == "" {
@@ -536,6 +611,10 @@ type CouponGiftStopResult struct {
 		Result string `json:"result"`
 		Code   string `json:"code"`
 	} `json:"jd_union_open_coupon_gift_stop_response"`
+}
+
+func (r *CouponGiftStopResult) String() string {
+	return string(r.GetResult())
 }
 
 func (r *CouponGiftStopResult) GetResult() []byte {
@@ -561,6 +640,10 @@ type GiftStatisticCouponQueryResult struct {
 		Result string `json:"result"`
 		Code   string `json:"code"`
 	} `json:"jd_union_open_gift_statistic_coupon_query_response"`
+}
+
+func (r *GiftStatisticCouponQueryResult) String() string {
+	return string(r.GetResult())
 }
 
 func (r *GiftStatisticCouponQueryResult) GetResult() []byte {
@@ -592,6 +675,10 @@ type OrderQueryResult struct {
 	} `json:"jd_union_open_order_query_response"`
 }
 
+func (r *OrderQueryResult) String() string {
+	return string(r.GetResult())
+}
+
 func (r *OrderQueryResult) GetResult() []byte {
 	str := r.JdUnionOpenOrderQueryResponse.Result
 	if str == "" {
@@ -619,6 +706,10 @@ type OrderBonusResult struct {
 		Result string `json:"result"`
 		Code   string `json:"code"`
 	} `json:"jd_union_open_order_bonus_response"`
+}
+
+func (r *OrderBonusResult) String() string {
+	return string(r.GetResult())
 }
 
 func (r *OrderBonusResult) GetResult() []byte {
@@ -650,6 +741,10 @@ type OrderRowResult struct {
 		Result string `json:"result"`
 		Code   string `json:"code"`
 	} `json:"jd_union_open_order_row_response"`
+}
+
+func (r *OrderRowResult) String() string {
+	return string(r.GetResult())
 }
 
 func (r *OrderRowResult) GetResult() []byte {
