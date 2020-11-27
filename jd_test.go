@@ -131,7 +131,7 @@ func TestGoodsServiceImpl_CategoryGoodsGetQuery(t *testing.T) {
 		ParentId: 0,
 		Grade:    0,
 	})
-	t.Log("=======================商品类目=====================\n", res, err)
+	t.Log(res, err)
 }
 
 // 获取商品列表
@@ -157,7 +157,7 @@ func TestGoodsServiceImpl_GoodsJingfenQuery(t *testing.T) {
 	t.Log(res, err)
 }
 
-// 获取商品详情
+// 根据skuid获取商品详情
 func TestGoodsServiceImpl_GoodsPromotiongoodsinfoQuery(t *testing.T) {
 	config := GetConfig()
 	service := NewJdService(config.AppKey, config.SecretKey)
@@ -178,33 +178,53 @@ func TestGoodsServiceImpl_GoodsQuery(t *testing.T) {
 	t.Log(res, err)
 }
 
+// 奖励订单查询接口【申请】
 func TestOrderServiceImpl_OrderBonusQuery(t *testing.T) {
 	config := GetConfig()
 	service := NewJdService(config.AppKey, config.SecretKey)
 	orderService := service.GetOrderService()
 
-	res, err := orderService.OrderBonusQuery(&OrderBonusQueryRequest{})
+	res, err := orderService.OrderBonusQuery(&OrderBonusQueryRequest{
+		OptType:   1,
+		StartTime: 0,
+		EndTime:   9999999999999,
+		PageSize:  10,
+	})
 	t.Log(res, err)
 }
 
+// 订单查询接口
 func TestOrderServiceImpl_OrderQuery(t *testing.T) {
 	config := GetConfig()
 	service := NewJdService(config.AppKey, config.SecretKey)
 	orderService := service.GetOrderService()
 
-	res, err := orderService.OrderQuery(&OrderQueryRequest{})
+	res, err := orderService.OrderQuery(&OrderQueryRequest{
+		PageNo:   1,
+		PageSize: 10,
+		TypeNum:  1,
+		Time:     "20201117090000",
+	})
 	t.Log(res, err)
 }
 
+// 订单行查询接口
 func TestOrderServiceImpl_OrderRowQuery(t *testing.T) {
 	config := GetConfig()
 	service := NewJdService(config.AppKey, config.SecretKey)
 	orderService := service.GetOrderService()
 
-	res, err := orderService.OrderRowQuery(&OrderRowQueryRequest{})
+	res, err := orderService.OrderRowQuery(&OrderRowQueryRequest{
+		PageSize:  10,
+		PageIndex: 1,
+		TypeNum:   1,
+		StartTime: "",
+		EndTime:   "",
+	})
 	t.Log(res, err)
 }
 
+// 活动查询接口
 func TestOtherServiceImpl_ActivityQuery(t *testing.T) {
 	config := GetConfig()
 	service := NewJdService(config.AppKey, config.SecretKey)
@@ -214,65 +234,102 @@ func TestOtherServiceImpl_ActivityQuery(t *testing.T) {
 	t.Log(res, err)
 }
 
+// 创建推广位【申请】
 func TestOtherServiceImpl_PositionCreate(t *testing.T) {
 	config := GetConfig()
 	service := NewJdService(config.AppKey, config.SecretKey)
 	otherService := service.GetOtherService()
 
-	res, err := otherService.PositionCreate(&PositionCreateRequest{})
+	res, err := otherService.PositionCreate(&PositionCreateRequest{
+		UnionId:       0,
+		Key:           "",
+		UnionType:     1,
+		TypeNum:       1,
+		SpaceNameList: []string{""},
+	})
 	t.Log(res, err)
 }
 
+// 查询推广位【申请】
 func TestOtherServiceImpl_PositionQuery(t *testing.T) {
 	config := GetConfig()
 	service := NewJdService(config.AppKey, config.SecretKey)
 	otherService := service.GetOtherService()
 
-	res, err := otherService.PositionQuery(&PositionQueryRequest{})
+	res, err := otherService.PositionQuery(&PositionQueryRequest{
+		UnionId:   0,
+		Key:       "",
+		UnionType: 1,
+		PageIndex: 1,
+		PageSize:  10,
+	})
 	t.Log(res, err)
 }
 
+// 京享红包效果数据
 func TestOtherServiceImpl_StatisticsRedpacketQuery(t *testing.T) {
 	config := GetConfig()
 	service := NewJdService(config.AppKey, config.SecretKey)
 	otherService := service.GetOtherService()
 
-	res, err := otherService.StatisticsRedpacketQuery(&StatisticsRedpacketQueryRequest{})
+	res, err := otherService.StatisticsRedpacketQuery(&StatisticsRedpacketQueryRequest{
+		StartDate: "",
+		EndDate:   "",
+		PageIndex: 1,
+		PageSize:  10,
+	})
 	t.Log(res, err)
 }
 
+// 获取PID【申请】
 func TestOtherServiceImpl_UserPidGet(t *testing.T) {
 	config := GetConfig()
 	service := NewJdService(config.AppKey, config.SecretKey)
 	otherService := service.GetOtherService()
 
-	res, err := otherService.UserPidGet(&UserPidGetRequest{})
+	res, err := otherService.UserPidGet(&UserPidGetRequest{
+		UnionId:       0,
+		ChildUnionId:  0,
+		PositionName:  "",
+		PromotionType: 1,
+	})
 	t.Log(res, err)
 }
 
+// 社交媒体获取推广链接接口【申请】
 func TestPromotionServiceImpl_PromotionBysubunionidGet(t *testing.T) {
 	config := GetConfig()
 	service := NewJdService(config.AppKey, config.SecretKey)
 	promoteService := service.GetPromoteService()
 
-	res, err := promoteService.PromotionBysubunionidGet(&PromotionBysubunionidGetRequest{})
+	res, err := promoteService.PromotionBysubunionidGet(&PromotionBysubunionidGetRequest{
+		MaterialId: "",
+	})
 	t.Log(res, err)
 }
 
+// 工具商获取推广链接接口【申请】
 func TestPromotionServiceImpl_PromotionByunionidGet(t *testing.T) {
 	config := GetConfig()
 	service := NewJdService(config.AppKey, config.SecretKey)
 	promoteService := service.GetPromoteService()
 
-	res, err := promoteService.PromotionByunionidGet(&PromotionByunionidGetRequest{})
+	res, err := promoteService.PromotionByunionidGet(&PromotionByunionidGetRequest{
+		MaterialId: "",
+		UnionId:    0,
+	})
 	t.Log(res, err)
 }
 
+// 网站/APP获取推广链接接口
 func TestPromotionServiceImpl_PromotionCommonGet(t *testing.T) {
 	config := GetConfig()
 	service := NewJdService(config.AppKey, config.SecretKey)
 	promoteService := service.GetPromoteService()
 
-	res, err := promoteService.PromotionCommonGet(&PromoteCommonGetRequest{})
+	res, err := promoteService.PromotionCommonGet(&PromoteCommonGetRequest{
+		MaterialId: "",
+		SiteId:     "",
+	})
 	t.Log(res, err)
 }
