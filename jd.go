@@ -25,8 +25,16 @@ type Service interface {
 	// 获取订单相关接口
 	//    文档: https://union.jd.com/openplatform/api
 	GetOrderService() OrderService
+	// 获取活动相关接口
+	//    文档: https://union.jd.com/openplatform/api
+	GetActivityService() ActivityService
+	// 获取推广位相关接口
+	//    文档: https://union.jd.com/openplatform/api
+	GetPositionService() PositionService
+	// Deprecated: 弃用
 	// 获取其他相关接口
 	//    文档: https://union.jd.com/openplatform/api
+	// 使用新接口: GetPositionService 和 GetActivityService
 	GetOtherService() OtherService
 
 	// 设置商品(自定义)相关接口
@@ -38,9 +46,15 @@ type Service interface {
 	// 设置礼金(自定义)相关接口
 	SetGiftService(GiftService)
 	// 设置其他(自定义)相关接口
-	SetOtherService(OtherService)
+	SetActivityService(ActivityService)
+	// 设置推广位(自定义)相关接口
+	SetPositionService(PositionService)
 	// 设置订单(自定义)相关接口
 	SetOrderService(OrderService)
+	// Deprecated: 弃用
+	// 设置其他(自定义)相关接口
+	// 使用新接口: SetPositionService 和 SetActivityService
+	SetOtherService(OtherService)
 
 	// 获取配置
 	GetConfig() *Config
@@ -49,7 +63,7 @@ type Service interface {
 	// 设置http请求
 	SetHttpService(service common.Service)
 
-	// 执行Get操作
+	// 执行http请求并解析结果
 	Do(v interface{}, method Method, param map[string]interface{}) error
 }
 
@@ -57,12 +71,16 @@ type ServiceImpl struct {
 	service common.Service
 	config  *Config
 
-	goodsService   GoodsService
-	promoteService PromotionService
-	couponService  CouponService
-	giftService    GiftService
-	orderService   OrderService
-	otherService   OtherService
+	goodsService    GoodsService
+	promoteService  PromotionService
+	couponService   CouponService
+	giftService     GiftService
+	orderService    OrderService
+	activityService ActivityService
+	positionService PositionService
+
+	//Deprecated: 弃用
+	otherService OtherService
 }
 
 func NewJdService(appKet, secretKey string) Service {
@@ -76,7 +94,10 @@ func NewJdService(appKet, secretKey string) Service {
 
 	impl.giftService = newGiftService(impl)
 	impl.orderService = newOrderService(impl)
-	impl.otherService = newOtherService(impl)
+	impl.activityService = newActivityService(impl)
+	impl.positionService = newPositionService(impl)
+
+	impl.otherService = newOtherService(impl.positionService, impl.activityService)
 	return impl
 }
 
@@ -124,20 +145,38 @@ func (s *ServiceImpl) GetOrderService() OrderService {
 	return s.orderService
 }
 
-func (s *ServiceImpl) GetOtherService() OtherService {
-	return s.otherService
+func (s *ServiceImpl) GetActivityService() ActivityService {
+	return s.activityService
+}
+
+func (s *ServiceImpl) GetPositionService() PositionService {
+	return s.positionService
 }
 
 func (s *ServiceImpl) SetGiftService(service GiftService) {
 	s.giftService = service
 }
 
-func (s *ServiceImpl) SetOtherService(service OtherService) {
-	s.otherService = service
+func (s *ServiceImpl) SetActivityService(service ActivityService) {
+	s.activityService = service
+}
+
+func (s *ServiceImpl) SetPositionService(service PositionService) {
+	s.positionService = service
 }
 
 func (s *ServiceImpl) SetOrderService(service OrderService) {
 	s.orderService = service
+}
+
+// Deprecated: 使用新接口: GetPositionService 和 GetActivityService
+func (s *ServiceImpl) GetOtherService() OtherService {
+	return s.otherService
+}
+
+// Deprecated: 使用新接口: SetPositionService 和 SetActivityService
+func (s *ServiceImpl) SetOtherService(service OtherService) {
+	s.otherService = service
 }
 
 func (s *ServiceImpl) GetConfig() *Config {

@@ -7,10 +7,10 @@ type PromotionService interface {
 	PromotionCommonGet(*PromoteCommonGetRequest) (*PromoteCommonGetResult, error)
 	// 社交媒体获取推广链接接口【申请】
 	//    文档: https://union.jd.com/openplatform/api/10424
-	PromotionBysubunionidQuery(*PromotionBysubunionidQueryRequest) (*PromotionBysubunionidQueryResult, error)
+	PromotionBysubunionidGet(*PromotionBysubunionidGetRequest) (*PromotionBysubunionidGetResult, error)
 	// 工具商获取推广链接接口【申请】
 	//    文档: https://union.jd.com/openplatform/api/10425
-	PromotionByunionidQuery(*PromotionByunionidQueryRequest) (*PromotionByunionidQueryResult, error)
+	PromotionByunionidGet(*PromotionByunionidGetRequest) (*PromotionByunionidGetResult, error)
 }
 
 type PromotionServiceImpl struct {
@@ -23,6 +23,8 @@ func newPromotionService(service Service) PromotionService {
 	}
 }
 
+// 网站/APP获取推广链接接口
+//    文档: https://union.jd.com/openplatform/api/10421
 func (p *PromotionServiceImpl) PromotionCommonGet(request *PromoteCommonGetRequest) (*PromoteCommonGetResult, error) {
 	param := map[string]interface{}{}
 	param["promotionCodeReq"] = request
@@ -31,18 +33,22 @@ func (p *PromotionServiceImpl) PromotionCommonGet(request *PromoteCommonGetReque
 	return &res, err
 }
 
-func (p *PromotionServiceImpl) PromotionBysubunionidQuery(request *PromotionBysubunionidQueryRequest) (*PromotionBysubunionidQueryResult, error) {
+// 社交媒体获取推广链接接口【申请】
+//    文档: https://union.jd.com/openplatform/api/10424
+func (p *PromotionServiceImpl) PromotionBysubunionidGet(request *PromotionBysubunionidGetRequest) (*PromotionBysubunionidGetResult, error) {
 	param := map[string]interface{}{}
 	param["promotionCodeReq"] = request
-	var res PromotionBysubunionidQueryResult
+	var res PromotionBysubunionidGetResult
 	err := p.service.Do(&res, PromotionBysubunionidQuery, param)
 	return &res, err
 }
 
-func (p *PromotionServiceImpl) PromotionByunionidQuery(request *PromotionByunionidQueryRequest) (*PromotionByunionidQueryResult, error) {
+// 工具商获取推广链接接口【申请】
+//    文档: https://union.jd.com/openplatform/api/10425
+func (p *PromotionServiceImpl) PromotionByunionidGet(request *PromotionByunionidGetRequest) (*PromotionByunionidGetResult, error) {
 	param := map[string]interface{}{}
 	param["promotionCodeReq"] = request
-	var res PromotionByunionidQueryResult
+	var res PromotionByunionidGetResult
 	err := p.service.Do(&res, PromotionByunionidQuery, param)
 	return &res, err
 }

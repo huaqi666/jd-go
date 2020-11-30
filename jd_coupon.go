@@ -21,6 +21,8 @@ func newCouponService(service Service) CouponService {
 	}
 }
 
+// 优惠券领取情况查询接口【申请】
+//    文档: https://union.jd.com/openplatform/api/10423
 func (c *CouponServiceImpl) CouponQueryByList(urls ...string) (*CouponQueryResult, error) {
 	var arr []*CouponQueryRequest
 	for _, url := range urls {
@@ -31,6 +33,8 @@ func (c *CouponServiceImpl) CouponQueryByList(urls ...string) (*CouponQueryResul
 	return c.CouponQuery(arr)
 }
 
+// 优惠券领取情况查询接口【申请】
+//    文档: https://union.jd.com/openplatform/api/10423
 func (c *CouponServiceImpl) CouponQuery(request []*CouponQueryRequest) (*CouponQueryResult, error) {
 	param := map[string]interface{}{}
 	param["couponUrls"] = request
