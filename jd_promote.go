@@ -11,6 +11,9 @@ type PromotionService interface {
 	// 工具商获取推广链接接口【申请】
 	//    文档: https://union.jd.com/openplatform/api/10425
 	PromotionByunionidGet(*PromotionByunionidGetRequest) (*PromotionByunionidGetResult, error)
+	// 通过小程序获取推广链接【申请】
+	//    文档: https://union.jd.com/openplatform/api/11793
+	PromotionAppletGet(request *PromotionAppletGetRequest) (*PromotionAppletGetResult, error)
 }
 
 type PromotionServiceImpl struct {
@@ -50,5 +53,15 @@ func (p *PromotionServiceImpl) PromotionByunionidGet(request *PromotionByunionid
 	param["promotionCodeReq"] = request
 	var res PromotionByunionidGetResult
 	err := p.service.Do(&res, PromotionByunionidQuery, param)
+	return &res, err
+}
+
+// 通过小程序获取推广链接【申请】
+//    文档: https://union.jd.com/openplatform/api/11793
+func (p *PromotionServiceImpl) PromotionAppletGet(request *PromotionAppletGetRequest) (*PromotionAppletGetResult, error) {
+	param := map[string]interface{}{}
+	param["promotionCodeReq"] = request
+	var res PromotionAppletGetResult
+	err := p.service.Do(&res, PromotionAppletQuery, param)
 	return &res, err
 }
