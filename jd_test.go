@@ -28,15 +28,13 @@ func GetConfig() LocalConfig {
 			panic(err)
 		}
 		_, _ = f.Write(b)
+		return c
 	}
 	b, err := ioutil.ReadAll(f)
 	if err != nil {
 		fmt.Println(err)
 	}
-	err = json.Unmarshal(b, &c)
-	if err != nil {
-		panic(err)
-	}
+	_ = json.Unmarshal(b, &c)
 	return c
 }
 
