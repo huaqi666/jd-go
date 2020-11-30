@@ -5,6 +5,7 @@ import (
 	"fmt"
 )
 
+// 基础响应
 type BaseResult struct {
 	ErrorResponse struct {
 		Code   string `json:"code"`
@@ -73,7 +74,6 @@ func (r *GoodsJingfenQueryResult) GetResult() []byte {
 	return []byte(str)
 }
 
-// 关键词商品查询接口
 type GoodsQueryRequest struct {
 	// 必填 ...
 	// 非必填 ...

@@ -23,6 +23,8 @@ func newPromotionService(service Service) PromotionService {
 	}
 }
 
+// 网站/APP获取推广链接接口
+//    文档: https://union.jd.com/openplatform/api/10421
 func (p *PromotionServiceImpl) PromotionCommonGet(request *PromoteCommonGetRequest) (*PromoteCommonGetResult, error) {
 	param := map[string]interface{}{}
 	param["promotionCodeReq"] = request
@@ -31,6 +33,8 @@ func (p *PromotionServiceImpl) PromotionCommonGet(request *PromoteCommonGetReque
 	return &res, err
 }
 
+// 社交媒体获取推广链接接口【申请】
+//    文档: https://union.jd.com/openplatform/api/10424
 func (p *PromotionServiceImpl) PromotionBysubunionidGet(request *PromotionBysubunionidGetRequest) (*PromotionBysubunionidGetResult, error) {
 	param := map[string]interface{}{}
 	param["promotionCodeReq"] = request
@@ -39,6 +43,8 @@ func (p *PromotionServiceImpl) PromotionBysubunionidGet(request *PromotionBysubu
 	return &res, err
 }
 
+// 工具商获取推广链接接口【申请】
+//    文档: https://union.jd.com/openplatform/api/10425
 func (p *PromotionServiceImpl) PromotionByunionidGet(request *PromotionByunionidGetRequest) (*PromotionByunionidGetResult, error) {
 	param := map[string]interface{}{}
 	param["promotionCodeReq"] = request

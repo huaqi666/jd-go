@@ -45,5 +45,5 @@ const (
 )
 
 const (
-	BaseUrl = "https://router.jd.com/api"
+	BaseUrl = "https://router.jd.com/api" // 京东联盟Url前缀
 )
