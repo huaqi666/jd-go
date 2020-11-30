@@ -19,6 +19,7 @@ const (
 	PromotionCommonGet         Method = "jd.union.open.promotion.common.get"       // 网站/APP获取推广链接接口
 	PromotionBysubunionidQuery Method = "jd.union.open.promotion.bysubunionid.get" // 社交媒体获取推广链接接口【申请】
 	PromotionByunionidQuery    Method = "jd.union.open.promotion.byunionid.get"    // 工具商获取推广链接接口【申请】
+	PromotionAppletQuery       Method = "jd.union.open.promotion.applet.get"       // 通过小程序获取推广链接【申请】
 )
 
 const (

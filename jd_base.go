@@ -359,6 +359,45 @@ func (r *PromotionByunionidGetResult) GetResult() []byte {
 	return []byte(str)
 }
 
+type PromotionAppletGetRequest struct {
+	// 必填 ...
+
+	Type uint64 `json:"type"` // 爆款小程序
+	// 非必填 ...
+
+	SubUnionId   string `json:"sub_union_id"`  // 子联盟ID（需要联系运营开通权限才能拿到数据）
+	PositionId   uint64 `json:"position_id"`   // 推广位ID
+	Pid          string `json:"pid"`           // 子帐号身份标识，格式为子站长ID_子站长网站ID_子站长推广位ID
+	ActivityType uint64 `json:"activity_type"` // 活动落地页类型，1：新人优惠券、2：新人专享价、3：商品推荐集合页，默认1
+}
+
+type PromotionAppletGetResult struct {
+	BaseResult
+	JdUnionOpenPromotionAppletGetResponse struct {
+		Result string `json:"result"`
+		Code   string `json:"code"`
+	} `json:"jd_union_open_promotion_applet_get_response"`
+}
+
+func (r *PromotionAppletGetResult) String() string {
+	return string(r.GetResult())
+}
+
+func (r *PromotionAppletGetResult) Error() string {
+	if !r.BaseResult.IsSuccess() {
+		return r.BaseResult.Error()
+	}
+	return string(r.GetResult())
+}
+
+func (r *PromotionAppletGetResult) GetResult() []byte {
+	str := r.JdUnionOpenPromotionAppletGetResponse.Result
+	if str == "" {
+		return r.BaseResult.GetResult()
+	}
+	return []byte(str)
+}
+
 type CouponQueryRequest struct {
 	// 必填...
 
