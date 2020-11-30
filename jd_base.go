@@ -176,7 +176,7 @@ type CategoryGoodsGetResult struct {
 	JdUnionOpenCategoryGoodsGetResponse struct {
 		Result string `json:"result"`
 		Code   string `json:"code"`
-	}
+	} `json:"jd_union_open_category_goods_get_response"`
 }
 
 func (r *CategoryGoodsGetResult) String() string {
@@ -293,10 +293,10 @@ type PromotionBysubunionidGetRequest struct {
 
 type PromotionBysubunionidGetResult struct {
 	BaseResult
-	JdUnionOpenPromotionBysubunionidQueryResponse struct {
+	JdUnionOpenPromotionBysubunionidGetResponse struct {
 		Result string `json:"result"`
 		Code   string `json:"code"`
-	} `json:"jd_union_open_promotion_bysubunionid_query_response"`
+	} `json:"jd_union_open_promotion_bysubunionid_get_response"`
 }
 
 func (r *PromotionBysubunionidGetResult) String() string {
@@ -311,7 +311,7 @@ func (r *PromotionBysubunionidGetResult) Error() string {
 }
 
 func (r *PromotionBysubunionidGetResult) GetResult() []byte {
-	str := r.JdUnionOpenPromotionBysubunionidQueryResponse.Result
+	str := r.JdUnionOpenPromotionBysubunionidGetResponse.Result
 	if str == "" {
 		return r.BaseResult.GetResult()
 	}
@@ -334,10 +334,10 @@ type PromotionByunionidGetRequest struct {
 
 type PromotionByunionidGetResult struct {
 	BaseResult
-	JdUnionOpenPromotionBysubunionidQueryResponse struct {
+	JdUnionOpenPromotionBysubunionidGetResponse struct {
 		Result string `json:"result"`
 		Code   string `json:"code"`
-	}
+	} `json:"jd_union_open_promotion_bysubunionid_get_response"`
 }
 
 func (r *PromotionByunionidGetResult) String() string {
@@ -352,7 +352,7 @@ func (r *PromotionByunionidGetResult) Error() string {
 }
 
 func (r *PromotionByunionidGetResult) GetResult() []byte {
-	str := r.JdUnionOpenPromotionBysubunionidQueryResponse.Result
+	str := r.JdUnionOpenPromotionBysubunionidGetResponse.Result
 	if str == "" {
 		return r.BaseResult.GetResult()
 	}

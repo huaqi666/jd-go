@@ -216,8 +216,8 @@ func TestOrderServiceImpl_OrderRowQuery(t *testing.T) {
 		PageSize:  10,
 		PageIndex: 1,
 		TypeNum:   1,
-		StartTime: "",
-		EndTime:   "",
+		StartTime: "2020-11-30 16:00:00",
+		EndTime:   "2020-11-30 16:30:00",
 	})
 	t.Log(res, err)
 }
