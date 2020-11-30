@@ -200,7 +200,7 @@ func TestOrderServiceImpl_OrderQuery(t *testing.T) {
 	res, err := orderService.OrderQuery(&OrderQueryRequest{
 		PageNo:   1,
 		PageSize: 10,
-		TypeNum:  1,
+		Type:     1,
 		Time:     "20201117090000",
 	})
 	t.Log(res, err)
@@ -215,7 +215,7 @@ func TestOrderServiceImpl_OrderRowQuery(t *testing.T) {
 	res, err := orderService.OrderRowQuery(&OrderRowQueryRequest{
 		PageSize:  10,
 		PageIndex: 1,
-		TypeNum:   1,
+		Type:      1,
 		StartTime: "2020-11-30 16:00:00",
 		EndTime:   "2020-11-30 16:30:00",
 	})
@@ -242,7 +242,7 @@ func TestOtherServiceImpl_PositionCreate(t *testing.T) {
 		UnionId:       0,
 		Key:           "",
 		UnionType:     1,
-		TypeNum:       1,
+		Type:          1,
 		SpaceNameList: []string{""},
 	})
 	t.Log(res, err)

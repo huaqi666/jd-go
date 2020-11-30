@@ -89,12 +89,12 @@ func (p *parameter) getConcatParams() string {
 	var params map[string]interface{}
 	bs, _ := json.Marshal(p)
 	_ = json.Unmarshal(bs, &params)
-	s := make([]string, len(params))
+	var s []string
 	for k := range params {
 		if "sign" != k {
 			v := params[k]
-			if "string" != reflect.TypeOf(params[k]).String() {
-				valueBs, _ := json.Marshal(params[k])
+			if "string" != reflect.TypeOf(v).String() {
+				valueBs, _ := json.Marshal(v)
 				v = string(valueBs)
 			}
 			s = append(s, fmt.Sprintf("%s%s", k, v))
