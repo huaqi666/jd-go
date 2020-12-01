@@ -474,7 +474,7 @@ type PositionCreateRequest struct {
 	UnionId       uint64   `json:"unionId"`       // 需要查询的目标联盟id
 	Key           string   `json:"key"`           // 推客unionid对应的“授权Key”，在联盟官网-我的工具-我的API中查询，授权Key具有唯一性，有效期365天，删除或创建新的授权Key后原有的授权Key自动失效
 	UnionType     uint64   `json:"unionType"`     // 3：私域推广位，上限5000个，不在联盟后台展示，无对应 PID；4：联盟后台推广位，上限500个，会在推客联盟后台展示，可用于内容平台推广
-	TypeNum       uint64   `json:"type"`          // 站点类型 1.网站推广位2.APP推广位3.导购媒体推广位4.聊天工具推广位
+	Type          uint64   `json:"type"`          // 站点类型 1.网站推广位2.APP推广位3.导购媒体推广位4.聊天工具推广位
 	SpaceNameList []string `json:"spaceNameList"` // 推广位名称集合，英文,分割；上限50
 	// 非必填 ...
 
@@ -743,7 +743,7 @@ type OrderQueryRequest struct {
 
 	PageNo   uint64 `json:"pageNo"`   // 页码，返回第几页结果
 	PageSize uint64 `json:"pageSize"` // 每页包含条数，上限为500
-	TypeNum  uint64 `json:"type"`     // 订单时间查询类型(1：下单时间，2：完成时间（购买用户确认收货时间），3：更新时间
+	Type     uint64 `json:"type"`     // 订单时间查询类型(1：下单时间，2：完成时间（购买用户确认收货时间），3：更新时间
 	Time     string `json:"time"`     // 查询时间，建议使用分钟级查询，格式：yyyyMMddHH、yyyyMMddHHmm或yyyyMMddHHmmss，如201811031212 的查询范围从12:12:00--12:12:59
 	// 非必填 ...
 
@@ -823,7 +823,7 @@ type OrderRowQueryRequest struct {
 
 	PageIndex uint64 `json:"pageIndex"` // 页码
 	PageSize  uint64 `json:"pageSize"`  // 每页包含条数，上限为500
-	TypeNum   uint64 `json:"type"`      // 订单时间查询类型(1：下单时间，2：完成时间（购买用户确认收货时间），3：更新时间
+	Type      uint64 `json:"type"`      // 订单时间查询类型(1：下单时间，2：完成时间（购买用户确认收货时间），3：更新时间
 	StartTime string `json:"startTime"` // 开始时间 格式yyyy-MM-dd HH:mm:ss，与endTime间隔不超过1小时
 	EndTime   string `json:"endTime"`   // 结束时间 格式yyyy-MM-dd HH:mm:ss，与startTime间隔不超过1小时
 	// 非必填 ...

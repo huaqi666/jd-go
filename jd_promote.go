@@ -14,6 +14,15 @@ type PromotionService interface {
 	// 通过小程序获取推广链接【申请】
 	//    文档: https://union.jd.com/openplatform/api/11793
 	PromotionAppletGet(request *PromotionAppletGetRequest) (*PromotionAppletGetResult, error)
+	// 网站/APP获取推广链接接口
+	//    文档: https://union.jd.com/openplatform/api/10421
+	PromotionCommonGetResult(*PromoteCommonGetRequest) ([]byte, error)
+	// 社交媒体获取推广链接接口【申请】
+	//    文档: https://union.jd.com/openplatform/api/10424
+	PromotionBysubunionidGetResult(*PromotionBysubunionidGetRequest) ([]byte, error)
+	// 工具商获取推广链接接口【申请】
+	//    文档: https://union.jd.com/openplatform/api/10425
+	PromotionByunionidGetResult(*PromotionByunionidGetRequest) ([]byte, error)
 }
 
 type PromotionServiceImpl struct {
@@ -64,4 +73,43 @@ func (p *PromotionServiceImpl) PromotionAppletGet(request *PromotionAppletGetReq
 	var res PromotionAppletGetResult
 	err := p.service.Do(&res, PromotionAppletQuery, param)
 	return &res, err
+}
+
+// 网站/APP获取推广链接接口
+//    文档: https://union.jd.com/openplatform/api/10421
+func (p *PromotionServiceImpl) PromotionCommonGetResult(request *PromoteCommonGetRequest) ([]byte, error) {
+	res, err := p.PromotionCommonGet(request)
+	if err != nil {
+		return nil, err
+	}
+	if res.IsSuccess() {
+		return nil, res
+	}
+	return res.GetResult(), nil
+}
+
+// 社交媒体获取推广链接接口【申请】
+//    文档: https://union.jd.com/openplatform/api/10424
+func (p *PromotionServiceImpl) PromotionBysubunionidGetResult(request *PromotionBysubunionidGetRequest) ([]byte, error) {
+	res, err := p.PromotionBysubunionidGet(request)
+	if err != nil {
+		return nil, err
+	}
+	if res.IsSuccess() {
+		return nil, res
+	}
+	return res.GetResult(), nil
+}
+
+// 工具商获取推广链接接口【申请】
+//    文档: https://union.jd.com/openplatform/api/10425
+func (p *PromotionServiceImpl) PromotionByunionidGetResult(request *PromotionByunionidGetRequest) ([]byte, error) {
+	res, err := p.PromotionByunionidGet(request)
+	if err != nil {
+		return nil, err
+	}
+	if res.IsSuccess() {
+		return nil, res
+	}
+	return res.GetResult(), nil
 }

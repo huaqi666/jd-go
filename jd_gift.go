@@ -4,15 +4,31 @@ type GiftService interface {
 	// 礼金创建
 	//    文档: https://union.jd.com/openplatform/api/12246
 	CouponGiftGet(*CouponGiftGetRequest) (*CouponGiftGetResult, error)
+	// 礼金创建
+	//    文档: https://union.jd.com/openplatform/api/12246
+	CouponGiftStopResult(request *CouponGiftStopRequest) ([]byte, error)
 	// 礼金停止
 	//    文档: https://union.jd.com/openplatform/api/12240
 	CouponGiftStop(*CouponGiftStopRequest) (*CouponGiftStopResult, error)
 	// 礼金停止
 	//    文档: https://union.jd.com/openplatform/api/12240
-	CouponGiftStopBy(giftCouponKey string) (*CouponGiftStopResult, error)
+	CouponGiftGetResult(request *CouponGiftGetRequest) ([]byte, error)
+	// 礼金停止
+	//    文档: https://union.jd.com/openplatform/api/12240
+	CouponGiftStopByKey(giftCouponKey string) (*CouponGiftStopResult, error)
+	// 礼金停止
+	//    文档: https://union.jd.com/openplatform/api/12240
+	CouponGiftStopResultByKey(giftCouponKey string) ([]byte, error)
 	// 礼金效果数据
 	//    文档: https://union.jd.com/openplatform/api/12248
 	StatisticGiftCouponQuery(*StatisticGiftCouponQueryRequest) (*StatisticGiftCouponQueryResult, error)
+	// 礼金效果数据
+	//    文档: https://union.jd.com/openplatform/api/12248
+	StatisticGiftCouponQueryResult(request *StatisticGiftCouponQueryRequest) ([]byte, error)
+	// 礼金停止
+	// Deprecated: 使用 CouponGiftStopByKey
+	//    文档: https://union.jd.com/openplatform/api/12240
+	CouponGiftStopBy(giftCouponKey string) (*CouponGiftStopResult, error)
 }
 
 type GiftServiceImpl struct {
@@ -45,12 +61,60 @@ func (p *GiftServiceImpl) CouponGiftStop(request *CouponGiftStopRequest) (*Coupo
 	return &res, err
 }
 
+// 礼金创建
+//    文档: https://union.jd.com/openplatform/api/12246
+func (p *GiftServiceImpl) CouponGiftGetResult(request *CouponGiftGetRequest) ([]byte, error) {
+	res, err := p.CouponGiftGet(request)
+	if err != nil {
+		return nil, err
+	}
+	if res.IsSuccess() {
+		return nil, res
+	}
+	return res.GetResult(), nil
+}
+
 // 礼金停止
+//    文档: https://union.jd.com/openplatform/api/12240
+func (p *GiftServiceImpl) CouponGiftStopResult(request *CouponGiftStopRequest) ([]byte, error) {
+	res, err := p.CouponGiftStop(request)
+	if err != nil {
+		return nil, err
+	}
+	if res.IsSuccess() {
+		return nil, res
+	}
+	return res.GetResult(), nil
+}
+
+// 礼金停止
+// Deprecated: 使用 CouponGiftStopByKey
 //    文档: https://union.jd.com/openplatform/api/12240
 func (p *GiftServiceImpl) CouponGiftStopBy(giftCouponKey string) (*CouponGiftStopResult, error) {
 	return p.CouponGiftStop(&CouponGiftStopRequest{
 		GiftCouponKey: giftCouponKey,
 	})
+}
+
+// 礼金停止
+//    文档: https://union.jd.com/openplatform/api/12240
+func (p *GiftServiceImpl) CouponGiftStopByKey(giftCouponKey string) (*CouponGiftStopResult, error) {
+	return p.CouponGiftStop(&CouponGiftStopRequest{
+		GiftCouponKey: giftCouponKey,
+	})
+}
+
+// 礼金停止
+//    文档: https://union.jd.com/openplatform/api/12240
+func (p *GiftServiceImpl) CouponGiftStopResultByKey(giftCouponKey string) ([]byte, error) {
+	res, err := p.CouponGiftStopByKey(giftCouponKey)
+	if err != nil {
+		return nil, err
+	}
+	if res.IsSuccess() {
+		return nil, res
+	}
+	return res.GetResult(), nil
 }
 
 // 礼金效果数据
@@ -61,4 +125,17 @@ func (p *GiftServiceImpl) StatisticGiftCouponQuery(request *StatisticGiftCouponQ
 	var res StatisticGiftCouponQueryResult
 	err := p.service.Do(&res, GiftStatistic, param)
 	return &res, err
+}
+
+// 礼金效果数据
+//    文档: https://union.jd.com/openplatform/api/12248
+func (p *GiftServiceImpl) StatisticGiftCouponQueryResult(request *StatisticGiftCouponQueryRequest) ([]byte, error) {
+	res, err := p.StatisticGiftCouponQuery(request)
+	if err != nil {
+		return nil, err
+	}
+	if res.IsSuccess() {
+		return nil, res
+	}
+	return res.GetResult(), nil
 }
