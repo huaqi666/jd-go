@@ -86,24 +86,29 @@ func (p *parameter) CheckRequiredParams() error {
 
 //  把所有请求参数按照参数名称的 ASCII 码表顺序进行排序并拼接
 func (p *parameter) getConcatParams() string {
-	var params map[string]interface{}
+	var (
+		sorts  []string
+		value  string
+		params map[string]interface{}
+		concat string
+	)
 	bs, _ := json.Marshal(p)
 	_ = json.Unmarshal(bs, &params)
-	s := make([]string, len(params))
-	for k := range params {
-		if "sign" != k {
-			v := params[k]
-			if "string" != reflect.TypeOf(params[k]).String() {
-				valueBs, _ := json.Marshal(params[k])
-				v = string(valueBs)
+	for key := range params {
+		if "sign" != key {
+			v := params[key]
+			if "string" != reflect.TypeOf(v).String() {
+				valueBs, _ := json.Marshal(v)
+				value = string(valueBs)
+			} else {
+				value = v.(string)
 			}
-			s = append(s, fmt.Sprintf("%s%s", k, v))
+			sorts = append(sorts, key+value)
 		}
 	}
-	sort.Strings(s)
-	var concat string
-	for i := range s {
-		concat += s[i]
+	sort.Strings(sorts)
+	for i := range sorts {
+		concat += sorts[i]
 	}
 	return concat
 }

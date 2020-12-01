@@ -331,3 +331,15 @@ func TestPromotionServiceImpl_PromotionCommonGet(t *testing.T) {
 	})
 	t.Log(res, err)
 }
+
+// 通过小程序获取推广链接【申请】
+func TestPromotionServiceImpl_PromotionAppletGet(t *testing.T) {
+	config := GetConfig()
+	service := NewJdService(config.AppKey, config.SecretKey)
+	promoteService := service.GetPromoteService()
+
+	res, err := promoteService.PromotionAppletGet(&PromotionAppletGetRequest{
+		Type: 1,
+	})
+	t.Log(res, err)
+}

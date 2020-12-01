@@ -365,10 +365,10 @@ type PromotionAppletGetRequest struct {
 	Type uint64 `json:"type"` // 爆款小程序
 	// 非必填 ...
 
-	SubUnionId   string `json:"sub_union_id"`  // 子联盟ID（需要联系运营开通权限才能拿到数据）
-	PositionId   uint64 `json:"position_id"`   // 推广位ID
-	Pid          string `json:"pid"`           // 子帐号身份标识，格式为子站长ID_子站长网站ID_子站长推广位ID
-	ActivityType uint64 `json:"activity_type"` // 活动落地页类型，1：新人优惠券、2：新人专享价、3：商品推荐集合页，默认1
+	SubUnionId   string `json:"sub_union_id,omitempty"`  // 子联盟ID（需要联系运营开通权限才能拿到数据）
+	PositionId   uint64 `json:"position_id,omitempty"`   // 推广位ID
+	Pid          string `json:"pid,omitempty"`           // 子帐号身份标识，格式为子站长ID_子站长网站ID_子站长推广位ID
+	ActivityType uint64 `json:"activity_type,omitempty"` // 活动落地页类型，1：新人优惠券、2：新人专享价、3：商品推荐集合页，默认1
 }
 
 type PromotionAppletGetResult struct {
