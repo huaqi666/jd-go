@@ -4,22 +4,21 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/cliod/jd-go/common"
-	"reflect"
 	"sort"
 	"time"
 )
 
 // 系统配置
 type Config struct {
-	Method      Method `json:"method" url:"method"`                       // API接口名称
-	AppKey      string `json:"app_key" url:"app_key"`                     // 分配给应用的AppKey
-	AccessToken string `json:"access_token,omitempty" url:"access_token"` // Oauth2颁发的动态令牌,根据API属性标签，如果需要授权，则此参数必传;如果不需要授权，则此参数不需要传
-	Timestamp   string `json:"timestamp" url:"timestamp"`                 // 时间戳，格式为yyyy-MM-dd  HH:mm:ss，时区为GMT+8。API服务端允许客户端请求最大时间误差为10分钟
-	Format      string `json:"format" url:"format"`                       // 响应格式。暂时只支持json
-	Version     string `json:"v" url:"v"`                                 // API协议版本，可选值：2.0，请根据API具体版本号传入此参数，一般为1.0
-	SignMethod  string `json:"sign_method" url:"sign_method"`             // 签名的摘要算法， md5
-	Sign        string `json:"sign" url:"sign"`                           // API输入参数签名结果
-	SecretKey   string `json:"-" url:"-"`                                 // api秘钥
+	Method      Method `json:"method"`                 // API接口名称
+	AppKey      string `json:"app_key"`                // 分配给应用的AppKey
+	AccessToken string `json:"access_token,omitempty"` // Oauth2颁发的动态令牌,根据API属性标签，如果需要授权，则此参数必传;如果不需要授权，则此参数不需要传
+	Timestamp   string `json:"timestamp"`              // 时间戳，格式为yyyy-MM-dd  HH:mm:ss，时区为GMT+8。API服务端允许客户端请求最大时间误差为10分钟
+	Format      string `json:"format"`                 // 响应格式。暂时只支持json
+	Version     string `json:"v"`                      // API协议版本，可选值：2.0，请根据API具体版本号传入此参数，一般为1.0
+	SignMethod  string `json:"sign_method"`            // 签名的摘要算法， md5
+	Sign        string `json:"sign"`                   // API输入参数签名结果
+	SecretKey   string `json:"-"`                      // api秘钥
 }
 
 func NewConfig(appKey, secretKey string) *Config {
@@ -38,32 +37,38 @@ func NewConfig(appKey, secretKey string) *Config {
 // 参数封装
 type parameter struct {
 	Config
-	ParamJson map[string]interface{} `json:"param_json,omitempty" url:"param_json"`
+	ParamJson string `json:"param_json,omitempty"` // 业务参数(string)
 }
 
 // 参数封装
 type Param struct {
-	Config
-	ParamJson string `json:"param_json,omitempty" url:"param_json"`
+	Method      Method `json:"method" url:"method"`                       // API接口名称
+	AppKey      string `json:"app_key" url:"app_key"`                     // 分配给应用的AppKey
+	AccessToken string `json:"access_token,omitempty" url:"access_token"` // Oauth2颁发的动态令牌,根据API属性标签，如果需要授权，则此参数必传;如果不需要授权，则此参数不需要传
+	Timestamp   string `json:"timestamp" url:"timestamp"`                 // 时间戳，格式为yyyy-MM-dd  HH:mm:ss，时区为GMT+8。API服务端允许客户端请求最大时间误差为10分钟
+	Format      string `json:"format" url:"format"`                       // 响应格式。暂时只支持json
+	Version     string `json:"v" url:"v"`                                 // API协议版本，可选值：2.0，请根据API具体版本号传入此参数，一般为1.0
+	SignMethod  string `json:"sign_method" url:"sign_method"`             // 签名的摘要算法， md5
+	Sign        string `json:"sign" url:"sign"`                           // API输入参数签名结果
+	ParamJson   string `json:"param_json,omitempty" url:"param_json"`     // 业务参数
 }
 
 func newParameter(config *Config, pj map[string]interface{}) *parameter {
-	return &parameter{Config: *config, ParamJson: pj}
+	bs, _ := json.Marshal(pj)
+	return &parameter{Config: *config, ParamJson: string(bs)}
 }
 
 func NewParam(param *parameter) *Param {
 	return &Param{
-		ParamJson: param.getParamString(),
-		Config: Config{
-			AppKey:      param.AppKey,
-			Method:      param.Method,
-			AccessToken: param.AccessToken,
-			Timestamp:   param.Timestamp,
-			Format:      param.Format,
-			Version:     param.Version,
-			SignMethod:  param.SignMethod,
-			Sign:        param.Sign,
-		},
+		ParamJson:   param.ParamJson,
+		AppKey:      param.AppKey,
+		Method:      param.Method,
+		AccessToken: param.AccessToken,
+		Timestamp:   param.Timestamp,
+		Format:      param.Format,
+		Version:     param.Version,
+		SignMethod:  param.SignMethod,
+		Sign:        param.Sign,
 	}
 }
 
@@ -96,13 +101,7 @@ func (p *parameter) getConcatParams() string {
 	_ = json.Unmarshal(bs, &params)
 	for key := range params {
 		if "sign" != key {
-			v := params[key]
-			if "string" != reflect.TypeOf(v).String() {
-				valueBs, _ := json.Marshal(v)
-				value = string(valueBs)
-			} else {
-				value = v.(string)
-			}
+			value = params[key].(string)
 			sorts = append(sorts, key+value)
 		}
 	}
@@ -111,12 +110,6 @@ func (p *parameter) getConcatParams() string {
 		concat += sorts[i]
 	}
 	return concat
-}
-
-// 组装 HTTP 请求，将所有参数名和参数值采用 utf-8 进行 URL 编码（
-func (p *parameter) getParamString() string {
-	bs, _ := json.Marshal(p.ParamJson)
-	return string(bs)
 }
 
 // 把 appSecret 的值拼接在字符串的两端，使用 MD5 进行加密，并转化成大写

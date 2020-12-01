@@ -51,17 +51,15 @@ func TestParameter_AttachSign(t *testing.T) {
 
 	r, _ := json.Marshal(param)
 	b, err := common.NewService().Get(BaseUrl, Param{
-		ParamJson: string(r),
-		Config: Config{
-			AppKey:      p.AppKey,
-			Method:      p.Method,
-			AccessToken: p.AccessToken,
-			Timestamp:   p.Timestamp,
-			Format:      p.Format,
-			Version:     p.Version,
-			SignMethod:  p.SignMethod,
-			Sign:        p.Sign,
-		},
+		ParamJson:   string(r),
+		AppKey:      p.AppKey,
+		Method:      p.Method,
+		AccessToken: p.AccessToken,
+		Timestamp:   p.Timestamp,
+		Format:      p.Format,
+		Version:     p.Version,
+		SignMethod:  p.SignMethod,
+		Sign:        p.Sign,
 	})
 	t.Log(string(b), err)
 }

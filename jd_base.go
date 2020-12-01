@@ -713,10 +713,10 @@ type StatisticGiftCouponQueryRequest struct {
 
 type StatisticGiftCouponQueryResult struct {
 	BaseResult
-	JdUnionOpenGiftStatisticCouponQueryResponse struct {
+	JdUnionOpenStatisticGiftCouponQueryResponse struct {
 		Result string `json:"result"`
 		Code   string `json:"code"`
-	} `json:"jd_union_open_gift_statistic_coupon_query_response"`
+	} `json:"jd_union_open_statistic_gift_coupon_query_response"`
 }
 
 func (r *StatisticGiftCouponQueryResult) String() string {
@@ -731,7 +731,7 @@ func (r *StatisticGiftCouponQueryResult) Error() string {
 }
 
 func (r *StatisticGiftCouponQueryResult) GetResult() []byte {
-	str := r.JdUnionOpenGiftStatisticCouponQueryResponse.Result
+	str := r.JdUnionOpenStatisticGiftCouponQueryResponse.Result
 	if str == "" {
 		return r.BaseResult.GetResult()
 	}
@@ -793,10 +793,10 @@ type OrderBonusQueryRequest struct {
 
 type OrderBonusQueryResult struct {
 	BaseResult
-	JdUnionOpenOrderBonusResponse struct {
+	JdUnionOpenOrderBonusQueryResponse struct {
 		Result string `json:"result"`
 		Code   string `json:"code"`
-	} `json:"jd_union_open_order_bonus_response"`
+	} `json:"jd_union_open_order_bonus_query_response"`
 }
 
 func (r *OrderBonusQueryResult) String() string {
@@ -811,7 +811,7 @@ func (r *OrderBonusQueryResult) Error() string {
 }
 
 func (r *OrderBonusQueryResult) GetResult() []byte {
-	str := r.JdUnionOpenOrderBonusResponse.Result
+	str := r.JdUnionOpenOrderBonusQueryResponse.Result
 	if str == "" {
 		return r.BaseResult.GetResult()
 	}
@@ -835,10 +835,10 @@ type OrderRowQueryRequest struct {
 
 type OrderRowQueryResult struct {
 	BaseResult
-	JdUnionOpenOrderRowResponse struct {
+	JdUnionOpenOrderRowQueryResponse struct {
 		Result string `json:"result"`
 		Code   string `json:"code"`
-	} `json:"jd_union_open_order_row_response"`
+	} `json:"jd_union_open_order_row_query_response"`
 }
 
 func (r *OrderRowQueryResult) String() string {
@@ -853,7 +853,7 @@ func (r *OrderRowQueryResult) Error() string {
 }
 
 func (r *OrderRowQueryResult) GetResult() []byte {
-	str := r.JdUnionOpenOrderRowResponse.Result
+	str := r.JdUnionOpenOrderRowQueryResponse.Result
 	if str == "" {
 		return r.BaseResult.GetResult()
 	}
