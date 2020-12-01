@@ -14,6 +14,7 @@ type PromotionService interface {
 	// 通过小程序获取推广链接【申请】
 	//    文档: https://union.jd.com/openplatform/api/11793
 	PromotionAppletGet(request *PromotionAppletGetRequest) (*PromotionAppletGetResult, error)
+
 	// 网站/APP获取推广链接接口
 	//    文档: https://union.jd.com/openplatform/api/10421
 	PromotionCommonGetResult(*PromoteCommonGetRequest) ([]byte, error)
@@ -26,6 +27,19 @@ type PromotionService interface {
 	// 通过小程序获取推广链接【申请】
 	//    文档: https://union.jd.com/openplatform/api/11793
 	PromotionAppletGetResult(request *PromotionAppletGetRequest) ([]byte, error)
+
+	// 网站/APP获取推广链接接口
+	//    文档: https://union.jd.com/openplatform/api/10421
+	PromotionCommonGetMap(*PromoteCommonGetRequest) (map[string]interface{}, error)
+	// 社交媒体获取推广链接接口【申请】
+	//    文档: https://union.jd.com/openplatform/api/10424
+	PromotionBysubunionidGetMap(*PromotionBysubunionidGetRequest) (map[string]interface{}, error)
+	// 工具商获取推广链接接口【申请】
+	//    文档: https://union.jd.com/openplatform/api/10425
+	PromotionByunionidGetMap(*PromotionByunionidGetRequest) (map[string]interface{}, error)
+	// 通过小程序获取推广链接【申请】
+	//    文档: https://union.jd.com/openplatform/api/11793
+	PromotionAppletGetMap(request *PromotionAppletGetRequest) (map[string]interface{}, error)
 }
 
 type PromotionServiceImpl struct {
@@ -45,6 +59,7 @@ func (p *PromotionServiceImpl) PromotionCommonGet(request *PromoteCommonGetReque
 	param["promotionCodeReq"] = request
 	var res PromoteCommonGetResult
 	err := p.service.Do(&res, PromotionCommonGet, param)
+	debugLog.Println(LogPrefix, "Result: ", res)
 	return &res, err
 }
 
@@ -55,6 +70,7 @@ func (p *PromotionServiceImpl) PromotionBysubunionidGet(request *PromotionBysubu
 	param["promotionCodeReq"] = request
 	var res PromotionBysubunionidGetResult
 	err := p.service.Do(&res, PromotionBysubunionidQuery, param)
+	debugLog.Println(LogPrefix, "Result: ", res)
 	return &res, err
 }
 
@@ -65,6 +81,7 @@ func (p *PromotionServiceImpl) PromotionByunionidGet(request *PromotionByunionid
 	param["promotionCodeReq"] = request
 	var res PromotionByunionidGetResult
 	err := p.service.Do(&res, PromotionByunionidQuery, param)
+	debugLog.Println(LogPrefix, "Result: ", res)
 	return &res, err
 }
 
@@ -75,6 +92,7 @@ func (p *PromotionServiceImpl) PromotionAppletGet(request *PromotionAppletGetReq
 	param["promotionCodeReq"] = request
 	var res PromotionAppletGetResult
 	err := p.service.Do(&res, PromotionAppletQuery, param)
+	debugLog.Println(LogPrefix, "Result: ", res)
 	return &res, err
 }
 
@@ -128,4 +146,48 @@ func (p *PromotionServiceImpl) PromotionAppletGetResult(request *PromotionApplet
 		return nil, res
 	}
 	return res.GetResult(), nil
+}
+
+// 网站/APP获取推广链接接口
+//    文档: https://union.jd.com/openplatform/api/10421
+func (p *PromotionServiceImpl) PromotionCommonGetMap(request *PromoteCommonGetRequest) (map[string]interface{}, error) {
+	param := map[string]interface{}{}
+	param["promotionCodeReq"] = request
+	var res = make(map[string]interface{})
+	err := p.service.Do(&res, PromotionCommonGet, param)
+	debugLog.Println(LogPrefix, "Result: ", res)
+	return res, err
+}
+
+// 社交媒体获取推广链接接口【申请】
+//    文档: https://union.jd.com/openplatform/api/10424
+func (p *PromotionServiceImpl) PromotionBysubunionidGetMap(request *PromotionBysubunionidGetRequest) (map[string]interface{}, error) {
+	param := map[string]interface{}{}
+	param["promotionCodeReq"] = request
+	var res map[string]interface{}
+	err := p.service.Do(&res, PromotionBysubunionidQuery, param)
+	debugLog.Println(LogPrefix, "Result: ", res)
+	return res, err
+}
+
+// 工具商获取推广链接接口【申请】
+//    文档: https://union.jd.com/openplatform/api/10425
+func (p *PromotionServiceImpl) PromotionByunionidGetMap(request *PromotionByunionidGetRequest) (map[string]interface{}, error) {
+	param := map[string]interface{}{}
+	param["promotionCodeReq"] = request
+	var res map[string]interface{}
+	err := p.service.Do(&res, PromotionByunionidQuery, param)
+	debugLog.Println(LogPrefix, "Result: ", res)
+	return res, err
+}
+
+// 通过小程序获取推广链接【申请】
+//    文档: https://union.jd.com/openplatform/api/11793
+func (p *PromotionServiceImpl) PromotionAppletGetMap(request *PromotionAppletGetRequest) (map[string]interface{}, error) {
+	param := map[string]interface{}{}
+	param["promotionCodeReq"] = request
+	var res map[string]interface{}
+	err := p.service.Do(&res, PromotionAppletQuery, param)
+	debugLog.Println(LogPrefix, "Result: ", res)
+	return res, err
 }

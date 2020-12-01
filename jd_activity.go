@@ -4,15 +4,23 @@ type ActivityService interface {
 	// 活动查询接口
 	//    文档: https://union.jd.com/openplatform/api/12667
 	ActivityQuery(*ActivityQueryRequest) (*ActivityQueryResult, error)
+	// 京享红包效果数据
+	//    文档: https://union.jd.com/openplatform/api/14416
+	StatisticsRedpacketQuery(*StatisticsRedpacketQueryRequest) (*StatisticsRedpacketQueryResult, error)
+
 	// 活动查询接口
 	//    文档: https://union.jd.com/openplatform/api/12667
 	ActivityQueryResult(request *ActivityQueryRequest) ([]byte, error)
 	// 京享红包效果数据
 	//    文档: https://union.jd.com/openplatform/api/14416
-	StatisticsRedpacketQuery(*StatisticsRedpacketQueryRequest) (*StatisticsRedpacketQueryResult, error)
+	StatisticsRedpacketQueryResult(request *StatisticsRedpacketQueryRequest) ([]byte, error)
+
+	// 活动查询接口
+	//    文档: https://union.jd.com/openplatform/api/12667
+	ActivityQueryMap(request *ActivityQueryRequest) (map[string]interface{}, error)
 	// 京享红包效果数据
 	//    文档: https://union.jd.com/openplatform/api/14416
-	StatisticsRedpacketQueryResult(request *StatisticsRedpacketQueryRequest) ([]byte, error)
+	StatisticsRedpacketQueryMap(request *StatisticsRedpacketQueryRequest) (map[string]interface{}, error)
 }
 
 type ActivityServiceImpl struct {
@@ -35,6 +43,16 @@ func (o *ActivityServiceImpl) ActivityQuery(request *ActivityQueryRequest) (*Act
 	return &res, err
 }
 
+// 京享红包效果数据
+//    文档: https://union.jd.com/openplatform/api/14416
+func (o *ActivityServiceImpl) StatisticsRedpacketQuery(request *StatisticsRedpacketQueryRequest) (*StatisticsRedpacketQueryResult, error) {
+	param := map[string]interface{}{}
+	param["effectDataReq"] = request
+	var res StatisticsRedpacketQueryResult
+	err := o.service.Do(&res, StatisticsRedpacketQuery, param)
+	return &res, err
+}
+
 // 活动查询接口
 //    文档: https://union.jd.com/openplatform/api/12667
 func (o *ActivityServiceImpl) ActivityQueryResult(request *ActivityQueryRequest) ([]byte, error) {
@@ -50,16 +68,6 @@ func (o *ActivityServiceImpl) ActivityQueryResult(request *ActivityQueryRequest)
 
 // 京享红包效果数据
 //    文档: https://union.jd.com/openplatform/api/14416
-func (o *ActivityServiceImpl) StatisticsRedpacketQuery(request *StatisticsRedpacketQueryRequest) (*StatisticsRedpacketQueryResult, error) {
-	param := map[string]interface{}{}
-	param["effectDataReq"] = request
-	var res StatisticsRedpacketQueryResult
-	err := o.service.Do(&res, StatisticsRedpacketQuery, param)
-	return &res, err
-}
-
-// 京享红包效果数据
-//    文档: https://union.jd.com/openplatform/api/14416
 func (o *ActivityServiceImpl) StatisticsRedpacketQueryResult(request *StatisticsRedpacketQueryRequest) ([]byte, error) {
 	res, err := o.StatisticsRedpacketQuery(request)
 	if err != nil {
@@ -69,4 +77,24 @@ func (o *ActivityServiceImpl) StatisticsRedpacketQueryResult(request *Statistics
 		return nil, res
 	}
 	return res.GetResult(), nil
+}
+
+// 活动查询接口
+//    文档: https://union.jd.com/openplatform/api/12667
+func (o *ActivityServiceImpl) ActivityQueryMap(request *ActivityQueryRequest) (map[string]interface{}, error) {
+	param := map[string]interface{}{}
+	param["activityReq"] = request
+	var res map[string]interface{}
+	err := o.service.Do(&res, ActivityQuery, param)
+	return res, err
+}
+
+// 京享红包效果数据
+//    文档: https://union.jd.com/openplatform/api/14416
+func (o *ActivityServiceImpl) StatisticsRedpacketQueryMap(request *StatisticsRedpacketQueryRequest) (map[string]interface{}, error) {
+	param := map[string]interface{}{}
+	param["effectDataReq"] = request
+	var res map[string]interface{}
+	err := o.service.Do(&res, StatisticsRedpacketQuery, param)
+	return res, err
 }

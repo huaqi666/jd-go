@@ -8,7 +8,7 @@ import (
 	"time"
 )
 
-// 系统配置
+// 系统配置/系统参数
 type Config struct {
 	Method      Method `json:"method"`                 // API接口名称
 	AppKey      string `json:"app_key"`                // 分配给应用的AppKey
@@ -34,13 +34,18 @@ func NewConfig(appKey, secretKey string) *Config {
 	}
 }
 
-// 参数封装
+// 参数封装，用于参数校验和签名
 type parameter struct {
 	Config
 	ParamJson string `json:"param_json,omitempty"` // 业务参数(string)
 }
 
-// 参数封装
+func newParameter(config *Config, pj map[string]interface{}) *parameter {
+	bs, _ := json.Marshal(pj)
+	return &parameter{Config: *config, ParamJson: string(bs)}
+}
+
+// 参数封装，用于请求
 type Param struct {
 	Method      Method `json:"method" url:"method"`                       // API接口名称
 	AppKey      string `json:"app_key" url:"app_key"`                     // 分配给应用的AppKey
@@ -51,11 +56,6 @@ type Param struct {
 	SignMethod  string `json:"sign_method" url:"sign_method"`             // 签名的摘要算法， md5
 	Sign        string `json:"sign" url:"sign"`                           // API输入参数签名结果
 	ParamJson   string `json:"param_json,omitempty" url:"param_json"`     // 业务参数
-}
-
-func newParameter(config *Config, pj map[string]interface{}) *parameter {
-	bs, _ := json.Marshal(pj)
-	return &parameter{Config: *config, ParamJson: string(bs)}
 }
 
 func NewParam(param *parameter) *Param {
@@ -73,18 +73,26 @@ func NewParam(param *parameter) *Param {
 }
 
 // 检查必选参数
-func (p *parameter) CheckRequiredParams() error {
+func (p *parameter) CheckRequiredParams() (err error) {
 	if "" == p.AppKey || "" == p.SecretKey {
-		return fmt.Errorf("AppKey and SecretKey must be set")
+		err = fmt.Errorf("AppKey and SecretKey must be set")
+		errorLog.Println(LogPrefix, "Parameter: ", err)
+		return
 	}
 	if "" == p.Format || "" == p.SignMethod || "" == p.Timestamp {
-		return fmt.Errorf("format, sign_method and timestamp must be set")
+		err = fmt.Errorf("format, sign_method and timestamp must be set")
+		errorLog.Println(LogPrefix, "Parameter: ", err)
+		return
 	}
 	if "" == p.Method {
-		return fmt.Errorf("method is required")
+		err = fmt.Errorf("method is required")
+		errorLog.Println(LogPrefix, "Parameter: ", err)
+		return
 	}
 	if "" == p.Version {
-		return fmt.Errorf("version is required")
+		err = fmt.Errorf("version is required")
+		errorLog.Println(LogPrefix, "Parameter: ", err)
+		return
 	}
 	return nil
 }

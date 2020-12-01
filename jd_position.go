@@ -10,6 +10,7 @@ type PositionService interface {
 	// 获取PID【申请】
 	//    文档: https://union.jd.com/openplatform/api/10430
 	UserPidGet(*UserPidGetRequest) (*UserPidGetResult, error)
+
 	// 查询推广位【申请】
 	//    文档: https://union.jd.com/openplatform/api/10428
 	PositionQueryResult(*PositionQueryRequest) ([]byte, error)
@@ -19,6 +20,16 @@ type PositionService interface {
 	// 获取PID【申请】
 	//    文档: https://union.jd.com/openplatform/api/10430
 	UserPidGetResult(*UserPidGetRequest) ([]byte, error)
+
+	// 查询推广位【申请】
+	//    文档: https://union.jd.com/openplatform/api/10428
+	PositionQueryMap(*PositionQueryRequest) (map[string]interface{}, error)
+	// 创建推广位【申请】
+	//    文档: https://union.jd.com/openplatform/api/10429
+	PositionCreateMap(*PositionCreateRequest) (map[string]interface{}, error)
+	// 获取PID【申请】
+	//    文档: https://union.jd.com/openplatform/api/10430
+	UserPidGetMap(*UserPidGetRequest) (map[string]interface{}, error)
 }
 
 type PositionServiceImpl struct {
@@ -98,4 +109,34 @@ func (o *PositionServiceImpl) UserPidGetResult(request *UserPidGetRequest) ([]by
 		return nil, res
 	}
 	return res.GetResult(), nil
+}
+
+// 查询推广位【申请】
+//    文档: https://union.jd.com/openplatform/api/10428
+func (o *PositionServiceImpl) PositionQueryMap(request *PositionQueryRequest) (map[string]interface{}, error) {
+	param := map[string]interface{}{}
+	param["positionReq"] = request
+	var res map[string]interface{}
+	err := o.service.Do(&res, PositionQuery, param)
+	return res, err
+}
+
+// 创建推广位【申请】
+//    文档: https://union.jd.com/openplatform/api/10429
+func (o *PositionServiceImpl) PositionCreateMap(request *PositionCreateRequest) (map[string]interface{}, error) {
+	param := map[string]interface{}{}
+	param["positionReq"] = request
+	var res map[string]interface{}
+	err := o.service.Do(&res, PositionCreate, param)
+	return res, err
+}
+
+// 获取PID【申请】
+//    文档: https://union.jd.com/openplatform/api/10430
+func (o *PositionServiceImpl) UserPidGetMap(request *UserPidGetRequest) (map[string]interface{}, error) {
+	param := map[string]interface{}{}
+	param["pidReq"] = request
+	var res map[string]interface{}
+	err := o.service.Do(&res, UserPidGet, param)
+	return res, err
 }

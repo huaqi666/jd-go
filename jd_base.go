@@ -5,6 +5,10 @@ import (
 	"fmt"
 )
 
+const (
+	LogPrefix = "[京东联盟]"
+)
+
 // 基础响应
 type BaseResult struct {
 	ErrorResponse struct {
@@ -252,7 +256,7 @@ type PromoteCommonGetRequest struct {
 
 type PromoteCommonGetResult struct {
 	BaseResult
-	JdUnionOpenPromotionCommonGetResponse struct {
+	JdUnionOpenPromoteCommonGetResponse struct {
 		Result string `json:"result"`
 		Code   string `json:"code"`
 	} `json:"jd_union_open_promotion_common_get_response"`
@@ -270,7 +274,7 @@ func (r *PromoteCommonGetResult) Error() string {
 }
 
 func (r *PromoteCommonGetResult) GetResult() []byte {
-	str := r.JdUnionOpenPromotionCommonGetResponse.Result
+	str := r.JdUnionOpenPromoteCommonGetResponse.Result
 	if str == "" {
 		return r.BaseResult.GetResult()
 	}

@@ -4,9 +4,19 @@ import (
 	"fmt"
 	"github.com/google/go-querystring/query"
 	"io/ioutil"
+	"log"
 	"net/http"
 	"net/url"
+	"os"
 )
+
+var (
+	debug *log.Logger
+)
+
+func init() {
+	debug = log.New(os.Stdout, "[DEBUG] ", log.Ldate|log.Ltime|log.Lshortfile)
+}
 
 // http请求接口
 type Service interface {
@@ -31,8 +41,8 @@ func (s *ServiceImpl) Get(address string, v interface{}) ([]byte, error) {
 	if err != nil {
 		return nil, err
 	}
-	a := req.URL.RequestURI()
-	fmt.Println("URI:", a)
+	a := req.URL.String()
+	debug.Println("[京东联盟] Request URI: ", a)
 	resp, err := s.client.Do(req)
 	if err != nil {
 		return nil, err

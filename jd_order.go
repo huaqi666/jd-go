@@ -10,6 +10,7 @@ type OrderService interface {
 	// 订单行查询接口
 	//    文档: https://union.jd.com/openplatform/api/12707
 	OrderRowQuery(*OrderRowQueryRequest) (*OrderRowQueryResult, error)
+
 	// 订单查询接口
 	//    文档: https://union.jd.com/openplatform/api/10419
 	OrderQueryResult(*OrderQueryRequest) ([]byte, error)
@@ -19,6 +20,15 @@ type OrderService interface {
 	// 订单行查询接口
 	//    文档: https://union.jd.com/openplatform/api/12707
 	OrderRowQueryResult(*OrderRowQueryRequest) ([]byte, error)
+	// 订单查询接口
+	//    文档: https://union.jd.com/openplatform/api/10419
+	OrderQueryMap(*OrderQueryRequest) (map[string]interface{}, error)
+	// 奖励订单查询接口【申请】
+	//    文档: https://union.jd.com/openplatform/api/11781
+	OrderBonusQueryMap(*OrderBonusQueryRequest) (map[string]interface{}, error)
+	// 订单行查询接口
+	//    文档: https://union.jd.com/openplatform/api/12707
+	OrderRowQueryMap(*OrderRowQueryRequest) (map[string]interface{}, error)
 }
 
 type OrderServiceImpl struct {
@@ -98,4 +108,34 @@ func (p *OrderServiceImpl) OrderRowQueryResult(request *OrderRowQueryRequest) ([
 		return nil, res
 	}
 	return res.GetResult(), nil
+}
+
+// 订单查询接口
+//    文档: https://union.jd.com/openplatform/api/10419
+func (p *OrderServiceImpl) OrderQueryMap(request *OrderQueryRequest) (map[string]interface{}, error) {
+	param := map[string]interface{}{}
+	param["orderReq"] = request
+	var res map[string]interface{}
+	err := p.service.Do(&res, OrderQuery, param)
+	return res, err
+}
+
+// 奖励订单查询接口【申请】
+//    文档: https://union.jd.com/openplatform/api/11781
+func (p *OrderServiceImpl) OrderBonusQueryMap(request *OrderBonusQueryRequest) (map[string]interface{}, error) {
+	param := map[string]interface{}{}
+	param["orderReq"] = request
+	var res map[string]interface{}
+	err := p.service.Do(&res, OrderBonusQuery, param)
+	return res, err
+}
+
+// 订单行查询接口
+//    文档: https://union.jd.com/openplatform/api/12707
+func (p *OrderServiceImpl) OrderRowQueryMap(request *OrderRowQueryRequest) (map[string]interface{}, error) {
+	param := map[string]interface{}{}
+	param["orderReq"] = request
+	var res map[string]interface{}
+	err := p.service.Do(&res, OrderRowQuery, param)
+	return res, err
 }

@@ -3,7 +3,19 @@ package jd
 import (
 	"encoding/json"
 	"github.com/cliod/jd-go/common"
+	"log"
+	"os"
 )
+
+var (
+	debugLog *log.Logger
+	errorLog *log.Logger
+)
+
+func init() {
+	debugLog = log.New(os.Stdout, "[DEBUG] ", log.Ldate|log.Ltime|log.Lshortfile)
+	errorLog = log.New(os.Stdout, "[ERROR] ", log.Ldate|log.Ltime|log.Lshortfile)
+}
 
 // 京东联盟API
 //    文档: https://union.jd.com/openplatform/api
@@ -203,6 +215,7 @@ func (s *ServiceImpl) Sign(method Method, param map[string]interface{}) (*Param,
 func (s *ServiceImpl) Do(v interface{}, method Method, param map[string]interface{}) error {
 	p, err := s.Sign(method, param)
 	if err != nil {
+		errorLog.Println(LogPrefix, "Sign: ", err)
 		return err
 	}
 	return s.GetFor(v, BaseUrl, p)

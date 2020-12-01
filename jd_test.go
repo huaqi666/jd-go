@@ -118,6 +118,7 @@ func TestGiftServiceImpl_GiftStatisticCouponQuery(t *testing.T) {
 	t.Log(res, err)
 }
 
+// 商品类目查询接口
 func TestGoodsServiceImpl_CategoryGoodsGetQuery(t *testing.T) {
 	config := GetConfig()
 	service := NewJdService(config.AppKey, config.SecretKey)
@@ -324,8 +325,8 @@ func TestPromotionServiceImpl_PromotionCommonGet(t *testing.T) {
 	promoteService := service.GetPromoteService()
 
 	res, err := promoteService.PromotionCommonGet(&PromoteCommonGetRequest{
-		MaterialId: "",
-		SiteId:     "",
+		MaterialId: "1",
+		SiteId:     "1",
 	})
 	t.Log(res, err)
 }
