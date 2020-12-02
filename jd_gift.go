@@ -61,7 +61,8 @@ func (p *GiftServiceImpl) CouponGiftGet(request *CouponGiftGetRequest) (*CouponG
 	param := map[string]interface{}{}
 	param["couponReq"] = request
 	var res CouponGiftGetResult
-	err := p.service.Do(&res, GiftGet, param)
+	err := p.service.Do(&res, CouponGiftGet, param)
+	debugLog.Println(LogPrefix, "Result: ", res)
 	return &res, err
 }
 
@@ -71,7 +72,8 @@ func (p *GiftServiceImpl) CouponGiftStop(request *CouponGiftStopRequest) (*Coupo
 	param := map[string]interface{}{}
 	param["couponReq"] = request
 	var res CouponGiftStopResult
-	err := p.service.Do(&res, GiftStop, param)
+	err := p.service.Do(&res, CouponGiftStop, param)
+	debugLog.Println(LogPrefix, "Result: ", res)
 	return &res, err
 }
 
@@ -89,7 +91,8 @@ func (p *GiftServiceImpl) StatisticGiftCouponQuery(request *StatisticGiftCouponQ
 	param := map[string]interface{}{}
 	param["effectDataReq"] = request
 	var res StatisticGiftCouponQueryResult
-	err := p.service.Do(&res, GiftStatistic, param)
+	err := p.service.Do(&res, StatisticGiftCouponQuery, param)
+	debugLog.Println(LogPrefix, "Result: ", res)
 	return &res, err
 }
 
@@ -160,7 +163,8 @@ func (p *GiftServiceImpl) CouponGiftGetMap(request *CouponGiftGetRequest) (map[s
 	param := map[string]interface{}{}
 	param["couponReq"] = request
 	var res map[string]interface{}
-	err := p.service.Do(&res, GiftGet, param)
+	err := p.service.Do(&res, CouponGiftGet, param)
+	debugLog.Println(LogPrefix, "Result: ", res)
 	return res, err
 }
 
@@ -170,7 +174,8 @@ func (p *GiftServiceImpl) CouponGiftStopMap(request *CouponGiftStopRequest) (map
 	param := map[string]interface{}{}
 	param["couponReq"] = request
 	var res map[string]interface{}
-	err := p.service.Do(&res, GiftStop, param)
+	err := p.service.Do(&res, CouponGiftStop, param)
+	debugLog.Println(LogPrefix, "Result: ", res)
 	return res, err
 }
 
@@ -188,6 +193,7 @@ func (p *GiftServiceImpl) StatisticGiftCouponQueryMap(request *StatisticGiftCoup
 	param := map[string]interface{}{}
 	param["effectDataReq"] = request
 	var res map[string]interface{}
-	err := p.service.Do(&res, GiftStatistic, param)
+	err := p.service.Do(&res, StatisticGiftCouponQuery, param)
+	debugLog.Println(LogPrefix, "Result: ", res)
 	return res, err
 }

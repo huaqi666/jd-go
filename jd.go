@@ -120,6 +120,7 @@ func (s *ServiceImpl) Get(url string, args interface{}) ([]byte, error) {
 func (s *ServiceImpl) GetFor(v interface{}, url string, args *Param) error {
 	res, err := s.Get(url, args)
 	if err != nil {
+		errorLog.Println(LogPrefix, "Request: ", err)
 		return err
 	}
 	return json.Unmarshal(res, v)

@@ -14,8 +14,12 @@ type GoodsService interface {
 	//    文档: https://union.jd.com/openplatform/api/10422
 	GoodsPromotiongoodsinfoQuery(skuIds string) (*GoodsPromotiongoodsinfoQueryResult, error)
 	// 商品类目查询接口
+	// Deprecated: 使用新接口: CategoryGoodsGet
 	//    文档: https://union.jd.com/openplatform/api/10434
 	CategoryGoodsGetQuery(*CategoryGoodsGetRequest) (*CategoryGoodsGetResult, error)
+	// 商品类目查询接口
+	//    文档: https://union.jd.com/openplatform/api/10434
+	CategoryGoodsGet(*CategoryGoodsGetRequest) (*CategoryGoodsGetResult, error)
 	// 商品详情查询接口【申请】
 	//    文档: https://union.jd.com/openplatform/api/11248
 	GoodsGigfieldQuery(*GoodsGigFieldQueryRequest) (*GoodsGigFieldQueryResult, error)
@@ -32,8 +36,12 @@ type GoodsService interface {
 	//    文档: https://union.jd.com/openplatform/api/10422
 	GoodsPromotiongoodsinfoQueryResult(skuIds string) ([]byte, error)
 	// 商品类目查询接口
+	// Deprecated: 使用新接口: GoodsService.CategoryGoodsGetResult
 	//    文档: https://union.jd.com/openplatform/api/10434
 	CategoryGoodsGetQueryResult(*CategoryGoodsGetRequest) ([]byte, error)
+	// 商品类目查询接口
+	//    文档: https://union.jd.com/openplatform/api/10434
+	CategoryGoodsGetResult(*CategoryGoodsGetRequest) ([]byte, error)
 	// 商品详情查询接口【申请】
 	//    文档: https://union.jd.com/openplatform/api/11248
 	GoodsGigfieldQueryResult(request *GoodsGigFieldQueryRequest) ([]byte, error)
@@ -50,8 +58,12 @@ type GoodsService interface {
 	//    文档: https://union.jd.com/openplatform/api/10422
 	GoodsPromotiongoodsinfoQueryMap(skuIds string) (map[string]interface{}, error)
 	// 商品类目查询接口
+	// Deprecated: 使用新接口: CategoryGoodsGetMap
 	//    文档: https://union.jd.com/openplatform/api/10434
 	CategoryGoodsGetQueryMap(*CategoryGoodsGetRequest) (map[string]interface{}, error)
+	// 商品类目查询接口
+	//    文档: https://union.jd.com/openplatform/api/10434
+	CategoryGoodsGetMap(*CategoryGoodsGetRequest) (map[string]interface{}, error)
 	// 商品详情查询接口【申请】
 	//    文档: https://union.jd.com/openplatform/api/11248
 	GoodsGigfieldQueryMap(request *GoodsGigFieldQueryRequest) (map[string]interface{}, error)
@@ -74,6 +86,7 @@ func (g *GoodsServiceImpl) GoodsJingfenQuery(request *GoodsJingfenQueryRequest) 
 	param["goodsReq"] = request
 	var res GoodsJingfenQueryResult
 	err := g.service.Do(&res, GoodsJingfenQuery, param)
+	debugLog.Println(LogPrefix, "Result: ", res)
 	return &res, err
 }
 
@@ -84,6 +97,7 @@ func (g *GoodsServiceImpl) GoodsQuery(request *GoodsQueryRequest) (*GoodsQueryRe
 	param["goodsReqDTO"] = request
 	var res GoodsQueryResult
 	err := g.service.Do(&res, GoodsQuery, param)
+	debugLog.Println(LogPrefix, "Result: ", res)
 	return &res, err
 }
 
@@ -96,16 +110,25 @@ func (g *GoodsServiceImpl) GoodsPromotiongoodsinfoQuery(skuIds string) (*GoodsPr
 	param["skuIds"] = skuIds
 	var res GoodsPromotiongoodsinfoQueryResult
 	err := g.service.Do(&res, GoodsPromotiongoodsinfoQuery, param)
+	debugLog.Println(LogPrefix, "Result: ", res)
 	return &res, err
 }
 
 // 商品类目查询接口
+// Deprecated: 使用新接口: CategoryGoodsGet
 //    文档: https://union.jd.com/openplatform/api/10434
 func (g *GoodsServiceImpl) CategoryGoodsGetQuery(request *CategoryGoodsGetRequest) (*CategoryGoodsGetResult, error) {
+	return g.CategoryGoodsGet(request)
+}
+
+// 商品类目查询接口
+//    文档: https://union.jd.com/openplatform/api/10434
+func (g *GoodsServiceImpl) CategoryGoodsGet(request *CategoryGoodsGetRequest) (*CategoryGoodsGetResult, error) {
 	param := map[string]interface{}{}
 	param["req"] = request
 	var res CategoryGoodsGetResult
-	err := g.service.Do(&res, CategoryGoodsGetQuery, param)
+	err := g.service.Do(&res, CategoryGoodsGet, param)
+	debugLog.Println(LogPrefix, "Result: ", res)
 	return &res, err
 }
 
@@ -116,6 +139,7 @@ func (g *GoodsServiceImpl) GoodsGigfieldQuery(request *GoodsGigFieldQueryRequest
 	param["goodsReq"] = request
 	var res GoodsGigFieldQueryResult
 	err := g.service.Do(&res, GoodsGigfieldQuery, param)
+	debugLog.Println(LogPrefix, "Result: ", res)
 	return &res, err
 }
 
@@ -161,9 +185,16 @@ func (g *GoodsServiceImpl) GoodsPromotiongoodsinfoQueryResult(skuIds string) ([]
 }
 
 // 商品类目查询接口
+// Deprecated: 使用新接口: GoodsService.CategoryGoodsGetResult
 //    文档: https://union.jd.com/openplatform/api/10434
 func (g *GoodsServiceImpl) CategoryGoodsGetQueryResult(request *CategoryGoodsGetRequest) ([]byte, error) {
-	res, err := g.CategoryGoodsGetQuery(request)
+	return g.CategoryGoodsGetResult(request)
+}
+
+// 商品类目查询接口
+//    文档: https://union.jd.com/openplatform/api/10434
+func (g *GoodsServiceImpl) CategoryGoodsGetResult(request *CategoryGoodsGetRequest) ([]byte, error) {
+	res, err := g.CategoryGoodsGet(request)
 	if err != nil {
 		return nil, err
 	}
@@ -193,6 +224,7 @@ func (g *GoodsServiceImpl) GoodsJingfenQueryMap(request *GoodsJingfenQueryReques
 	param["goodsReq"] = request
 	var res map[string]interface{}
 	err := g.service.Do(&res, GoodsJingfenQuery, param)
+	debugLog.Println(LogPrefix, "Result: ", res)
 	return res, err
 }
 
@@ -203,6 +235,7 @@ func (g *GoodsServiceImpl) GoodsQueryMap(request *GoodsQueryRequest) (map[string
 	param["goodsReqDTO"] = request
 	var res map[string]interface{}
 	err := g.service.Do(&res, GoodsQuery, param)
+	debugLog.Println(LogPrefix, "Result: ", res)
 	return res, err
 }
 
@@ -215,16 +248,25 @@ func (g *GoodsServiceImpl) GoodsPromotiongoodsinfoQueryMap(skuIds string) (map[s
 	param["skuIds"] = skuIds
 	var res map[string]interface{}
 	err := g.service.Do(&res, GoodsPromotiongoodsinfoQuery, param)
+	debugLog.Println(LogPrefix, "Result: ", res)
 	return res, err
 }
 
 // 商品类目查询接口
+// Deprecated: 使用新接口: CategoryGoodsGetMap
 //    文档: https://union.jd.com/openplatform/api/10434
 func (g *GoodsServiceImpl) CategoryGoodsGetQueryMap(request *CategoryGoodsGetRequest) (map[string]interface{}, error) {
+	return g.CategoryGoodsGetMap(request)
+}
+
+// 商品类目查询接口
+//    文档: https://union.jd.com/openplatform/api/10434
+func (g *GoodsServiceImpl) CategoryGoodsGetMap(request *CategoryGoodsGetRequest) (map[string]interface{}, error) {
 	param := map[string]interface{}{}
 	param["req"] = request
 	var res map[string]interface{}
-	err := g.service.Do(&res, CategoryGoodsGetQuery, param)
+	err := g.service.Do(&res, CategoryGoodsGet, param)
+	debugLog.Println(LogPrefix, "Result: ", res)
 	return res, err
 }
 
@@ -235,5 +277,6 @@ func (g *GoodsServiceImpl) GoodsGigfieldQueryMap(request *GoodsGigFieldQueryRequ
 	param["goodsReq"] = request
 	var res map[string]interface{}
 	err := g.service.Do(&res, GoodsGigfieldQuery, param)
+	debugLog.Println(LogPrefix, "Result: ", res)
 	return res, err
 }

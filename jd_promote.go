@@ -69,7 +69,7 @@ func (p *PromotionServiceImpl) PromotionBysubunionidGet(request *PromotionBysubu
 	param := map[string]interface{}{}
 	param["promotionCodeReq"] = request
 	var res PromotionBysubunionidGetResult
-	err := p.service.Do(&res, PromotionBysubunionidQuery, param)
+	err := p.service.Do(&res, PromotionBysubunionidGet, param)
 	debugLog.Println(LogPrefix, "Result: ", res)
 	return &res, err
 }
@@ -80,7 +80,7 @@ func (p *PromotionServiceImpl) PromotionByunionidGet(request *PromotionByunionid
 	param := map[string]interface{}{}
 	param["promotionCodeReq"] = request
 	var res PromotionByunionidGetResult
-	err := p.service.Do(&res, PromotionByunionidQuery, param)
+	err := p.service.Do(&res, PromotionByunionidGet, param)
 	debugLog.Println(LogPrefix, "Result: ", res)
 	return &res, err
 }
@@ -91,7 +91,7 @@ func (p *PromotionServiceImpl) PromotionAppletGet(request *PromotionAppletGetReq
 	param := map[string]interface{}{}
 	param["promotionCodeReq"] = request
 	var res PromotionAppletGetResult
-	err := p.service.Do(&res, PromotionAppletQuery, param)
+	err := p.service.Do(&res, PromotionAppletGet, param)
 	debugLog.Println(LogPrefix, "Result: ", res)
 	return &res, err
 }
@@ -165,7 +165,7 @@ func (p *PromotionServiceImpl) PromotionBysubunionidGetMap(request *PromotionBys
 	param := map[string]interface{}{}
 	param["promotionCodeReq"] = request
 	var res map[string]interface{}
-	err := p.service.Do(&res, PromotionBysubunionidQuery, param)
+	err := p.service.Do(&res, PromotionBysubunionidGet, param)
 	debugLog.Println(LogPrefix, "Result: ", res)
 	return res, err
 }
@@ -176,7 +176,7 @@ func (p *PromotionServiceImpl) PromotionByunionidGetMap(request *PromotionByunio
 	param := map[string]interface{}{}
 	param["promotionCodeReq"] = request
 	var res map[string]interface{}
-	err := p.service.Do(&res, PromotionByunionidQuery, param)
+	err := p.service.Do(&res, PromotionByunionidGet, param)
 	debugLog.Println(LogPrefix, "Result: ", res)
 	return res, err
 }
@@ -187,7 +187,7 @@ func (p *PromotionServiceImpl) PromotionAppletGetMap(request *PromotionAppletGet
 	param := map[string]interface{}{}
 	param["promotionCodeReq"] = request
 	var res map[string]interface{}
-	err := p.service.Do(&res, PromotionAppletQuery, param)
+	err := p.service.Do(&res, PromotionAppletGet, param)
 	debugLog.Println(LogPrefix, "Result: ", res)
 	return res, err
 }

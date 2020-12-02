@@ -47,6 +47,7 @@ func (c *CouponServiceImpl) CouponQuery(request []*CouponQueryRequest) (*CouponQ
 	param["couponUrls"] = request
 	var res CouponQueryResult
 	err := c.service.Do(&res, CouponQuery, param)
+	debugLog.Println(LogPrefix, "Result: ", res)
 	return &res, err
 }
 
@@ -102,6 +103,7 @@ func (c *CouponServiceImpl) CouponQueryMap(request []*CouponQueryRequest) (map[s
 	param["couponUrls"] = request
 	var res map[string]interface{}
 	err := c.service.Do(&res, CouponQuery, param)
+	debugLog.Println(LogPrefix, "Result: ", res)
 	return res, err
 }
 

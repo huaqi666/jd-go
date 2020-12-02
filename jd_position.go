@@ -49,6 +49,7 @@ func (o *PositionServiceImpl) PositionQuery(request *PositionQueryRequest) (*Pos
 	param["positionReq"] = request
 	var res PositionQueryResult
 	err := o.service.Do(&res, PositionQuery, param)
+	debugLog.Println(LogPrefix, "Result: ", res)
 	return &res, err
 }
 
@@ -59,6 +60,7 @@ func (o *PositionServiceImpl) PositionCreate(request *PositionCreateRequest) (*P
 	param["positionReq"] = request
 	var res PositionCreateResult
 	err := o.service.Do(&res, PositionCreate, param)
+	debugLog.Println(LogPrefix, "Result: ", res)
 	return &res, err
 }
 
@@ -69,6 +71,7 @@ func (o *PositionServiceImpl) UserPidGet(request *UserPidGetRequest) (*UserPidGe
 	param["pidReq"] = request
 	var res UserPidGetResult
 	err := o.service.Do(&res, UserPidGet, param)
+	debugLog.Println(LogPrefix, "Result: ", res)
 	return &res, err
 }
 
@@ -118,6 +121,7 @@ func (o *PositionServiceImpl) PositionQueryMap(request *PositionQueryRequest) (m
 	param["positionReq"] = request
 	var res map[string]interface{}
 	err := o.service.Do(&res, PositionQuery, param)
+	debugLog.Println(LogPrefix, "Result: ", res)
 	return res, err
 }
 
@@ -128,6 +132,7 @@ func (o *PositionServiceImpl) PositionCreateMap(request *PositionCreateRequest) 
 	param["positionReq"] = request
 	var res map[string]interface{}
 	err := o.service.Do(&res, PositionCreate, param)
+	debugLog.Println(LogPrefix, "Result: ", res)
 	return res, err
 }
 
@@ -138,5 +143,6 @@ func (o *PositionServiceImpl) UserPidGetMap(request *UserPidGetRequest) (map[str
 	param["pidReq"] = request
 	var res map[string]interface{}
 	err := o.service.Do(&res, UserPidGet, param)
+	debugLog.Println(LogPrefix, "Result: ", res)
 	return res, err
 }

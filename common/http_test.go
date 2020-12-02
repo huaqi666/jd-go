@@ -5,5 +5,6 @@ import (
 )
 
 func TestServiceImpl_Get(t *testing.T) {
-	t.Log(NewService().Get("<url>", nil))
+	res, err := NewService().Get("https://www.baidu.com", nil)
+	t.Log(string(res), err)
 }

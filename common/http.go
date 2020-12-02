@@ -63,6 +63,6 @@ func (s *ServiceImpl) Get(address string, v interface{}) ([]byte, error) {
 
 func NewService() Service {
 	return &ServiceImpl{
-		client: &http.Client{},
+		client: http.DefaultClient,
 	}
 }

@@ -20,6 +20,7 @@ type OrderService interface {
 	// 订单行查询接口
 	//    文档: https://union.jd.com/openplatform/api/12707
 	OrderRowQueryResult(*OrderRowQueryRequest) ([]byte, error)
+
 	// 订单查询接口
 	//    文档: https://union.jd.com/openplatform/api/10419
 	OrderQueryMap(*OrderQueryRequest) (map[string]interface{}, error)
@@ -48,6 +49,7 @@ func (p *OrderServiceImpl) OrderQuery(request *OrderQueryRequest) (*OrderQueryRe
 	param["orderReq"] = request
 	var res OrderQueryResult
 	err := p.service.Do(&res, OrderQuery, param)
+	debugLog.Println(LogPrefix, "Result: ", res)
 	return &res, err
 }
 
@@ -58,6 +60,7 @@ func (p *OrderServiceImpl) OrderBonusQuery(request *OrderBonusQueryRequest) (*Or
 	param["orderReq"] = request
 	var res OrderBonusQueryResult
 	err := p.service.Do(&res, OrderBonusQuery, param)
+	debugLog.Println(LogPrefix, "Result: ", res)
 	return &res, err
 }
 
@@ -68,6 +71,7 @@ func (p *OrderServiceImpl) OrderRowQuery(request *OrderRowQueryRequest) (*OrderR
 	param["orderReq"] = request
 	var res OrderRowQueryResult
 	err := p.service.Do(&res, OrderRowQuery, param)
+	debugLog.Println(LogPrefix, "Result: ", res)
 	return &res, err
 }
 
@@ -117,6 +121,7 @@ func (p *OrderServiceImpl) OrderQueryMap(request *OrderQueryRequest) (map[string
 	param["orderReq"] = request
 	var res map[string]interface{}
 	err := p.service.Do(&res, OrderQuery, param)
+	debugLog.Println(LogPrefix, "Result: ", res)
 	return res, err
 }
 
@@ -127,6 +132,7 @@ func (p *OrderServiceImpl) OrderBonusQueryMap(request *OrderBonusQueryRequest) (
 	param["orderReq"] = request
 	var res map[string]interface{}
 	err := p.service.Do(&res, OrderBonusQuery, param)
+	debugLog.Println(LogPrefix, "Result: ", res)
 	return res, err
 }
 
@@ -137,5 +143,6 @@ func (p *OrderServiceImpl) OrderRowQueryMap(request *OrderRowQueryRequest) (map[
 	param["orderReq"] = request
 	var res map[string]interface{}
 	err := p.service.Do(&res, OrderRowQuery, param)
+	debugLog.Println(LogPrefix, "Result: ", res)
 	return res, err
 }
