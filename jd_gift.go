@@ -62,7 +62,6 @@ func (p *GiftServiceImpl) CouponGiftGet(request *CouponGiftGetRequest) (*CouponG
 	param["couponReq"] = request
 	var res CouponGiftGetResult
 	err := p.service.Do(&res, CouponGiftGet, param)
-	debugLog.Println(LogPrefix, "Result: ", res)
 	return &res, err
 }
 
@@ -73,7 +72,6 @@ func (p *GiftServiceImpl) CouponGiftStop(request *CouponGiftStopRequest) (*Coupo
 	param["couponReq"] = request
 	var res CouponGiftStopResult
 	err := p.service.Do(&res, CouponGiftStop, param)
-	debugLog.Println(LogPrefix, "Result: ", res)
 	return &res, err
 }
 
@@ -92,7 +90,6 @@ func (p *GiftServiceImpl) StatisticGiftCouponQuery(request *StatisticGiftCouponQ
 	param["effectDataReq"] = request
 	var res StatisticGiftCouponQueryResult
 	err := p.service.Do(&res, StatisticGiftCouponQuery, param)
-	debugLog.Println(LogPrefix, "Result: ", res)
 	return &res, err
 }
 
@@ -164,7 +161,6 @@ func (p *GiftServiceImpl) CouponGiftGetMap(request *CouponGiftGetRequest) (map[s
 	param["couponReq"] = request
 	var res map[string]interface{}
 	err := p.service.Do(&res, CouponGiftGet, param)
-	debugLog.Println(LogPrefix, "Result: ", res)
 	return res, err
 }
 
@@ -175,7 +171,6 @@ func (p *GiftServiceImpl) CouponGiftStopMap(request *CouponGiftStopRequest) (map
 	param["couponReq"] = request
 	var res map[string]interface{}
 	err := p.service.Do(&res, CouponGiftStop, param)
-	debugLog.Println(LogPrefix, "Result: ", res)
 	return res, err
 }
 
@@ -194,6 +189,5 @@ func (p *GiftServiceImpl) StatisticGiftCouponQueryMap(request *StatisticGiftCoup
 	param["effectDataReq"] = request
 	var res map[string]interface{}
 	err := p.service.Do(&res, StatisticGiftCouponQuery, param)
-	debugLog.Println(LogPrefix, "Result: ", res)
 	return res, err
 }

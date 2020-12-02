@@ -49,7 +49,6 @@ func (p *OrderServiceImpl) OrderQuery(request *OrderQueryRequest) (*OrderQueryRe
 	param["orderReq"] = request
 	var res OrderQueryResult
 	err := p.service.Do(&res, OrderQuery, param)
-	debugLog.Println(LogPrefix, "Result: ", res)
 	return &res, err
 }
 
@@ -60,7 +59,6 @@ func (p *OrderServiceImpl) OrderBonusQuery(request *OrderBonusQueryRequest) (*Or
 	param["orderReq"] = request
 	var res OrderBonusQueryResult
 	err := p.service.Do(&res, OrderBonusQuery, param)
-	debugLog.Println(LogPrefix, "Result: ", res)
 	return &res, err
 }
 
@@ -71,7 +69,6 @@ func (p *OrderServiceImpl) OrderRowQuery(request *OrderRowQueryRequest) (*OrderR
 	param["orderReq"] = request
 	var res OrderRowQueryResult
 	err := p.service.Do(&res, OrderRowQuery, param)
-	debugLog.Println(LogPrefix, "Result: ", res)
 	return &res, err
 }
 
@@ -121,7 +118,6 @@ func (p *OrderServiceImpl) OrderQueryMap(request *OrderQueryRequest) (map[string
 	param["orderReq"] = request
 	var res map[string]interface{}
 	err := p.service.Do(&res, OrderQuery, param)
-	debugLog.Println(LogPrefix, "Result: ", res)
 	return res, err
 }
 
@@ -132,7 +128,6 @@ func (p *OrderServiceImpl) OrderBonusQueryMap(request *OrderBonusQueryRequest) (
 	param["orderReq"] = request
 	var res map[string]interface{}
 	err := p.service.Do(&res, OrderBonusQuery, param)
-	debugLog.Println(LogPrefix, "Result: ", res)
 	return res, err
 }
 
@@ -143,6 +138,5 @@ func (p *OrderServiceImpl) OrderRowQueryMap(request *OrderRowQueryRequest) (map[
 	param["orderReq"] = request
 	var res map[string]interface{}
 	err := p.service.Do(&res, OrderRowQuery, param)
-	debugLog.Println(LogPrefix, "Result: ", res)
 	return res, err
 }

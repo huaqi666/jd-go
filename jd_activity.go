@@ -40,7 +40,6 @@ func (o *ActivityServiceImpl) ActivityQuery(request *ActivityQueryRequest) (*Act
 	param["activityReq"] = request
 	var res ActivityQueryResult
 	err := o.service.Do(&res, ActivityQuery, param)
-	debugLog.Println(LogPrefix, "Result: ", res)
 	return &res, err
 }
 
@@ -51,7 +50,6 @@ func (o *ActivityServiceImpl) StatisticsRedpacketQuery(request *StatisticsRedpac
 	param["effectDataReq"] = request
 	var res StatisticsRedpacketQueryResult
 	err := o.service.Do(&res, StatisticsRedpacketQuery, param)
-	debugLog.Println(LogPrefix, "Result: ", res)
 	return &res, err
 }
 
@@ -88,7 +86,6 @@ func (o *ActivityServiceImpl) ActivityQueryMap(request *ActivityQueryRequest) (m
 	param["activityReq"] = request
 	var res map[string]interface{}
 	err := o.service.Do(&res, ActivityQuery, param)
-	debugLog.Println(LogPrefix, "Result: ", res)
 	return res, err
 }
 
@@ -99,6 +96,5 @@ func (o *ActivityServiceImpl) StatisticsRedpacketQueryMap(request *StatisticsRed
 	param["effectDataReq"] = request
 	var res map[string]interface{}
 	err := o.service.Do(&res, StatisticsRedpacketQuery, param)
-	debugLog.Println(LogPrefix, "Result: ", res)
 	return res, err
 }

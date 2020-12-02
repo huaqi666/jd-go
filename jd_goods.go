@@ -86,7 +86,6 @@ func (g *GoodsServiceImpl) GoodsJingfenQuery(request *GoodsJingfenQueryRequest) 
 	param["goodsReq"] = request
 	var res GoodsJingfenQueryResult
 	err := g.service.Do(&res, GoodsJingfenQuery, param)
-	debugLog.Println(LogPrefix, "Result: ", res)
 	return &res, err
 }
 
@@ -97,7 +96,6 @@ func (g *GoodsServiceImpl) GoodsQuery(request *GoodsQueryRequest) (*GoodsQueryRe
 	param["goodsReqDTO"] = request
 	var res GoodsQueryResult
 	err := g.service.Do(&res, GoodsQuery, param)
-	debugLog.Println(LogPrefix, "Result: ", res)
 	return &res, err
 }
 
@@ -110,7 +108,6 @@ func (g *GoodsServiceImpl) GoodsPromotiongoodsinfoQuery(skuIds string) (*GoodsPr
 	param["skuIds"] = skuIds
 	var res GoodsPromotiongoodsinfoQueryResult
 	err := g.service.Do(&res, GoodsPromotiongoodsinfoQuery, param)
-	debugLog.Println(LogPrefix, "Result: ", res)
 	return &res, err
 }
 
@@ -128,7 +125,6 @@ func (g *GoodsServiceImpl) CategoryGoodsGet(request *CategoryGoodsGetRequest) (*
 	param["req"] = request
 	var res CategoryGoodsGetResult
 	err := g.service.Do(&res, CategoryGoodsGet, param)
-	debugLog.Println(LogPrefix, "Result: ", res)
 	return &res, err
 }
 
@@ -139,7 +135,6 @@ func (g *GoodsServiceImpl) GoodsGigfieldQuery(request *GoodsGigFieldQueryRequest
 	param["goodsReq"] = request
 	var res GoodsGigFieldQueryResult
 	err := g.service.Do(&res, GoodsGigfieldQuery, param)
-	debugLog.Println(LogPrefix, "Result: ", res)
 	return &res, err
 }
 
@@ -224,7 +219,6 @@ func (g *GoodsServiceImpl) GoodsJingfenQueryMap(request *GoodsJingfenQueryReques
 	param["goodsReq"] = request
 	var res map[string]interface{}
 	err := g.service.Do(&res, GoodsJingfenQuery, param)
-	debugLog.Println(LogPrefix, "Result: ", res)
 	return res, err
 }
 
@@ -235,7 +229,6 @@ func (g *GoodsServiceImpl) GoodsQueryMap(request *GoodsQueryRequest) (map[string
 	param["goodsReqDTO"] = request
 	var res map[string]interface{}
 	err := g.service.Do(&res, GoodsQuery, param)
-	debugLog.Println(LogPrefix, "Result: ", res)
 	return res, err
 }
 
@@ -248,7 +241,6 @@ func (g *GoodsServiceImpl) GoodsPromotiongoodsinfoQueryMap(skuIds string) (map[s
 	param["skuIds"] = skuIds
 	var res map[string]interface{}
 	err := g.service.Do(&res, GoodsPromotiongoodsinfoQuery, param)
-	debugLog.Println(LogPrefix, "Result: ", res)
 	return res, err
 }
 
@@ -266,7 +258,6 @@ func (g *GoodsServiceImpl) CategoryGoodsGetMap(request *CategoryGoodsGetRequest)
 	param["req"] = request
 	var res map[string]interface{}
 	err := g.service.Do(&res, CategoryGoodsGet, param)
-	debugLog.Println(LogPrefix, "Result: ", res)
 	return res, err
 }
 
@@ -277,6 +268,5 @@ func (g *GoodsServiceImpl) GoodsGigfieldQueryMap(request *GoodsGigFieldQueryRequ
 	param["goodsReq"] = request
 	var res map[string]interface{}
 	err := g.service.Do(&res, GoodsGigfieldQuery, param)
-	debugLog.Println(LogPrefix, "Result: ", res)
 	return res, err
 }

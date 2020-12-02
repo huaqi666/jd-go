@@ -5,10 +5,6 @@ import (
 	"fmt"
 )
 
-const (
-	LogPrefix = "[京东联盟]"
-)
-
 // 基础响应
 type BaseResult struct {
 	ErrorResponse struct {

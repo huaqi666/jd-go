@@ -171,6 +171,7 @@ func TestGoodsServiceImpl_GoodsQuery(t *testing.T) {
 	config := GetConfig()
 	service := NewJdService(config.AppKey, config.SecretKey)
 	goodsService := service.GetGoodsService()
+	service.SetLogLevel(4)
 	res, err := goodsService.GoodsQuery(&GoodsQueryRequest{})
 	t.Log(res, err)
 }
