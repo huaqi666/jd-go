@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/cliod/jd-go/common"
+	"github.com/cliod/jd-go/log"
 	"io/ioutil"
 	"os"
 	"testing"
@@ -171,7 +172,7 @@ func TestGoodsServiceImpl_GoodsQuery(t *testing.T) {
 	config := GetConfig()
 	service := NewJdService(config.AppKey, config.SecretKey)
 	goodsService := service.GetGoodsService()
-	service.SetLogLevel(4)
+	log.SetLevel(6)
 	res, err := goodsService.GoodsQuery(&GoodsQueryRequest{})
 	t.Log(res, err)
 }

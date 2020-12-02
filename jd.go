@@ -66,9 +66,6 @@ type Service interface {
 
 	// 执行http请求并解析结果
 	Do(v interface{}, method Method, param map[string]interface{}) error
-
-	// 设置日志打印等级
-	SetLogLevel(level log.Level)
 }
 
 type ServiceImpl struct {
@@ -85,15 +82,10 @@ type ServiceImpl struct {
 
 	//Deprecated: 弃用
 	otherService OtherService
-
-	log     log.Logger
-	IsDebug bool
 }
 
 func NewJdService(appKet, secretKey string) Service {
-	impl := &ServiceImpl{
-		log: log.NewLogger(log.LevelInfo),
-	}
+	impl := &ServiceImpl{}
 	impl.SetConfig(NewConfig(appKet, secretKey))
 	impl.SetHttpService(common.NewService())
 
@@ -117,7 +109,7 @@ func (s *ServiceImpl) Get(url string, args interface{}) ([]byte, error) {
 func (s *ServiceImpl) GetFor(v interface{}, url string, args *Param) error {
 	res, err := s.Get(url, args)
 	if err != nil {
-		s.log.Error("Request", err)
+		log.Error("Request:", err)
 		return err
 	}
 	return json.Unmarshal(res, v)
@@ -213,18 +205,14 @@ func (s *ServiceImpl) Sign(method Method, param map[string]interface{}) (*Param,
 func (s *ServiceImpl) Do(v interface{}, method Method, param map[string]interface{}) error {
 	p, err := s.Sign(method, param)
 	if err != nil {
-		s.log.Error("Sign", err)
+		log.Error("Sign:", err)
 		return err
 	}
 	err = s.GetFor(v, BaseUrl, p)
 	if err != nil {
-		s.log.Debug("Result Err", err)
+		log.Debug("Result Err:", err)
 	} else {
-		s.log.Debug("Result", v)
+		log.Debug("Result:", v)
 	}
 	return err
-}
-
-func (s *ServiceImpl) SetLogLevel(level log.Level) {
-	s.log.SetLevel(level)
 }

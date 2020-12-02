@@ -2,8 +2,7 @@ package log
 
 import (
 	"fmt"
-	"log"
-	"os"
+	"github.com/sirupsen/logrus"
 	"strings"
 )
 
@@ -26,71 +25,86 @@ const (
 
 // debug日志
 type Logger interface {
-	Trace(msg string, args ...interface{})
-	Debug(msg string, args ...interface{})
-	Info(msg string, args ...interface{})
-	Warn(msg string, args ...interface{})
-	Error(msg string, args ...interface{})
+	Panic(args ...interface{})
+	Fatal(args ...interface{})
+	Error(args ...interface{})
+	Warn(args ...interface{})
+	Info(args ...interface{})
+	Debug(args ...interface{})
+	Trace(args ...interface{})
+	Print(args ...interface{})
+
 	// 日志
-	Log(level Level, format string, args ...interface{})
+	Logf(level Level, format string, args ...interface{})
+	// 日志
+	Log(level Level, args ...interface{})
 	// 设置是否打印
 	SetLevel(level Level)
 }
 
 type LoggerImpl struct {
-	level Level
-
-	output *log.Logger
+	*logrus.Logger
 }
 
 func NewLogger(level Level) Logger {
+	lgr := logrus.New()
+	lgr.SetFormatter(newFormatter())
+	lgr.Level = logrus.Level(level)
 	return &LoggerImpl{
-		level:  level,
-		output: log.New(os.Stdout, colors[LevelEmpty](Prefix), log.Ldate|log.Ltime|log.Lshortfile),
+		Logger: lgr,
 	}
 }
 
-func (l *LoggerImpl) Trace(msg string, args ...interface{}) {
-	l.Log(LevelTrace, "[TRACE] "+msg, args...)
+func (l *LoggerImpl) Panic(args ...interface{}) {
+	l.Log(LevelPanic, args...)
 }
 
-func (l *LoggerImpl) Debug(msg string, args ...interface{}) {
-	l.Log(LevelDebug, "[DEBUG] "+msg, args...)
+func (l *LoggerImpl) Fatal(args ...interface{}) {
+	l.Log(LevelFatal, args...)
 }
 
-func (l *LoggerImpl) Info(msg string, args ...interface{}) {
-	l.Log(LevelInfo, "[INFO] "+msg, args...)
+func (l *LoggerImpl) Error(args ...interface{}) {
+	l.Log(LevelError, args...)
 }
 
-func (l *LoggerImpl) Warn(msg string, args ...interface{}) {
-	l.Log(LevelWarn, "[WARN] "+msg, args...)
+func (l *LoggerImpl) Warn(args ...interface{}) {
+	l.Log(LevelWarn, args...)
 }
 
-func (l *LoggerImpl) Error(msg string, args ...interface{}) {
-	l.Log(LevelError, "[ERROR] "+msg, args...)
+func (l *LoggerImpl) Info(args ...interface{}) {
+	l.Log(LevelInfo, args...)
 }
 
-func (l *LoggerImpl) Log(level Level, format string, args ...interface{}) {
+func (l *LoggerImpl) Debug(args ...interface{}) {
+	l.Log(LevelDebug, args...)
+}
+
+func (l *LoggerImpl) Trace(args ...interface{}) {
+	l.Log(LevelTrace, args...)
+}
+
+func (l *LoggerImpl) Logf(level Level, format string, args ...interface{}) {
 	if l.checkLevel(level) {
 		n := strings.Count(format, "%s")
 		le := len(args)
-		if !strings.HasSuffix(format, ":") {
-			format += ":"
-		}
 		for i := 0; i < (le - n); i++ {
-			format += " %s"
+			format += "%s "
 		}
-		l.output.Println(colors[level](fmt.Sprintf(format, args...)))
+		l.Logger.Log(logrus.Level(level), fmt.Sprintf(format, args...))
 	}
+}
+
+func (l *LoggerImpl) Log(level Level, args ...interface{}) {
+	l.Logf(level, Prefix, args...)
 }
 
 func (l *LoggerImpl) SetLevel(level Level) {
-	if level >= LevelEmpty || level < LevelError {
+	if level >= LevelEmpty || level < LevelPanic {
 		level = LevelWarn
 	}
-	l.level = level
+	l.Level = logrus.Level(level)
 }
 
 func (l *LoggerImpl) checkLevel(level Level) bool {
-	return l.level >= level
+	return uint64(l.Level) >= uint64(level)
 }

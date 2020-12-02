@@ -1,28 +1,48 @@
 package log
 
 var (
-	std = NewLogger(LevelDebug)
+	std Logger
 )
 
-func Debug(msg string, args ...interface{}) {
-	std.Debug(msg, args...)
+func init() {
+	std = NewLogger(LevelDebug)
 }
 
-func Info(msg string, args ...interface{}) {
-	std.Info(msg, args...)
+func Panic(args ...interface{}) {
+	std.Panic(args...)
 }
 
-func Warn(msg string, args ...interface{}) {
-	std.Warn(msg, args...)
+func Fatal(args ...interface{}) {
+	std.Fatal(args...)
 }
 
-func Error(msg string, args ...interface{}) {
-	std.Error(msg, args...)
+func Error(args ...interface{}) {
+	std.Error(args...)
+}
+
+func Warn(args ...interface{}) {
+	std.Warn(args...)
+}
+
+func Info(args ...interface{}) {
+	std.Info(args...)
+}
+
+func Debug(args ...interface{}) {
+	std.Debug(args...)
+}
+
+func Trace(args ...interface{}) {
+	std.Trace(args...)
+}
+
+func Print(args ...interface{}) {
+	std.Print(args...)
 }
 
 // 日志
-func Log(level Level, format string, args ...interface{}) {
-	std.Log(level, format, args...)
+func Log(level Level, args ...interface{}) {
+	std.Log(level, args...)
 }
 
 // 设置是否打印

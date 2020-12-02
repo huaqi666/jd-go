@@ -77,22 +77,22 @@ func NewParam(param *parameter) *Param {
 func (p *parameter) CheckRequiredParams() (err error) {
 	if "" == p.AppKey || "" == p.SecretKey {
 		err = fmt.Errorf("AppKey and SecretKey must be set")
-		log.Error("Parameter", err)
+		log.Error("Parameter:", err)
 		return
 	}
 	if "" == p.Format || "" == p.SignMethod || "" == p.Timestamp {
 		err = fmt.Errorf("format, sign_method and timestamp must be set")
-		log.Error("Parameter", err)
+		log.Error("Parameter:", err)
 		return
 	}
 	if "" == p.Method {
 		err = fmt.Errorf("method is required")
-		log.Error("Parameter", err)
+		log.Error("Parameter:", err)
 		return
 	}
 	if "" == p.Version {
 		err = fmt.Errorf("version is required")
-		log.Error("Parameter", err)
+		log.Error("Parameter:", err)
 		return
 	}
 	return nil
