@@ -33,7 +33,7 @@ func (s *ServiceImpl) Get(address string, v interface{}) ([]byte, error) {
 		return nil, err
 	}
 
-	log.Debug("Request URI: ", req.URL.String())
+	log.Debug("Request URL", req.URL.String())
 
 	resp, err := s.client.Do(req)
 	if err != nil {

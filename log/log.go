@@ -15,10 +15,21 @@ const (
 	LevelInfo
 	LevelDebug
 	LevelTrace
+	LevelEmpty
 )
 
 const (
-	Prefix = "[京东联盟]"
+	Prefix = "[京东联盟] "
+)
+
+var (
+	levelStr = []string{
+		colors[LevelError]("[ERROR] "),
+		colors[LevelWarn]("[WARN] "),
+		colors[LevelInfo]("[INFO] "),
+		colors[LevelDebug]("[DEBUG] "),
+		colors[LevelTrace]("[TRACE] "),
+	}
 )
 
 // debug日志
@@ -37,21 +48,13 @@ type Logger interface {
 type LoggerImpl struct {
 	level Level
 
-	trace *log.Logger
-	debug *log.Logger
-	error *log.Logger
-	warn  *log.Logger
-	info  *log.Logger
+	output *log.Logger
 }
 
 func NewLogger(level Level) Logger {
 	return &LoggerImpl{
-		level: level,
-		trace: log.New(os.Stdout, colors[LevelTrace]("[TRACE] "), log.Ldate|log.Ltime|log.Lshortfile),
-		debug: log.New(os.Stdout, colors[LevelDebug]("[DEBUG] "), log.Ldate|log.Ltime|log.Lshortfile),
-		error: log.New(os.Stdout, colors[LevelError]("[ERROR] "), log.Ldate|log.Ltime|log.Lshortfile),
-		warn:  log.New(os.Stdout, colors[LevelWarn]("[WARN] "), log.Ldate|log.Ltime|log.Lshortfile),
-		info:  log.New(os.Stdout, colors[LevelInfo]("[INFO] "), log.Ldate|log.Ltime|log.Lshortfile),
+		level:  level,
+		output: log.New(os.Stdout, colors[LevelEmpty](Prefix), log.Ldate|log.Ltime|log.Lshortfile),
 	}
 }
 
@@ -85,7 +88,7 @@ func (l *LoggerImpl) Log(level Level, format string, args ...interface{}) {
 		for i := 0; i < (le - n); i++ {
 			format += " %s"
 		}
-		l.getLog(level).Println(colors[5](Prefix), colors[level](fmt.Sprintf(format, args...)))
+		l.output.Println(levelStr[level], colors[level](fmt.Sprintf(format, args...)))
 	}
 }
 
@@ -93,25 +96,6 @@ func (l *LoggerImpl) SetLevel(level Level) {
 	l.level = level
 }
 
-func (l *LoggerImpl) getLog(level Level) *log.Logger {
-	var lg *log.Logger
-	switch level {
-	case LevelDebug:
-		lg = l.debug
-	case LevelInfo:
-		lg = l.info
-	case LevelWarn:
-		lg = l.warn
-	case LevelError:
-		lg = l.error
-	case LevelTrace:
-		lg = l.trace
-	default:
-		lg = l.warn
-	}
-	return lg
-}
-
 func (l *LoggerImpl) checkLevel(level Level) bool {
-	return l.level > level
+	return l.level >= level
 }

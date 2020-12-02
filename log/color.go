@@ -47,5 +47,5 @@ var colors = []brush{
 	newBrush("1;36"), // Informational      天蓝色
 	newBrush("1;32"), // Debug              绿色
 	newBrush("1;37"), // Trace              白色
-	newBrush("1;37"), // Empty              绿色
+	newBrush("1;37"), // Empty              白色
 }
