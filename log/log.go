@@ -47,11 +47,11 @@ type LoggerImpl struct {
 func NewLogger(level Level) Logger {
 	return &LoggerImpl{
 		level: level,
-		trace: log.New(os.Stdout, "[TRACE] ", log.Ldate|log.Ltime|log.Lshortfile),
-		debug: log.New(os.Stdout, "[DEBUG] ", log.Ldate|log.Ltime|log.Lshortfile),
-		error: log.New(os.Stdout, "[ERROR] ", log.Ldate|log.Ltime|log.Lshortfile),
-		warn:  log.New(os.Stdout, "[WARN] ", log.Ldate|log.Ltime|log.Lshortfile),
-		info:  log.New(os.Stdout, "[INFO] ", log.Ldate|log.Ltime|log.Lshortfile),
+		trace: log.New(os.Stdout, colors[LevelTrace]("[TRACE] "), log.Ldate|log.Ltime|log.Lshortfile),
+		debug: log.New(os.Stdout, colors[LevelDebug]("[DEBUG] "), log.Ldate|log.Ltime|log.Lshortfile),
+		error: log.New(os.Stdout, colors[LevelError]("[ERROR] "), log.Ldate|log.Ltime|log.Lshortfile),
+		warn:  log.New(os.Stdout, colors[LevelWarn]("[WARN] "), log.Ldate|log.Ltime|log.Lshortfile),
+		info:  log.New(os.Stdout, colors[LevelInfo]("[INFO] "), log.Ldate|log.Ltime|log.Lshortfile),
 	}
 }
 
