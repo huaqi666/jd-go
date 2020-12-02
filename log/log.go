@@ -10,7 +10,9 @@ import (
 type Level int
 
 const (
-	LevelError Level = iota
+	LevelPanic Level = iota
+	LevelFatal
+	LevelError
 	LevelWarn
 	LevelInfo
 	LevelDebug
@@ -20,16 +22,6 @@ const (
 
 const (
 	Prefix = "[京东联盟] "
-)
-
-var (
-	levelStr = []string{
-		colors[LevelError]("[ERROR] "),
-		colors[LevelWarn]("[WARN] "),
-		colors[LevelInfo]("[INFO] "),
-		colors[LevelDebug]("[DEBUG] "),
-		colors[LevelTrace]("[TRACE] "),
-	}
 )
 
 // debug日志
@@ -59,23 +51,23 @@ func NewLogger(level Level) Logger {
 }
 
 func (l *LoggerImpl) Trace(msg string, args ...interface{}) {
-	l.Log(LevelTrace, msg, args...)
+	l.Log(LevelTrace, "[TRACE] "+msg, args...)
 }
 
 func (l *LoggerImpl) Debug(msg string, args ...interface{}) {
-	l.Log(LevelDebug, msg, args...)
+	l.Log(LevelDebug, "[DEBUG] "+msg, args...)
 }
 
 func (l *LoggerImpl) Info(msg string, args ...interface{}) {
-	l.Log(LevelInfo, msg, args...)
+	l.Log(LevelInfo, "[INFO] "+msg, args...)
 }
 
 func (l *LoggerImpl) Warn(msg string, args ...interface{}) {
-	l.Log(LevelWarn, msg, args...)
+	l.Log(LevelWarn, "[WARN] "+msg, args...)
 }
 
 func (l *LoggerImpl) Error(msg string, args ...interface{}) {
-	l.Log(LevelError, msg, args...)
+	l.Log(LevelError, "[ERROR] "+msg, args...)
 }
 
 func (l *LoggerImpl) Log(level Level, format string, args ...interface{}) {
@@ -88,11 +80,14 @@ func (l *LoggerImpl) Log(level Level, format string, args ...interface{}) {
 		for i := 0; i < (le - n); i++ {
 			format += " %s"
 		}
-		l.output.Println(levelStr[level], colors[level](fmt.Sprintf(format, args...)))
+		l.output.Println(colors[level](fmt.Sprintf(format, args...)))
 	}
 }
 
 func (l *LoggerImpl) SetLevel(level Level) {
+	if level >= LevelEmpty || level < LevelError {
+		level = LevelWarn
+	}
 	l.level = level
 }
 
