@@ -65,7 +65,17 @@ type Service interface {
 	SetHttpService(service common.Service)
 
 	// 执行http请求并解析结果
+	// v 返回数据解析对象(指针)
+	// method 请求路由方法
+	// 业务参数
+	// Deprecated: 使用新接口: Request
 	Do(v interface{}, method Method, param map[string]interface{}) error
+
+	// 执行http请求并解析结果
+	// v 返回数据解析对象(指针)
+	// method 请求路由方法
+	// 业务参数
+	Request(v interface{}, method Method, param map[string]interface{}) error
 }
 
 type ServiceImpl struct {
@@ -202,7 +212,7 @@ func (s *ServiceImpl) Sign(method Method, param map[string]interface{}) (*Param,
 	return NewParam(parameter), err
 }
 
-func (s *ServiceImpl) Do(v interface{}, method Method, param map[string]interface{}) error {
+func (s *ServiceImpl) Request(v interface{}, method Method, param map[string]interface{}) error {
 	p, err := s.Sign(method, param)
 	if err != nil {
 		log.Error("Sign:", err)
@@ -210,9 +220,14 @@ func (s *ServiceImpl) Do(v interface{}, method Method, param map[string]interfac
 	}
 	err = s.GetFor(v, BaseUrl, p)
 	if err != nil {
-		log.Debug("Result Err:", err)
+		log.Error("Result Err:", err)
 	} else {
 		log.Debug("Result:", v)
 	}
 	return err
+}
+
+// Deprecated: 使用新接口: Request
+func (s *ServiceImpl) Do(v interface{}, method Method, param map[string]interface{}) error {
+	return s.Request(v, method, param)
 }
