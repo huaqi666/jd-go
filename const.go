@@ -50,5 +50,7 @@ const (
 )
 
 const (
-	BaseUrl = "https://router.jd.com/api" // 京东联盟Url前缀
+	UnionRootEndpoint = "https://router.jd.com/api"     // 京东联盟API路由: 参数: param_json
+	JosRootEndpoint   = "https://api.jd.com/routerjson" // 宙斯API路由 🤣: 参数: 360buy_param_json
+	BaseUrl           = UnionRootEndpoint
 )
