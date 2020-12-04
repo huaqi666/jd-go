@@ -6,6 +6,7 @@ import (
 	"github.com/cliod/jd-go/common"
 	"github.com/cliod/jd-go/log"
 	"sort"
+	"strings"
 	"time"
 )
 
@@ -20,9 +21,10 @@ type Config struct {
 	SignMethod  string `json:"sign_method"`            // 签名的摘要算法， md5
 	Sign        string `json:"sign"`                   // API输入参数签名结果
 	SecretKey   string `json:"-"`                      // api秘钥
+	RouteApi    string `json:"-"`                      // 路由API，默认京东联盟
 }
 
-func NewConfig(appKey, secretKey string) *Config {
+func newConfig(appKey, secretKey, routApi string) *Config {
 	return &Config{
 		AppKey:      appKey,
 		Timestamp:   time.Now().Local().Format("2006-01-02 15:04:05"),
@@ -32,44 +34,59 @@ func NewConfig(appKey, secretKey string) *Config {
 		Method:      "",
 		Version:     "1.0",
 		SecretKey:   secretKey,
+		RouteApi:    routApi,
 	}
+}
+
+// 默认京东联盟
+func NewConfig(appKey, secretKey string) *Config {
+	return newConfig(appKey, secretKey, BaseUrl)
 }
 
 // 参数封装，用于参数校验和签名
 type parameter struct {
 	Config
-	ParamJson string `json:"param_json,omitempty"` // 业务参数(string)
+	ParamJson    string `json:"param_json,omitempty"`        // 业务参数(string)
+	BuyParamJson string `json:"360buy_param_json,omitempty"` // 业务参数(string)
 }
 
-func newParameter(config *Config, pj map[string]interface{}) *parameter {
+func newParameter(config *Config, pj map[string]interface{}) (p *parameter) {
 	bs, _ := json.Marshal(pj)
-	return &parameter{Config: *config, ParamJson: string(bs)}
+	p = &parameter{Config: *config}
+	if strings.Trim(config.RouteApi, " ") == JosRootEndpoint {
+		p.BuyParamJson = string(bs)
+	} else {
+		p.ParamJson = string(bs)
+	}
+	return
 }
 
 // 参数封装，用于请求
 type Param struct {
-	Method      Method `json:"method" url:"method"`                       // API接口名称
-	AppKey      string `json:"app_key" url:"app_key"`                     // 分配给应用的AppKey
-	AccessToken string `json:"access_token,omitempty" url:"access_token"` // Oauth2颁发的动态令牌,根据API属性标签，如果需要授权，则此参数必传;如果不需要授权，则此参数不需要传
-	Timestamp   string `json:"timestamp" url:"timestamp"`                 // 时间戳，格式为yyyy-MM-dd  HH:mm:ss，时区为GMT+8。API服务端允许客户端请求最大时间误差为10分钟
-	Format      string `json:"format" url:"format"`                       // 响应格式。暂时只支持json
-	Version     string `json:"v" url:"v"`                                 // API协议版本，可选值：2.0，请根据API具体版本号传入此参数，一般为1.0
-	SignMethod  string `json:"sign_method" url:"sign_method"`             // 签名的摘要算法， md5
-	Sign        string `json:"sign" url:"sign"`                           // API输入参数签名结果
-	ParamJson   string `json:"param_json,omitempty" url:"param_json"`     // 业务参数
+	Method       Method `json:"method" url:"method"`                                           // API接口名称
+	AppKey       string `json:"app_key" url:"app_key"`                                         // 分配给应用的AppKey
+	AccessToken  string `json:"access_token,omitempty" url:"access_token"`                     // Oauth2颁发的动态令牌,根据API属性标签，如果需要授权，则此参数必传;如果不需要授权，则此参数不需要传
+	Timestamp    string `json:"timestamp" url:"timestamp"`                                     // 时间戳，格式为yyyy-MM-dd  HH:mm:ss，时区为GMT+8。API服务端允许客户端请求最大时间误差为10分钟
+	Format       string `json:"format" url:"format"`                                           // 响应格式。暂时只支持json
+	Version      string `json:"v" url:"v"`                                                     // API协议版本，可选值：2.0，请根据API具体版本号传入此参数，一般为1.0
+	SignMethod   string `json:"sign_method" url:"sign_method"`                                 // 签名的摘要算法， md5
+	Sign         string `json:"sign" url:"sign"`                                               // API输入参数签名结果
+	ParamJson    string `json:"param_json,omitempty" url:"param_json,omitempty"`               // 业务参数
+	BuyParamJson string `json:"360buy_param_json,omitempty" url:"360buy_param_json,omitempty"` // 业务参数
 }
 
 func NewParam(param *parameter) *Param {
 	return &Param{
-		ParamJson:   param.ParamJson,
-		AppKey:      param.AppKey,
-		Method:      param.Method,
-		AccessToken: param.AccessToken,
-		Timestamp:   param.Timestamp,
-		Format:      param.Format,
-		Version:     param.Version,
-		SignMethod:  param.SignMethod,
-		Sign:        param.Sign,
+		BuyParamJson: param.BuyParamJson,
+		ParamJson:    param.ParamJson,
+		AppKey:       param.AppKey,
+		Method:       param.Method,
+		AccessToken:  param.AccessToken,
+		Timestamp:    param.Timestamp,
+		Format:       param.Format,
+		Version:      param.Version,
+		SignMethod:   param.SignMethod,
+		Sign:         param.Sign,
 	}
 }
 

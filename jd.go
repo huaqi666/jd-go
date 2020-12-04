@@ -2,6 +2,7 @@ package jd
 
 import (
 	"encoding/json"
+	"errors"
 	"github.com/cliod/jd-go/common"
 	"github.com/cliod/jd-go/log"
 )
@@ -94,9 +95,22 @@ type ServiceImpl struct {
 	otherService OtherService
 }
 
-func NewJdService(appKet, secretKey string) Service {
+// 默认京东联盟
+func NewJdService(appKey, secretKey string) Service {
+	return NewJdUnionService(appKey, secretKey)
+}
+
+func NewJdUnionService(appKey, secretKey string) Service {
+	return newService(appKey, secretKey, UnionRootEndpoint)
+}
+
+func NewJosService(appKey, secretKey string) Service {
+	return newService(appKey, secretKey, JosRootEndpoint)
+}
+
+func newService(appKey, secretKey, routApi string) Service {
 	impl := &ServiceImpl{}
-	impl.SetConfig(NewConfig(appKet, secretKey))
+	impl.SetConfig(newConfig(appKey, secretKey, routApi))
 	impl.SetHttpService(common.NewService())
 
 	impl.goodsService = newGoodsService(impl)
@@ -218,13 +232,37 @@ func (s *ServiceImpl) Request(v interface{}, method Method, param map[string]int
 		log.Error("Sign:", err)
 		return err
 	}
-	err = s.GetFor(v, BaseUrl, p)
+	err = s.GetFor(v, s.GetConfig().RouteApi, p)
 	if err != nil {
 		log.Error("Result Err:", err)
 	} else {
 		log.Debug("Result:", v)
 	}
 	return err
+}
+
+// 非必填参数为空不会序列化
+func (s *ServiceImpl) CheckRequiredParameters(v interface{}) error {
+	var param map[string]interface{}
+	param, ok := v.(map[string]interface{})
+	if !ok {
+		bs, err := json.Marshal(v)
+		if err != nil {
+			return err
+		}
+		err = json.Unmarshal(bs, &param)
+		if err != nil {
+			return err
+		}
+	}
+	for _, v := range param {
+		if s, ok := v.(string); ok {
+			if s == "" {
+				return errors.New("参数为空")
+			}
+		}
+	}
+	return nil
 }
 
 // Deprecated: 使用新接口: Request
