@@ -147,7 +147,7 @@ func TestGoodsServiceImpl_GoodsGigfieldQuery(t *testing.T) {
 // 获取商品列表
 func TestGoodsServiceImpl_GoodsJingfenQuery(t *testing.T) {
 	config := GetConfig()
-	service := NewJdService(config.AppKey, config.SecretKey)
+	service := NewJosService(config.AppKey, config.SecretKey)
 	goodsService := service.GetGoodsService()
 	res, err := goodsService.GoodsJingfenQuery(&GoodsJingfenQueryRequest{
 		EliteId: 33,
