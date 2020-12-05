@@ -65,6 +65,11 @@ type Service interface {
 	// 设置http请求
 	SetHttpService(service common.Service)
 
+	// 获取路由api
+	GetRouteApi() string
+	// 设置路由api
+	SetRouteApi(string)
+
 	// 执行http请求并解析结果
 	// v 返回数据解析对象(指针)
 	// method 请求路由方法
@@ -93,6 +98,11 @@ type ServiceImpl struct {
 
 	//Deprecated: 弃用
 	otherService OtherService
+}
+
+// 默认京东联盟
+func NewJdClient(appKey, secretKey string) Service {
+	return NewJdUnionService(appKey, secretKey)
 }
 
 // 默认京东联盟
@@ -215,6 +225,14 @@ func (s *ServiceImpl) SetConfig(config *Config) {
 
 func (s *ServiceImpl) SetHttpService(service common.Service) {
 	s.service = service
+}
+
+func (s *ServiceImpl) GetRouteApi() string {
+	return s.GetConfig().RouteApi
+}
+
+func (s *ServiceImpl) SetRouteApi(api string) {
+	s.GetConfig().RouteApi = api
 }
 
 func (s *ServiceImpl) Sign(method Method, param map[string]interface{}) (*Param, error) {
