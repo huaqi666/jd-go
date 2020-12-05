@@ -81,21 +81,29 @@ func newGoodsService(service Service) GoodsService {
 
 // 京粉精选商品查询接口
 //    文档: https://union.jd.com/openplatform/api/10417
-func (g *GoodsServiceImpl) GoodsJingfenQuery(request *GoodsJingfenQueryRequest) (*GoodsJingfenQueryResult, error) {
+func (goods *GoodsServiceImpl) GoodsJingfenQuery(request *GoodsJingfenQueryRequest) (*GoodsJingfenQueryResult, error) {
+	err := goods.service.CheckRequiredParameters(request)
+	if err != nil {
+		return nil, err
+	}
 	param := map[string]interface{}{}
 	param["goodsReq"] = request
 	var res GoodsJingfenQueryResult
-	err := g.service.Do(&res, GoodsJingfenQuery, param)
+	err = goods.service.Do(&res, GoodsJingfenQuery, param)
 	return &res, err
 }
 
 // 关键词商品查询接口【申请】
 //    文档: https://union.jd.com/openplatform/api/10420
-func (g *GoodsServiceImpl) GoodsQuery(request *GoodsQueryRequest) (*GoodsQueryResult, error) {
+func (goods *GoodsServiceImpl) GoodsQuery(request *GoodsQueryRequest) (*GoodsQueryResult, error) {
+	err := goods.service.CheckRequiredParameters(request)
+	if err != nil {
+		return nil, err
+	}
 	param := map[string]interface{}{}
 	param["goodsReqDTO"] = request
 	var res GoodsQueryResult
-	err := g.service.Do(&res, GoodsQuery, param)
+	err = goods.service.Do(&res, GoodsQuery, param)
 	return &res, err
 }
 
@@ -103,170 +111,217 @@ func (g *GoodsServiceImpl) GoodsQuery(request *GoodsQueryRequest) (*GoodsQueryRe
    skuIds: 京东skuID串，逗号分割，最多100个，开发示例如param_json={'skuIds':'5225346,7275691'}
   （非常重要 请大家关注：如果输入的sk串中某个skuID的商品不在推广中[就是没有佣金]，返回结果中不会包含这个商品的信息）*/
 //    文档: https://union.jd.com/openplatform/api/10422
-func (g *GoodsServiceImpl) GoodsPromotiongoodsinfoQuery(skuIds string) (*GoodsPromotiongoodsinfoQueryResult, error) {
+func (goods *GoodsServiceImpl) GoodsPromotiongoodsinfoQuery(skuIds string) (*GoodsPromotiongoodsinfoQueryResult, error) {
+	err := goods.service.CheckRequiredParameters(struct{ skuIds string }{skuIds: skuIds})
+	if err != nil {
+		return nil, err
+	}
 	param := map[string]interface{}{}
 	param["skuIds"] = skuIds
 	var res GoodsPromotiongoodsinfoQueryResult
-	err := g.service.Do(&res, GoodsPromotiongoodsinfoQuery, param)
+	err = goods.service.Do(&res, GoodsPromotiongoodsinfoQuery, param)
 	return &res, err
 }
 
 // 商品类目查询接口
 // Deprecated: 使用新接口: CategoryGoodsGet
 //    文档: https://union.jd.com/openplatform/api/10434
-func (g *GoodsServiceImpl) CategoryGoodsGetQuery(request *CategoryGoodsGetRequest) (*CategoryGoodsGetResult, error) {
-	return g.CategoryGoodsGet(request)
+func (goods *GoodsServiceImpl) CategoryGoodsGetQuery(request *CategoryGoodsGetRequest) (*CategoryGoodsGetResult, error) {
+	return goods.CategoryGoodsGet(request)
 }
 
 // 商品类目查询接口
 //    文档: https://union.jd.com/openplatform/api/10434
-func (g *GoodsServiceImpl) CategoryGoodsGet(request *CategoryGoodsGetRequest) (*CategoryGoodsGetResult, error) {
+func (goods *GoodsServiceImpl) CategoryGoodsGet(request *CategoryGoodsGetRequest) (*CategoryGoodsGetResult, error) {
+	err := goods.service.CheckRequiredParameters(request)
+	if err != nil {
+		return nil, err
+	}
 	param := map[string]interface{}{}
 	param["req"] = request
 	var res CategoryGoodsGetResult
-	err := g.service.Do(&res, CategoryGoodsGet, param)
+	err = goods.service.Do(&res, CategoryGoodsGet, param)
 	return &res, err
 }
 
 // 商品详情查询接口【申请】
 //    文档: https://union.jd.com/openplatform/api/11248
-func (g *GoodsServiceImpl) GoodsGigfieldQuery(request *GoodsGigFieldQueryRequest) (*GoodsGigFieldQueryResult, error) {
+func (goods *GoodsServiceImpl) GoodsGigfieldQuery(request *GoodsGigFieldQueryRequest) (*GoodsGigFieldQueryResult, error) {
+	err := goods.service.CheckRequiredParameters(request)
+	if err != nil {
+		return nil, err
+	}
 	param := map[string]interface{}{}
 	param["goodsReq"] = request
 	var res GoodsGigFieldQueryResult
-	err := g.service.Do(&res, GoodsGigfieldQuery, param)
+	err = goods.service.Do(&res, GoodsGigfieldQuery, param)
 	return &res, err
 }
 
 // 京粉精选商品查询接口
 //    文档: https://union.jd.com/openplatform/api/10417
-func (g *GoodsServiceImpl) GoodsJingfenQueryResult(request *GoodsJingfenQueryRequest) ([]byte, error) {
-	res, err := g.GoodsJingfenQuery(request)
-	if err != nil {
-		return nil, err
-	}
-	if res.IsSuccess() {
-		return nil, res
-	}
-	return res.GetResult(), nil
+func (goods *GoodsServiceImpl) GoodsJingfenQueryResult(request *GoodsJingfenQueryRequest) ([]byte, error) {
+	res, err := goods.GoodsJingfenQuery(request)
+	return goods.service.GetResult(res, err)
 }
 
 // 关键词商品查询接口【申请】
 //    文档: https://union.jd.com/openplatform/api/10420
-func (g *GoodsServiceImpl) GoodsQueryResult(request *GoodsQueryRequest) ([]byte, error) {
-	res, err := g.GoodsQuery(request)
-	if err != nil {
-		return nil, err
-	}
-	if res.IsSuccess() {
-		return nil, res
-	}
-	return res.GetResult(), nil
+func (goods *GoodsServiceImpl) GoodsQueryResult(request *GoodsQueryRequest) ([]byte, error) {
+	res, err := goods.GoodsQuery(request)
+	return goods.service.GetResult(res, err)
 }
 
 /* 根据skuid查询商品信息接口
    skuIds: 京东skuID串，逗号分割，最多100个，开发示例如param_json={'skuIds':'5225346,7275691'}
   （非常重要 请大家关注：如果输入的sk串中某个skuID的商品不在推广中[就是没有佣金]，返回结果中不会包含这个商品的信息）*/
 //    文档: https://union.jd.com/openplatform/api/10422
-func (g *GoodsServiceImpl) GoodsPromotiongoodsinfoQueryResult(skuIds string) ([]byte, error) {
-	res, err := g.GoodsPromotiongoodsinfoQuery(skuIds)
-	if err != nil {
-		return nil, err
-	}
-	if res.IsSuccess() {
-		return nil, res
-	}
-	return res.GetResult(), nil
+func (goods *GoodsServiceImpl) GoodsPromotiongoodsinfoQueryResult(skuIds string) ([]byte, error) {
+	res, err := goods.GoodsPromotiongoodsinfoQuery(skuIds)
+	return goods.service.GetResult(res, err)
 }
 
 // 商品类目查询接口
 // Deprecated: 使用新接口: GoodsService.CategoryGoodsGetResult
 //    文档: https://union.jd.com/openplatform/api/10434
-func (g *GoodsServiceImpl) CategoryGoodsGetQueryResult(request *CategoryGoodsGetRequest) ([]byte, error) {
-	return g.CategoryGoodsGetResult(request)
+func (goods *GoodsServiceImpl) CategoryGoodsGetQueryResult(request *CategoryGoodsGetRequest) ([]byte, error) {
+	return goods.CategoryGoodsGetResult(request)
 }
 
 // 商品类目查询接口
 //    文档: https://union.jd.com/openplatform/api/10434
-func (g *GoodsServiceImpl) CategoryGoodsGetResult(request *CategoryGoodsGetRequest) ([]byte, error) {
-	res, err := g.CategoryGoodsGet(request)
-	if err != nil {
-		return nil, err
-	}
-	if res.IsSuccess() {
-		return nil, res
-	}
-	return res.GetResult(), nil
+func (goods *GoodsServiceImpl) CategoryGoodsGetResult(request *CategoryGoodsGetRequest) ([]byte, error) {
+	res, err := goods.CategoryGoodsGet(request)
+	return goods.service.GetResult(res, err)
 }
 
 // 商品详情查询接口【申请】
 //    文档: https://union.jd.com/openplatform/api/11248
-func (g *GoodsServiceImpl) GoodsGigfieldQueryResult(request *GoodsGigFieldQueryRequest) ([]byte, error) {
-	res, err := g.GoodsGigfieldQuery(request)
-	if err != nil {
-		return nil, err
-	}
-	if res.IsSuccess() {
-		return nil, res
-	}
-	return res.GetResult(), nil
+func (goods *GoodsServiceImpl) GoodsGigfieldQueryResult(request *GoodsGigFieldQueryRequest) ([]byte, error) {
+	res, err := goods.GoodsGigfieldQuery(request)
+	return goods.service.GetResult(res, err)
 }
 
 // 京粉精选商品查询接口
 //    文档: https://union.jd.com/openplatform/api/10417
-func (g *GoodsServiceImpl) GoodsJingfenQueryMap(request *GoodsJingfenQueryRequest) (map[string]interface{}, error) {
+func (goods *GoodsServiceImpl) GoodsJingfenQueryMap(request *GoodsJingfenQueryRequest) (map[string]interface{}, error) {
+	err := goods.service.CheckRequiredParameters(request)
+	if err != nil {
+		return nil, err
+	}
 	param := map[string]interface{}{}
 	param["goodsReq"] = request
 	var res map[string]interface{}
-	err := g.service.Do(&res, GoodsJingfenQuery, param)
-	return res, err
+	err = goods.service.Do(&res, GoodsJingfenQuery, param)
+	if err != nil {
+		return nil, err
+	}
+	var key ResponseKey
+	if goods.service.GetRouteApi() == JosRootEndpoint {
+		key = GoodsJingfenQueryResponce
+	} else {
+		key = GoodsJingfenQueryResponse
+	}
+	return goods.service.ParseResult(res, key)
 }
 
 // 关键词商品查询接口【申请】
 //    文档: https://union.jd.com/openplatform/api/10420
-func (g *GoodsServiceImpl) GoodsQueryMap(request *GoodsQueryRequest) (map[string]interface{}, error) {
+func (goods *GoodsServiceImpl) GoodsQueryMap(request *GoodsQueryRequest) (map[string]interface{}, error) {
+	err := goods.service.CheckRequiredParameters(request)
+	if err != nil {
+		return nil, err
+	}
 	param := map[string]interface{}{}
 	param["goodsReqDTO"] = request
 	var res map[string]interface{}
-	err := g.service.Do(&res, GoodsQuery, param)
-	return res, err
+	err = goods.service.Do(&res, GoodsQuery, param)
+	if err != nil {
+		return nil, err
+	}
+	var key ResponseKey
+	if goods.service.GetRouteApi() == JosRootEndpoint {
+		key = GoodsQueryResponce
+	} else {
+		key = GoodsQueryResponse
+	}
+	return goods.service.ParseResult(res, key)
 }
 
 /* 根据skuid查询商品信息接口
    skuIds: 京东skuID串，逗号分割，最多100个，开发示例如param_json={'skuIds':'5225346,7275691'}
   （非常重要 请大家关注：如果输入的sk串中某个skuID的商品不在推广中[就是没有佣金]，返回结果中不会包含这个商品的信息）*/
 //    文档: https://union.jd.com/openplatform/api/10422
-func (g *GoodsServiceImpl) GoodsPromotiongoodsinfoQueryMap(skuIds string) (map[string]interface{}, error) {
+func (goods *GoodsServiceImpl) GoodsPromotiongoodsinfoQueryMap(skuIds string) (map[string]interface{}, error) {
+	err := goods.service.CheckRequiredParameters(struct{ skuIds string }{skuIds: skuIds})
+	if err != nil {
+		return nil, err
+	}
 	param := map[string]interface{}{}
 	param["skuIds"] = skuIds
 	var res map[string]interface{}
-	err := g.service.Do(&res, GoodsPromotiongoodsinfoQuery, param)
-	return res, err
+	err = goods.service.Do(&res, GoodsPromotiongoodsinfoQuery, param)
+	if err != nil {
+		return nil, err
+	}
+	var key ResponseKey
+	if goods.service.GetRouteApi() == JosRootEndpoint {
+		key = GoodsPromotiongoodsinfoQueryResponce
+	} else {
+		key = GoodsPromotiongoodsinfoQueryResponse
+	}
+	return goods.service.ParseResult(res, key)
 }
 
 // 商品类目查询接口
 // Deprecated: 使用新接口: CategoryGoodsGetMap
 //    文档: https://union.jd.com/openplatform/api/10434
-func (g *GoodsServiceImpl) CategoryGoodsGetQueryMap(request *CategoryGoodsGetRequest) (map[string]interface{}, error) {
-	return g.CategoryGoodsGetMap(request)
+func (goods *GoodsServiceImpl) CategoryGoodsGetQueryMap(request *CategoryGoodsGetRequest) (map[string]interface{}, error) {
+	return goods.CategoryGoodsGetMap(request)
 }
 
 // 商品类目查询接口
 //    文档: https://union.jd.com/openplatform/api/10434
-func (g *GoodsServiceImpl) CategoryGoodsGetMap(request *CategoryGoodsGetRequest) (map[string]interface{}, error) {
+func (goods *GoodsServiceImpl) CategoryGoodsGetMap(request *CategoryGoodsGetRequest) (map[string]interface{}, error) {
+	err := goods.service.CheckRequiredParameters(request)
+	if err != nil {
+		return nil, err
+	}
 	param := map[string]interface{}{}
 	param["req"] = request
 	var res map[string]interface{}
-	err := g.service.Do(&res, CategoryGoodsGet, param)
-	return res, err
+	err = goods.service.Do(&res, CategoryGoodsGet, param)
+	if err != nil {
+		return nil, err
+	}
+	var key ResponseKey
+	if goods.service.GetRouteApi() == JosRootEndpoint {
+		key = CategoryGoodsGetResponce
+	} else {
+		key = CategoryGoodsGetResponse
+	}
+	return goods.service.ParseResult(res, key)
 }
 
 // 商品详情查询接口【申请】
 //    文档: https://union.jd.com/openplatform/api/11248
-func (g *GoodsServiceImpl) GoodsGigfieldQueryMap(request *GoodsGigFieldQueryRequest) (map[string]interface{}, error) {
+func (goods *GoodsServiceImpl) GoodsGigfieldQueryMap(request *GoodsGigFieldQueryRequest) (map[string]interface{}, error) {
+	err := goods.service.CheckRequiredParameters(request)
+	if err != nil {
+		return nil, err
+	}
 	param := map[string]interface{}{}
 	param["goodsReq"] = request
 	var res map[string]interface{}
-	err := g.service.Do(&res, GoodsGigfieldQuery, param)
-	return res, err
+	err = goods.service.Do(&res, GoodsGigfieldQuery, param)
+	if err != nil {
+		return nil, err
+	}
+	var key ResponseKey
+	if goods.service.GetRouteApi() == JosRootEndpoint {
+		key = GoodsGigfieldQueryResponce
+	} else {
+		key = GoodsGigfieldQueryResponse
+	}
+	return goods.service.ParseResult(res, key)
 }

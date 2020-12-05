@@ -15,13 +15,37 @@ type JosQueryResult struct {
 	QueryResult string `json:"queryResult"`
 }
 
+type JosGetResult struct {
+	Code      string `json:"code"`
+	GetResult string `json:"getResult"`
+}
+
+type JosStopResult struct {
+	Code       string `json:"code"`
+	StopResult string `json:"stopResult"`
+}
+
+type JosCreateResult struct {
+	Code         string `json:"code"`
+	CreateResult string `json:"createResult"`
+}
+
+type ErrorResponse struct {
+	Code   string `json:"code"`
+	ZhDesc string `json:"zh_desc"`
+	EnDesc string `json:"en_desc"`
+}
+
+type Result interface {
+	error
+	String() string
+	IsSuccess() bool
+	GetResult() []byte
+}
+
 // 基础响应
 type BaseResult struct {
-	ErrorResponse struct {
-		Code   string `json:"code"`
-		ZhDesc string `json:"zh_desc"`
-		EnDesc string `json:"en_desc"`
-	} `json:"error_response"`
+	ErrorResponse ErrorResponse `json:"error_response"`
 }
 
 func (b *BaseResult) Error() string {
@@ -64,7 +88,7 @@ type GoodsJingfenQueryResult struct {
 }
 
 func (r *GoodsJingfenQueryResult) IsSuccess() bool {
-	return r.ErrorResponse.Code == "" && (r.JdUnionOpenGoodsJingfenQueryResponce.Code == "200" || r.JdUnionOpenGoodsJingfenQueryResponse.Code == "200")
+	return r.BaseResult.IsSuccess() //&& (r.JdUnionOpenGoodsJingfenQueryResponce.Code == "200" || r.JdUnionOpenGoodsJingfenQueryResponse.Code == "200")
 }
 
 func (r *GoodsJingfenQueryResult) String() string {
@@ -190,8 +214,8 @@ type CategoryGoodsGetRequest struct {
 
 type CategoryGoodsGetResult struct {
 	BaseResult
-	JdUnionOpenCategoryGoodsGetResponse UnionResult `json:"jd_union_open_category_goods_get_response"`
-	JdUnionOpenCategoryGoodsGetResponce UnionResult
+	JdUnionOpenCategoryGoodsGetResponse UnionResult  `json:"jd_union_open_category_goods_get_response"`
+	JdUnionOpenCategoryGoodsGetResponce JosGetResult `json:"jd_union_open_category_goods_get_responce"`
 }
 
 func (r *CategoryGoodsGetResult) String() string {
@@ -207,6 +231,9 @@ func (r *CategoryGoodsGetResult) Error() string {
 
 func (r *CategoryGoodsGetResult) GetResult() []byte {
 	str := r.JdUnionOpenCategoryGoodsGetResponse.Result
+	if str == "" {
+		str = r.JdUnionOpenCategoryGoodsGetResponce.GetResult
+	}
 	if str == "" {
 		return r.BaseResult.GetResult()
 	}
@@ -268,8 +295,8 @@ type PromoteCommonGetRequest struct {
 
 type PromoteCommonGetResult struct {
 	BaseResult
-	JdUnionOpenPromoteCommonGetResponse UnionResult    `json:"jd_union_open_promotion_common_get_response"`
-	JdUnionOpenPromoteCommonGetResponce JosQueryResult `json:"jd_union_open_promote_common_get_responce"`
+	JdUnionOpenPromoteCommonGetResponse UnionResult  `json:"jd_union_open_promotion_common_get_response"`
+	JdUnionOpenPromoteCommonGetResponce JosGetResult `json:"jd_union_open_promote_common_get_responce"`
 }
 
 func (r *PromoteCommonGetResult) String() string {
@@ -286,7 +313,7 @@ func (r *PromoteCommonGetResult) Error() string {
 func (r *PromoteCommonGetResult) GetResult() []byte {
 	str := r.JdUnionOpenPromoteCommonGetResponse.Result
 	if str == "" {
-		str = r.JdUnionOpenPromoteCommonGetResponce.QueryResult
+		str = r.JdUnionOpenPromoteCommonGetResponce.GetResult
 	}
 	if str == "" {
 		return r.BaseResult.GetResult()
@@ -310,8 +337,8 @@ type PromotionBysubunionidGetRequest struct {
 
 type PromotionBysubunionidGetResult struct {
 	BaseResult
-	JdUnionOpenPromotionBysubunionidGetResponse UnionResult    `json:"jd_union_open_promotion_bysubunionid_get_response"`
-	JdUnionOpenPromotionBysubunionidGetResponce JosQueryResult `json:"jd_union_open_promotion_bysubunionid_get_responce"`
+	JdUnionOpenPromotionBysubunionidGetResponse UnionResult  `json:"jd_union_open_promotion_bysubunionid_get_response"`
+	JdUnionOpenPromotionBysubunionidGetResponce JosGetResult `json:"jd_union_open_promotion_bysubunionid_get_responce"`
 }
 
 func (r *PromotionBysubunionidGetResult) String() string {
@@ -328,7 +355,7 @@ func (r *PromotionBysubunionidGetResult) Error() string {
 func (r *PromotionBysubunionidGetResult) GetResult() []byte {
 	str := r.JdUnionOpenPromotionBysubunionidGetResponse.Result
 	if str == "" {
-		str = r.JdUnionOpenPromotionBysubunionidGetResponce.QueryResult
+		str = r.JdUnionOpenPromotionBysubunionidGetResponce.GetResult
 	}
 	if str == "" {
 		return r.BaseResult.GetResult()
@@ -352,8 +379,8 @@ type PromotionByunionidGetRequest struct {
 
 type PromotionByunionidGetResult struct {
 	BaseResult
-	JdUnionOpenPromotionBysubunionidGetResponse UnionResult    `json:"jd_union_open_promotion_bysubunionid_get_response"`
-	JdUnionOpenPromotionBysubunionidGetResponce JosQueryResult `json:"jd_union_open_promotion_bysubunionid_get_responce"`
+	JdUnionOpenPromotionBysubunionidGetResponse UnionResult  `json:"jd_union_open_promotion_bysubunionid_get_response"`
+	JdUnionOpenPromotionBysubunionidGetResponce JosGetResult `json:"jd_union_open_promotion_bysubunionid_get_responce"`
 }
 
 func (r *PromotionByunionidGetResult) String() string {
@@ -370,7 +397,7 @@ func (r *PromotionByunionidGetResult) Error() string {
 func (r *PromotionByunionidGetResult) GetResult() []byte {
 	str := r.JdUnionOpenPromotionBysubunionidGetResponse.Result
 	if str == "" {
-		str = r.JdUnionOpenPromotionBysubunionidGetResponce.QueryResult
+		str = r.JdUnionOpenPromotionBysubunionidGetResponce.GetResult
 	}
 	if str == "" {
 		return r.BaseResult.GetResult()
@@ -392,8 +419,8 @@ type PromotionAppletGetRequest struct {
 
 type PromotionAppletGetResult struct {
 	BaseResult
-	JdUnionOpenPromotionAppletGetResponse UnionResult    `json:"jd_union_open_promotion_applet_get_response"`
-	JdUnionOpenPromotionAppletGetResponce JosQueryResult `json:"jd_union_open_promotion_applet_get_responce"`
+	JdUnionOpenPromotionAppletGetResponse UnionResult  `json:"jd_union_open_promotion_applet_get_response"`
+	JdUnionOpenPromotionAppletGetResponce JosGetResult `json:"jd_union_open_promotion_applet_get_responce"`
 }
 
 func (r *PromotionAppletGetResult) String() string {
@@ -410,7 +437,7 @@ func (r *PromotionAppletGetResult) Error() string {
 func (r *PromotionAppletGetResult) GetResult() []byte {
 	str := r.JdUnionOpenPromotionAppletGetResponse.Result
 	if str == "" {
-		str = r.JdUnionOpenPromotionAppletGetResponce.QueryResult
+		str = r.JdUnionOpenPromotionAppletGetResponce.GetResult
 	}
 	if str == "" {
 		return r.BaseResult.GetResult()
@@ -505,8 +532,8 @@ type PositionCreateRequest struct {
 
 type PositionCreateResult struct {
 	BaseResult
-	JdUnionOpenPositionCreateResponse UnionResult    `json:"jd_union_open_position_create_response"`
-	JdUnionOpenPositionCreateResponce JosQueryResult `json:"jd_union_open_position_create_responce"`
+	JdUnionOpenPositionCreateResponse UnionResult     `json:"jd_union_open_position_create_response"`
+	JdUnionOpenPositionCreateResponce JosCreateResult `json:"jd_union_open_position_create_responce"`
 }
 
 func (r *PositionCreateResult) String() string {
@@ -523,7 +550,7 @@ func (r *PositionCreateResult) Error() string {
 func (r *PositionCreateResult) GetResult() []byte {
 	str := r.JdUnionOpenPositionCreateResponse.Result
 	if str == "" {
-		str = r.JdUnionOpenPositionCreateResponce.QueryResult
+		str = r.JdUnionOpenPositionCreateResponce.CreateResult
 	}
 	if str == "" {
 		return r.BaseResult.GetResult()
@@ -545,8 +572,8 @@ type UserPidGetRequest struct {
 
 type UserPidGetResult struct {
 	BaseResult
-	JdUnionOpenUserPidGetResponse UnionResult    `json:"jd_union_open_user_pid_get_response"`
-	JdUnionOpenUserPidGetResponce JosQueryResult `json:"jd_union_open_user_pid_get_responce"`
+	JdUnionOpenUserPidGetResponse UnionResult  `json:"jd_union_open_user_pid_get_response"`
+	JdUnionOpenUserPidGetResponce JosGetResult `json:"jd_union_open_user_pid_get_responce"`
 }
 
 func (r *UserPidGetResult) String() string {
@@ -563,7 +590,7 @@ func (r *UserPidGetResult) Error() string {
 func (r *UserPidGetResult) GetResult() []byte {
 	str := r.JdUnionOpenUserPidGetResponse.Result
 	if str == "" {
-		str = r.JdUnionOpenUserPidGetResponce.QueryResult
+		str = r.JdUnionOpenUserPidGetResponce.GetResult
 	}
 	if str == "" {
 		return r.BaseResult.GetResult()
@@ -670,8 +697,8 @@ type CouponGiftGetRequest struct {
 
 type CouponGiftGetResult struct {
 	BaseResult
-	JdUnionOpenCouponGiftGetResponse UnionResult    `json:"jd_union_open_coupon_gift_get_response"`
-	JdUnionOpenCouponGiftGetResponce JosQueryResult `json:"jd_union_open_coupon_gift_get_responce"`
+	JdUnionOpenCouponGiftGetResponse UnionResult  `json:"jd_union_open_coupon_gift_get_response"`
+	JdUnionOpenCouponGiftGetResponce JosGetResult `json:"jd_union_open_coupon_gift_get_responce"`
 }
 
 func (r *CouponGiftGetResult) String() string {
@@ -688,7 +715,7 @@ func (r *CouponGiftGetResult) Error() string {
 func (r *CouponGiftGetResult) GetResult() []byte {
 	str := r.JdUnionOpenCouponGiftGetResponse.Result
 	if str == "" {
-		str = r.JdUnionOpenCouponGiftGetResponce.QueryResult
+		str = r.JdUnionOpenCouponGiftGetResponce.GetResult
 	}
 	if str == "" {
 		return r.BaseResult.GetResult()
@@ -704,8 +731,8 @@ type CouponGiftStopRequest struct {
 
 type CouponGiftStopResult struct {
 	BaseResult
-	JdUnionOpenCouponGiftStopResponse UnionResult    `json:"jd_union_open_coupon_gift_stop_response"`
-	JdUnionOpenCouponGiftStopResponce JosQueryResult `json:"jd_union_open_coupon_gift_stop_responce"`
+	JdUnionOpenCouponGiftStopResponse UnionResult   `json:"jd_union_open_coupon_gift_stop_response"`
+	JdUnionOpenCouponGiftStopResponce JosStopResult `json:"jd_union_open_coupon_gift_stop_responce"`
 }
 
 func (r *CouponGiftStopResult) String() string {
@@ -722,7 +749,7 @@ func (r *CouponGiftStopResult) Error() string {
 func (r *CouponGiftStopResult) GetResult() []byte {
 	str := r.JdUnionOpenCouponGiftStopResponse.Result
 	if str == "" {
-		str = r.JdUnionOpenCouponGiftStopResponce.QueryResult
+		str = r.JdUnionOpenCouponGiftStopResponce.StopResult
 	}
 	if str == "" {
 		return r.BaseResult.GetResult()
@@ -741,8 +768,8 @@ type StatisticGiftCouponQueryRequest struct {
 
 type StatisticGiftCouponQueryResult struct {
 	BaseResult
-	JdUnionOpenStatisticGiftCouponQueryResponse UnionResult    `json:"jd_union_open_statistic_gift_coupon_query_response"`
-	JdUnionOpenStatisticGiftCouponQueryResponce JosQueryResult `json:"jd_union_open_statistic_gift_coupon_query_responce"`
+	JdUnionOpenStatisticGiftCouponQueryResponse UnionResult    `json:"jd_union_open_statistics_giftcoupon_query_response"`
+	JdUnionOpenStatisticGiftCouponQueryResponce JosQueryResult `json:"jd_union_open_statistics_giftcoupon_query_responce"`
 }
 
 func (r *StatisticGiftCouponQueryResult) String() string {

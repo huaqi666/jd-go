@@ -82,104 +82,104 @@ func newOtherService(p PositionService, a ActivityService) OtherService {
 // 查询推广位【申请】
 // Deprecated: 使用新接口: PositionService.PositionQuery
 //    文档: https://union.jd.com/openplatform/api/10428
-func (o *OtherServiceImpl) PositionQuery(request *PositionQueryRequest) (*PositionQueryResult, error) {
-	return o.p.PositionQuery(request)
+func (oth *OtherServiceImpl) PositionQuery(request *PositionQueryRequest) (*PositionQueryResult, error) {
+	return oth.p.PositionQuery(request)
 }
 
 // 创建推广位【申请】
 // Deprecated: 使用新接口: PositionService.PositionCreate
 //    文档: https://union.jd.com/openplatform/api/10429
-func (o *OtherServiceImpl) PositionCreate(request *PositionCreateRequest) (*PositionCreateResult, error) {
-	return o.p.PositionCreate(request)
+func (oth *OtherServiceImpl) PositionCreate(request *PositionCreateRequest) (*PositionCreateResult, error) {
+	return oth.p.PositionCreate(request)
 }
 
 // 获取PID【申请】
 // Deprecated: 使用新接口: PositionService.UserPidGet
 //    文档: https://union.jd.com/openplatform/api/10430
-func (o *OtherServiceImpl) UserPidGet(request *UserPidGetRequest) (*UserPidGetResult, error) {
-	return o.p.UserPidGet(request)
+func (oth *OtherServiceImpl) UserPidGet(request *UserPidGetRequest) (*UserPidGetResult, error) {
+	return oth.p.UserPidGet(request)
 }
 
 // 活动查询接口
 // Deprecated: 使用新接口: ActivityService.ActivityQuery
 //    文档: https://union.jd.com/openplatform/api/12667
-func (o *OtherServiceImpl) ActivityQuery(request *ActivityQueryRequest) (*ActivityQueryResult, error) {
-	return o.a.ActivityQuery(request)
+func (oth *OtherServiceImpl) ActivityQuery(request *ActivityQueryRequest) (*ActivityQueryResult, error) {
+	return oth.a.ActivityQuery(request)
 }
 
 // 京享红包效果数据
 // Deprecated: 使用新接口: ActivityService.StatisticsRedpacketQuery
 //    文档: https://union.jd.com/openplatform/api/14416
-func (o *OtherServiceImpl) StatisticsRedpacketQuery(request *StatisticsRedpacketQueryRequest) (*StatisticsRedpacketQueryResult, error) {
-	return o.a.StatisticsRedpacketQuery(request)
+func (oth *OtherServiceImpl) StatisticsRedpacketQuery(request *StatisticsRedpacketQueryRequest) (*StatisticsRedpacketQueryResult, error) {
+	return oth.a.StatisticsRedpacketQuery(request)
 }
 
 // 查询推广位【申请】
 // Deprecated: 使用新接口: PositionService.PositionQueryResult
 //    文档: https://union.jd.com/openplatform/api/10428
-func (o *OtherServiceImpl) PositionQueryResult(request *PositionQueryRequest) ([]byte, error) {
-	return o.p.PositionQueryResult(request)
+func (oth *OtherServiceImpl) PositionQueryResult(request *PositionQueryRequest) ([]byte, error) {
+	return oth.p.PositionQueryResult(request)
 }
 
 // 创建推广位【申请】
 // Deprecated: 使用新接口: PositionService.PositionCreateResult
 //    文档: https://union.jd.com/openplatform/api/10429
-func (o *OtherServiceImpl) PositionCreateResult(request *PositionCreateRequest) ([]byte, error) {
-	return o.p.PositionCreateResult(request)
+func (oth *OtherServiceImpl) PositionCreateResult(request *PositionCreateRequest) ([]byte, error) {
+	return oth.p.PositionCreateResult(request)
 }
 
 // 获取PID【申请】
 // Deprecated: 使用新接口: PositionService.UserPidGetResult
 //    文档: https://union.jd.com/openplatform/api/10430
-func (o *OtherServiceImpl) UserPidGetResult(request *UserPidGetRequest) ([]byte, error) {
-	return o.p.UserPidGetResult(request)
+func (oth *OtherServiceImpl) UserPidGetResult(request *UserPidGetRequest) ([]byte, error) {
+	return oth.p.UserPidGetResult(request)
 }
 
 // 活动查询接口
 // Deprecated: 使用新接口: ActivityService.ActivityQueryResult
 //    文档: https://union.jd.com/openplatform/api/12667
-func (o *OtherServiceImpl) ActivityQueryResult(request *ActivityQueryRequest) ([]byte, error) {
-	return o.a.ActivityQueryResult(request)
+func (oth *OtherServiceImpl) ActivityQueryResult(request *ActivityQueryRequest) ([]byte, error) {
+	return oth.a.ActivityQueryResult(request)
 }
 
 // 京享红包效果数据
 // Deprecated: 使用新接口: ActivityService.StatisticsRedpacketQueryResult
 //    文档: https://union.jd.com/openplatform/api/14416
-func (o *OtherServiceImpl) StatisticsRedpacketQueryResult(request *StatisticsRedpacketQueryRequest) ([]byte, error) {
-	return o.a.StatisticsRedpacketQueryResult(request)
+func (oth *OtherServiceImpl) StatisticsRedpacketQueryResult(request *StatisticsRedpacketQueryRequest) ([]byte, error) {
+	return oth.a.StatisticsRedpacketQueryResult(request)
 }
 
 // 查询推广位【申请】
 // Deprecated: 使用新接口: PositionService.PositionQueryMap
 //    文档: https://union.jd.com/openplatform/api/10428
-func (o *OtherServiceImpl) PositionQueryMap(request *PositionQueryRequest) (map[string]interface{}, error) {
-	return o.p.PositionQueryMap(request)
+func (oth *OtherServiceImpl) PositionQueryMap(request *PositionQueryRequest) (map[string]interface{}, error) {
+	return oth.p.PositionQueryMap(request)
 }
 
 // 创建推广位【申请】
 // Deprecated: 使用新接口: PositionService.PositionCreateMap
 //    文档: https://union.jd.com/openplatform/api/10429
-func (o *OtherServiceImpl) PositionCreateMap(request *PositionCreateRequest) (map[string]interface{}, error) {
-	return o.p.PositionCreateMap(request)
+func (oth *OtherServiceImpl) PositionCreateMap(request *PositionCreateRequest) (map[string]interface{}, error) {
+	return oth.p.PositionCreateMap(request)
 }
 
 // 获取PID【申请】
 // Deprecated: 使用新接口: PositionService.UserPidGetMap
 //    文档: https://union.jd.com/openplatform/api/10430
-func (o *OtherServiceImpl) UserPidGetMap(request *UserPidGetRequest) (map[string]interface{}, error) {
-	return o.p.UserPidGetMap(request)
+func (oth *OtherServiceImpl) UserPidGetMap(request *UserPidGetRequest) (map[string]interface{}, error) {
+	return oth.p.UserPidGetMap(request)
 }
 
 // 活动查询接口
 // Deprecated: 使用新接口: ActivityService.ActivityQueryMap
 //    文档: https://union.jd.com/openplatform/api/12667
-func (o *OtherServiceImpl) ActivityQueryMap(request *ActivityQueryRequest) (map[string]interface{}, error) {
-	return o.a.ActivityQueryMap(request)
+func (oth *OtherServiceImpl) ActivityQueryMap(request *ActivityQueryRequest) (map[string]interface{}, error) {
+	return oth.a.ActivityQueryMap(request)
 }
 
 // 京享红包效果数据
 // Deprecated: 使用新接口: ActivityService.StatisticsRedpacketQueryMap
 //    文档: https://union.jd.com/openplatform/api/14416
-func (o *OtherServiceImpl) StatisticsRedpacketQueryMap(request *StatisticsRedpacketQueryRequest) (map[string]interface{}, error) {
-	return o.a.StatisticsRedpacketQueryMap(request)
+func (oth *OtherServiceImpl) StatisticsRedpacketQueryMap(request *StatisticsRedpacketQueryRequest) (map[string]interface{}, error) {
+	return oth.a.StatisticsRedpacketQueryMap(request)
 }

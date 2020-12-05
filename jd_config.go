@@ -91,31 +91,31 @@ func NewParam(param *parameter) *Param {
 }
 
 // 检查必选参数
-func (p *parameter) CheckRequiredParams() (err error) {
-	if "" == p.AppKey || "" == p.SecretKey {
+func (ptr *parameter) CheckRequiredParams() (err error) {
+	if "" == ptr.AppKey || "" == ptr.SecretKey {
 		err = fmt.Errorf("AppKey and SecretKey must be set")
 		log.Error("Parameter:", err)
 		return
 	}
-	if p.RouteApi == UnionRootEndpoint {
+	if ptr.RouteApi == UnionRootEndpoint {
 		// 宙斯中format和sign_method不是必须
-		if "" == p.Format || "" == p.SignMethod {
+		if "" == ptr.Format || "" == ptr.SignMethod {
 			err = fmt.Errorf("format, sign_method must be set")
 			log.Error("Parameter:", err)
 			return
 		}
 	}
-	if "" == p.Timestamp {
+	if "" == ptr.Timestamp {
 		err = fmt.Errorf("timestamp must be set")
 		log.Error("Parameter:", err)
 		return
 	}
-	if "" == p.Method {
+	if "" == ptr.Method {
 		err = fmt.Errorf("method is required")
 		log.Error("Parameter:", err)
 		return
 	}
-	if "" == p.Version {
+	if "" == ptr.Version {
 		err = fmt.Errorf("version is required")
 		log.Error("Parameter:", err)
 		return
@@ -124,20 +124,20 @@ func (p *parameter) CheckRequiredParams() (err error) {
 }
 
 //  把所有请求参数按照参数名称的 ASCII 码表顺序进行排序并拼接
-func (p *parameter) getConcatParams() string {
+func (ptr *parameter) getConcatParams() string {
 	var (
 		sorts  []string
 		value  string
 		params map[string]interface{}
 		concat string
 	)
-	bs, _ := json.Marshal(p)
+	bs, _ := json.Marshal(ptr)
 	_ = json.Unmarshal(bs, &params)
 	for key := range params {
 		if "sign" != key {
 			value = params[key].(string)
 			// 签名兼容宙斯
-			if p.RouteApi == UnionRootEndpoint && key == "access_token" && value == "" {
+			if ptr.RouteApi == UnionRootEndpoint && key == "access_token" && value == "" {
 				continue
 			}
 			sorts = append(sorts, key+value)
@@ -151,7 +151,7 @@ func (p *parameter) getConcatParams() string {
 }
 
 // 把 appSecret 的值拼接在字符串的两端，使用 MD5 进行加密，并转化成大写
-func (p *parameter) attachSign() {
-	concatParams := p.getConcatParams()
-	p.Sign = common.Md5ToUpper(p.SecretKey + concatParams + p.SecretKey)
+func (ptr *parameter) attachSign() {
+	concatParams := ptr.getConcatParams()
+	ptr.Sign = common.Md5ToUpper(ptr.SecretKey + concatParams + ptr.SecretKey)
 }

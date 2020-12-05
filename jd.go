@@ -5,6 +5,7 @@ import (
 	"errors"
 	"github.com/cliod/jd-go/common"
 	"github.com/cliod/jd-go/log"
+	"strings"
 )
 
 // 京东联盟API
@@ -81,7 +82,24 @@ type Service interface {
 	// v 返回数据解析对象(指针)
 	// method 请求路由方法
 	// 业务参数
+	// 可通过 Request 方法执行其他未封装的京东联盟API
 	Request(v interface{}, method Method, param map[string]interface{}) error
+
+	// 参数校验
+	CheckRequiredParameters(v interface{}) error
+
+	// 获取解析正确结果
+	GetResult(Result, error) ([]byte, error)
+	// 解析并获取正确结果
+	ParseResult(map[string]interface{}, ResponseKey) (map[string]interface{}, error)
+
+	// 开启验证等级
+	Validate(VCode)
+	// 结果为map对象时的解封装等级，默认1
+	// 0 不做解析，全部返回
+	// 1 解析返回1层
+	// 2 解析返回主要数据
+	SetMapResultParseLevel(level int)
 }
 
 type ServiceImpl struct {
@@ -96,8 +114,14 @@ type ServiceImpl struct {
 	activityService ActivityService
 	positionService PositionService
 
-	//Deprecated: 弃用
 	otherService OtherService
+
+	// 是否开启参数非空校验
+	validateEmpty bool
+	// 结果为map对象时的解封装等级，默认1
+	mapResultParseLevel int
+	// 请求的结果解封装等级 todo
+	resultParseLevel int
 }
 
 // 默认京东联盟
@@ -107,7 +131,10 @@ func NewJdClient(appKey, secretKey string) Service {
 
 // 默认京东联盟
 func NewJdService(appKey, secretKey string) Service {
-	return NewJdUnionService(appKey, secretKey)
+	service := NewJdUnionService(appKey, secretKey)
+	// 不做解析，兼容旧版本
+	service.SetMapResultParseLevel(0)
+	return service
 }
 
 func NewJdUnionService(appKey, secretKey string) Service {
@@ -133,15 +160,18 @@ func newService(appKey, secretKey, routApi string) Service {
 	impl.positionService = newPositionService(impl)
 
 	impl.otherService = newOtherService(impl.positionService, impl.activityService)
+
+	impl.validateEmpty = false
+	impl.mapResultParseLevel = 1
 	return impl
 }
 
-func (s *ServiceImpl) Get(url string, args interface{}) ([]byte, error) {
-	return s.service.Get(url, args)
+func (ser *ServiceImpl) Get(url string, args interface{}) ([]byte, error) {
+	return ser.service.Get(url, args)
 }
 
-func (s *ServiceImpl) GetFor(v interface{}, url string, args *Param) error {
-	res, err := s.Get(url, args)
+func (ser *ServiceImpl) GetFor(v interface{}, url string, args *Param) error {
+	res, err := ser.Get(url, args)
 	if err != nil {
 		log.Error("Request:", err)
 		return err
@@ -149,94 +179,94 @@ func (s *ServiceImpl) GetFor(v interface{}, url string, args *Param) error {
 	return json.Unmarshal(res, v)
 }
 
-func (s *ServiceImpl) GetGoodsService() GoodsService {
-	return s.goodsService
+func (ser *ServiceImpl) GetGoodsService() GoodsService {
+	return ser.goodsService
 }
 
-func (s *ServiceImpl) GetCouponService() CouponService {
-	return s.couponService
+func (ser *ServiceImpl) GetCouponService() CouponService {
+	return ser.couponService
 }
 
-func (s *ServiceImpl) GetPromoteService() PromotionService {
-	return s.promoteService
+func (ser *ServiceImpl) GetPromoteService() PromotionService {
+	return ser.promoteService
 }
 
-func (s *ServiceImpl) SetGoodsService(service GoodsService) {
-	s.goodsService = service
+func (ser *ServiceImpl) SetGoodsService(service GoodsService) {
+	ser.goodsService = service
 }
 
-func (s *ServiceImpl) SetCouponService(service CouponService) {
-	s.couponService = service
+func (ser *ServiceImpl) SetCouponService(service CouponService) {
+	ser.couponService = service
 }
 
-func (s *ServiceImpl) SetPromoteService(service PromotionService) {
-	s.promoteService = service
+func (ser *ServiceImpl) SetPromoteService(service PromotionService) {
+	ser.promoteService = service
 }
 
-func (s *ServiceImpl) GetGiftService() GiftService {
-	return s.giftService
+func (ser *ServiceImpl) GetGiftService() GiftService {
+	return ser.giftService
 }
 
-func (s *ServiceImpl) GetOrderService() OrderService {
-	return s.orderService
+func (ser *ServiceImpl) GetOrderService() OrderService {
+	return ser.orderService
 }
 
-func (s *ServiceImpl) GetActivityService() ActivityService {
-	return s.activityService
+func (ser *ServiceImpl) GetActivityService() ActivityService {
+	return ser.activityService
 }
 
-func (s *ServiceImpl) GetPositionService() PositionService {
-	return s.positionService
+func (ser *ServiceImpl) GetPositionService() PositionService {
+	return ser.positionService
 }
 
-func (s *ServiceImpl) SetGiftService(service GiftService) {
-	s.giftService = service
+func (ser *ServiceImpl) SetGiftService(service GiftService) {
+	ser.giftService = service
 }
 
-func (s *ServiceImpl) SetActivityService(service ActivityService) {
-	s.activityService = service
+func (ser *ServiceImpl) SetActivityService(service ActivityService) {
+	ser.activityService = service
 }
 
-func (s *ServiceImpl) SetPositionService(service PositionService) {
-	s.positionService = service
+func (ser *ServiceImpl) SetPositionService(service PositionService) {
+	ser.positionService = service
 }
 
-func (s *ServiceImpl) SetOrderService(service OrderService) {
-	s.orderService = service
+func (ser *ServiceImpl) SetOrderService(service OrderService) {
+	ser.orderService = service
 }
 
 // Deprecated: 使用新接口: GetPositionService 和 GetActivityService
-func (s *ServiceImpl) GetOtherService() OtherService {
-	return s.otherService
+func (ser *ServiceImpl) GetOtherService() OtherService {
+	return ser.otherService
 }
 
 // Deprecated: 使用新接口: SetPositionService 和 SetActivityService
-func (s *ServiceImpl) SetOtherService(service OtherService) {
-	s.otherService = service
+func (ser *ServiceImpl) SetOtherService(service OtherService) {
+	ser.otherService = service
 }
 
-func (s *ServiceImpl) GetConfig() *Config {
-	return s.config
+func (ser *ServiceImpl) GetConfig() *Config {
+	return ser.config
 }
 
-func (s *ServiceImpl) SetConfig(config *Config) {
-	s.config = config
+func (ser *ServiceImpl) SetConfig(config *Config) {
+	ser.config = config
 }
 
-func (s *ServiceImpl) SetHttpService(service common.Service) {
-	s.service = service
+func (ser *ServiceImpl) SetHttpService(service common.Service) {
+	ser.service = service
 }
 
-func (s *ServiceImpl) GetRouteApi() string {
-	return s.GetConfig().RouteApi
+func (ser *ServiceImpl) GetRouteApi() string {
+	return ser.GetConfig().RouteApi
 }
 
-func (s *ServiceImpl) SetRouteApi(api string) {
-	s.GetConfig().RouteApi = api
+func (ser *ServiceImpl) SetRouteApi(api string) {
+	ser.GetConfig().RouteApi = api
 }
 
-func (s *ServiceImpl) Sign(method Method, param map[string]interface{}) (*Param, error) {
-	c := s.GetConfig()
+func (ser *ServiceImpl) Sign(method Method, param map[string]interface{}) (*Param, error) {
+	c := ser.GetConfig()
 	c.Method = method
 	parameter := newParameter(c, param)
 	parameter.attachSign()
@@ -244,13 +274,13 @@ func (s *ServiceImpl) Sign(method Method, param map[string]interface{}) (*Param,
 	return NewParam(parameter), err
 }
 
-func (s *ServiceImpl) Request(v interface{}, method Method, param map[string]interface{}) error {
-	p, err := s.Sign(method, param)
+func (ser *ServiceImpl) Request(v interface{}, method Method, param map[string]interface{}) error {
+	p, err := ser.Sign(method, param)
 	if err != nil {
 		log.Error("Sign:", err)
 		return err
 	}
-	err = s.GetFor(v, s.GetConfig().RouteApi, p)
+	err = ser.GetFor(v, ser.GetConfig().RouteApi, p)
 	if err != nil {
 		log.Error("Result Err:", err)
 	} else {
@@ -260,23 +290,30 @@ func (s *ServiceImpl) Request(v interface{}, method Method, param map[string]int
 }
 
 // 非必填参数为空不会序列化
-func (s *ServiceImpl) CheckRequiredParameters(v interface{}) error {
+func (ser *ServiceImpl) CheckRequiredParameters(v interface{}) error {
+	if !ser.validateEmpty {
+		return nil
+	}
 	var param map[string]interface{}
 	param, ok := v.(map[string]interface{})
 	if !ok {
 		bs, err := json.Marshal(v)
 		if err != nil {
+			log.Error("Validate Empty: ", err)
 			return err
 		}
 		err = json.Unmarshal(bs, &param)
 		if err != nil {
+			log.Error("Validate Empty: ", err)
 			return err
 		}
 	}
 	for _, v := range param {
 		if s, ok := v.(string); ok {
 			if s == "" {
-				return errors.New("参数为空")
+				err := errors.New("参数为空")
+				log.Error("Validate Empty: ", err)
+				return err
 			}
 		}
 	}
@@ -284,6 +321,74 @@ func (s *ServiceImpl) CheckRequiredParameters(v interface{}) error {
 }
 
 // Deprecated: 使用新接口: Request
-func (s *ServiceImpl) Do(v interface{}, method Method, param map[string]interface{}) error {
-	return s.Request(v, method, param)
+func (ser *ServiceImpl) Do(v interface{}, method Method, param map[string]interface{}) error {
+	return ser.Request(v, method, param)
+}
+
+func (ser *ServiceImpl) GetResult(res Result, err error) ([]byte, error) {
+	if err != nil {
+		log.Warn("Get Result: ", err)
+		return nil, err
+	}
+	if res.IsSuccess() {
+		return nil, res
+	}
+	return res.GetResult(), nil
+}
+
+func (ser *ServiceImpl) ParseResult(res map[string]interface{}, key ResponseKey) (map[string]interface{}, error) {
+	if ser.mapResultParseLevel == 0 {
+		return res, nil
+	} else {
+		//错误信息处理
+		if res["error_response"] != nil {
+			var errResponse *BaseResult
+			errJson, err := json.Marshal(res)
+			if err != nil {
+				log.Error("Parse Result: ", err)
+				return nil, err
+			}
+			if err := json.Unmarshal(errJson, &errResponse); err != nil {
+				log.Error("Parse Result", err)
+				return nil, err
+			}
+			return nil, errResponse
+		}
+		resp, ok := res[key.String()].(map[string]interface{})
+		if ok {
+			if ser.mapResultParseLevel == 1 {
+				return resp, nil
+			}
+			var resName string
+			if strings.Contains(key.String(), "response") {
+				resName = "result"
+			} else {
+				resName = "queryResult"
+			}
+			str := resp[resName].(string)
+			r := make(map[string]interface{})
+			err := json.Unmarshal([]byte(str), &r)
+			if err != nil {
+				log.Error("Parse Result: ", err)
+				return nil, err
+			}
+			return r, nil
+		}
+		return nil, errors.New("error parse result")
+	}
+}
+
+func (ser *ServiceImpl) Validate(code VCode) {
+	switch code {
+	case NotEmpty:
+		ser.validateEmpty = true
+	case Non:
+		ser.validateEmpty = false
+	default:
+	}
+	//todo 其他校验
+}
+
+func (ser *ServiceImpl) SetMapResultParseLevel(level int) {
+	ser.mapResultParseLevel = level
 }

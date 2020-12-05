@@ -35,66 +35,86 @@ func newActivityService(service Service) ActivityService {
 
 // 活动查询接口
 //    文档: https://union.jd.com/openplatform/api/12667
-func (o *ActivityServiceImpl) ActivityQuery(request *ActivityQueryRequest) (*ActivityQueryResult, error) {
+func (act *ActivityServiceImpl) ActivityQuery(request *ActivityQueryRequest) (*ActivityQueryResult, error) {
+	err := act.service.CheckRequiredParameters(request)
+	if err != nil {
+		return nil, err
+	}
 	param := map[string]interface{}{}
 	param["activityReq"] = request
 	var res ActivityQueryResult
-	err := o.service.Do(&res, ActivityQuery, param)
+	err = act.service.Do(&res, ActivityQuery, param)
 	return &res, err
 }
 
 // 京享红包效果数据
 //    文档: https://union.jd.com/openplatform/api/14416
-func (o *ActivityServiceImpl) StatisticsRedpacketQuery(request *StatisticsRedpacketQueryRequest) (*StatisticsRedpacketQueryResult, error) {
+func (act *ActivityServiceImpl) StatisticsRedpacketQuery(request *StatisticsRedpacketQueryRequest) (*StatisticsRedpacketQueryResult, error) {
+	err := act.service.CheckRequiredParameters(request)
+	if err != nil {
+		return nil, err
+	}
 	param := map[string]interface{}{}
 	param["effectDataReq"] = request
 	var res StatisticsRedpacketQueryResult
-	err := o.service.Do(&res, StatisticsRedpacketQuery, param)
+	err = act.service.Do(&res, StatisticsRedpacketQuery, param)
 	return &res, err
 }
 
 // 活动查询接口
 //    文档: https://union.jd.com/openplatform/api/12667
-func (o *ActivityServiceImpl) ActivityQueryResult(request *ActivityQueryRequest) ([]byte, error) {
-	res, err := o.ActivityQuery(request)
-	if err != nil {
-		return nil, err
-	}
-	if res.IsSuccess() {
-		return nil, res
-	}
-	return res.GetResult(), nil
+func (act *ActivityServiceImpl) ActivityQueryResult(request *ActivityQueryRequest) ([]byte, error) {
+	return act.service.GetResult(act.ActivityQuery(request))
 }
 
 // 京享红包效果数据
 //    文档: https://union.jd.com/openplatform/api/14416
-func (o *ActivityServiceImpl) StatisticsRedpacketQueryResult(request *StatisticsRedpacketQueryRequest) ([]byte, error) {
-	res, err := o.StatisticsRedpacketQuery(request)
-	if err != nil {
-		return nil, err
-	}
-	if res.IsSuccess() {
-		return nil, res
-	}
-	return res.GetResult(), nil
+func (act *ActivityServiceImpl) StatisticsRedpacketQueryResult(request *StatisticsRedpacketQueryRequest) ([]byte, error) {
+	return act.service.GetResult(act.StatisticsRedpacketQuery(request))
 }
 
 // 活动查询接口
 //    文档: https://union.jd.com/openplatform/api/12667
-func (o *ActivityServiceImpl) ActivityQueryMap(request *ActivityQueryRequest) (map[string]interface{}, error) {
+func (act *ActivityServiceImpl) ActivityQueryMap(request *ActivityQueryRequest) (map[string]interface{}, error) {
+	err := act.service.CheckRequiredParameters(request)
+	if err != nil {
+		return nil, err
+	}
 	param := map[string]interface{}{}
 	param["activityReq"] = request
 	var res map[string]interface{}
-	err := o.service.Do(&res, ActivityQuery, param)
-	return res, err
+	err = act.service.Do(&res, ActivityQuery, param)
+	if err != nil {
+		return nil, err
+	}
+	var key ResponseKey
+	if act.service.GetRouteApi() == JosRootEndpoint {
+		key = ActivityQueryResponce
+	} else {
+		key = ActivityQueryResponse
+	}
+	return act.service.ParseResult(res, key)
 }
 
 // 京享红包效果数据
 //    文档: https://union.jd.com/openplatform/api/14416
-func (o *ActivityServiceImpl) StatisticsRedpacketQueryMap(request *StatisticsRedpacketQueryRequest) (map[string]interface{}, error) {
+func (act *ActivityServiceImpl) StatisticsRedpacketQueryMap(request *StatisticsRedpacketQueryRequest) (map[string]interface{}, error) {
+	err := act.service.CheckRequiredParameters(request)
+	if err != nil {
+		return nil, err
+	}
 	param := map[string]interface{}{}
 	param["effectDataReq"] = request
 	var res map[string]interface{}
-	err := o.service.Do(&res, StatisticsRedpacketQuery, param)
-	return res, err
+	err = act.service.Do(&res, StatisticsRedpacketQuery, param)
+	if err != nil {
+		return nil, err
+	}
+	var key ResponseKey
+	if act.service.GetRouteApi() == JosRootEndpoint {
+		key = StatisticsRedpacketQueryResponce
+	} else {
+		key = StatisticsRedpacketQueryResponse
+	}
+	return act.service.ParseResult(res, key)
 }
