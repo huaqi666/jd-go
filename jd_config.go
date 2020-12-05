@@ -12,16 +12,16 @@ import (
 
 // 系统配置/系统参数
 type Config struct {
-	Method      Method `json:"method"`                 // API接口名称
-	AppKey      string `json:"app_key"`                // 分配给应用的AppKey
-	AccessToken string `json:"access_token,omitempty"` // Oauth2颁发的动态令牌,根据API属性标签，如果需要授权，则此参数必传;如果不需要授权，则此参数不需要传
-	Timestamp   string `json:"timestamp"`              // 时间戳，格式为yyyy-MM-dd  HH:mm:ss，时区为GMT+8。API服务端允许客户端请求最大时间误差为10分钟
-	Format      string `json:"format"`                 // 响应格式。暂时只支持json
-	Version     string `json:"v"`                      // API协议版本，可选值：2.0，请根据API具体版本号传入此参数，一般为1.0
-	SignMethod  string `json:"sign_method"`            // 签名的摘要算法， md5
-	Sign        string `json:"sign"`                   // API输入参数签名结果
-	SecretKey   string `json:"-"`                      // api秘钥
-	RouteApi    string `json:"-"`                      // 路由API，默认京东联盟
+	Method      Method `json:"method"`       // API接口名称
+	AppKey      string `json:"app_key"`      // 分配给应用的AppKey
+	AccessToken string `json:"access_token"` // Oauth2颁发的动态令牌,根据API属性标签，如果需要授权，则此参数必传;如果不需要授权，则此参数不需要传
+	Timestamp   string `json:"timestamp"`    // 时间戳，格式为yyyy-MM-dd  HH:mm:ss，时区为GMT+8。API服务端允许客户端请求最大时间误差为10分钟
+	Format      string `json:"format"`       // 响应格式。暂时只支持json
+	Version     string `json:"v"`            // API协议版本，可选值：2.0，请根据API具体版本号传入此参数，一般为1.0
+	SignMethod  string `json:"sign_method"`  // 签名的摘要算法， md5
+	Sign        string `json:"sign"`         // API输入参数签名结果
+	SecretKey   string `json:"-"`            // api秘钥
+	RouteApi    string `json:"-"`            // 路由API，默认京东联盟
 }
 
 func newConfig(appKey, secretKey, routApi string) *Config {
@@ -97,8 +97,16 @@ func (p *parameter) CheckRequiredParams() (err error) {
 		log.Error("Parameter:", err)
 		return
 	}
-	if "" == p.Format || "" == p.SignMethod || "" == p.Timestamp {
-		err = fmt.Errorf("format, sign_method and timestamp must be set")
+	if p.RouteApi == UnionRootEndpoint {
+		// 宙斯中format和sign_method不是必须
+		if "" == p.Format || "" == p.SignMethod {
+			err = fmt.Errorf("format, sign_method must be set")
+			log.Error("Parameter:", err)
+			return
+		}
+	}
+	if "" == p.Timestamp {
+		err = fmt.Errorf("timestamp must be set")
 		log.Error("Parameter:", err)
 		return
 	}
@@ -128,6 +136,10 @@ func (p *parameter) getConcatParams() string {
 	for key := range params {
 		if "sign" != key {
 			value = params[key].(string)
+			// 签名兼容宙斯
+			if p.RouteApi == UnionRootEndpoint && key == "access_token" && value == "" {
+				continue
+			}
 			sorts = append(sorts, key+value)
 		}
 	}
