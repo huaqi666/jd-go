@@ -8,6 +8,7 @@ type PositionService interface {
 	//    文档: https://union.jd.com/openplatform/api/10429
 	PositionCreate(*PositionCreateRequest) (*PositionCreateResult, error)
 	// 获取PID【申请】
+	// 此接口属于版本: 1.1
 	//    文档: https://union.jd.com/openplatform/api/10430
 	UserPidGet(*UserPidGetRequest) (*UserPidGetResult, error)
 
@@ -71,6 +72,7 @@ func (pos *PositionServiceImpl) PositionCreate(request *PositionCreateRequest) (
 }
 
 // 获取PID【申请】
+// 此接口在版本1.1才有
 //    文档: https://union.jd.com/openplatform/api/10430
 func (pos *PositionServiceImpl) UserPidGet(request *UserPidGetRequest) (*UserPidGetResult, error) {
 	err := pos.service.CheckRequiredParameters(request)
