@@ -126,28 +126,28 @@ type ServiceImpl struct {
 
 // 默认京东联盟
 func NewJdClient(appKey, secretKey string) Service {
-	return NewJdUnionService(appKey, secretKey)
+	return NewJdUnionService(appKey, secretKey, "")
 }
 
 // 默认京东联盟
 func NewJdService(appKey, secretKey string) Service {
-	service := NewJdUnionService(appKey, secretKey)
+	service := NewJdUnionService(appKey, secretKey, "")
 	// 不做解析，兼容旧版本
 	service.SetMapResultParseLevel(0)
 	return service
 }
 
-func NewJdUnionService(appKey, secretKey string) Service {
-	return newService(appKey, secretKey, UnionRootEndpoint)
+func NewJdUnionService(appKey, secretKey, accessToken string) Service {
+	return newService(appKey, secretKey, accessToken, UnionRootEndpoint)
 }
 
-func NewJosService(appKey, secretKey string) Service {
-	return newService(appKey, secretKey, JosRootEndpoint)
+func NewJosService(appKey, secretKey, accessToken string) Service {
+	return newService(appKey, secretKey, accessToken, JosRootEndpoint)
 }
 
-func newService(appKey, secretKey, routApi string) Service {
+func newService(appKey, secretKey, accessToken, routApi string) Service {
 	impl := &ServiceImpl{}
-	impl.SetConfig(newConfig(appKey, secretKey, routApi))
+	impl.SetConfig(newConfig(appKey, secretKey, accessToken, routApi))
 	impl.SetHttpService(common.NewService())
 
 	impl.goodsService = newGoodsService(impl)

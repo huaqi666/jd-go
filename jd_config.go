@@ -24,11 +24,11 @@ type Config struct {
 	RouteApi    string `json:"-"`            // 路由API，默认京东联盟
 }
 
-func newConfig(appKey, secretKey, routApi string) *Config {
+func newConfig(appKey, secretKey, accessToken, routApi string) *Config {
 	return &Config{
 		AppKey:      appKey,
 		Timestamp:   time.Now().Local().Format("2006-01-02 15:04:05"),
-		AccessToken: "", // 不需要授权，不用填写
+		AccessToken: accessToken, // 不需要授权，不用填写
 		Format:      "json",
 		SignMethod:  "md5",
 		Method:      "",
@@ -40,7 +40,7 @@ func newConfig(appKey, secretKey, routApi string) *Config {
 
 // 默认京东联盟
 func NewConfig(appKey, secretKey string) *Config {
-	return newConfig(appKey, secretKey, BaseUrl)
+	return newConfig(appKey, secretKey, "", BaseUrl)
 }
 
 // 参数封装，用于参数校验和签名
