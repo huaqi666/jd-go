@@ -158,10 +158,10 @@ func TestGoodsServiceImpl_GoodsJingfenQuery(t *testing.T) {
 // 根据skuid获取商品详情
 func TestGoodsServiceImpl_GoodsPromotiongoodsinfoQuery(t *testing.T) {
 	config := GetConfig()
-	service := NewJdService(config.AppKey, config.SecretKey)
+	service := NewJosService(config.AppKey, config.SecretKey)
 	goodsService := service.GetGoodsService()
 	// 商品详情查询
-	res, err := goodsService.GoodsPromotiongoodsinfoQuery(
+	res, err := goodsService.GoodsPromotiongoodsinfoQueryMap(
 		"63682765730",
 	)
 	t.Log(res, err)
