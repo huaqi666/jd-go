@@ -144,3 +144,11 @@ const (
 	JosRootEndpoint   = "https://api.jd.com/routerjson" // 宙斯API路由 🤣: 参数: 360buy_param_json
 	BaseUrl           = UnionRootEndpoint
 )
+
+// 参数验证/校验等级
+type VCode int
+
+const (
+	Non VCode = iota // 不校验😅
+	NotEmpty
+)

@@ -44,99 +44,132 @@ func newOrderService(service Service) OrderService {
 
 // 订单查询接口
 //    文档: https://union.jd.com/openplatform/api/10419
-func (p *OrderServiceImpl) OrderQuery(request *OrderQueryRequest) (*OrderQueryResult, error) {
+func (order *OrderServiceImpl) OrderQuery(request *OrderQueryRequest) (*OrderQueryResult, error) {
+	err := order.service.CheckRequiredParameters(request)
+	if err != nil {
+		return nil, err
+	}
 	param := map[string]interface{}{}
 	param["orderReq"] = request
 	var res OrderQueryResult
-	err := p.service.Do(&res, OrderQuery, param)
+	err = order.service.Do(&res, OrderQuery, param)
 	return &res, err
 }
 
 // 奖励订单查询接口【申请】
 //    文档: https://union.jd.com/openplatform/api/11781
-func (p *OrderServiceImpl) OrderBonusQuery(request *OrderBonusQueryRequest) (*OrderBonusQueryResult, error) {
+func (order *OrderServiceImpl) OrderBonusQuery(request *OrderBonusQueryRequest) (*OrderBonusQueryResult, error) {
+	err := order.service.CheckRequiredParameters(request)
+	if err != nil {
+		return nil, err
+	}
 	param := map[string]interface{}{}
 	param["orderReq"] = request
 	var res OrderBonusQueryResult
-	err := p.service.Do(&res, OrderBonusQuery, param)
+	err = order.service.Do(&res, OrderBonusQuery, param)
 	return &res, err
 }
 
 // 订单行查询接口
 //    文档: https://union.jd.com/openplatform/api/12707
-func (p *OrderServiceImpl) OrderRowQuery(request *OrderRowQueryRequest) (*OrderRowQueryResult, error) {
+func (order *OrderServiceImpl) OrderRowQuery(request *OrderRowQueryRequest) (*OrderRowQueryResult, error) {
+	err := order.service.CheckRequiredParameters(request)
+	if err != nil {
+		return nil, err
+	}
 	param := map[string]interface{}{}
 	param["orderReq"] = request
 	var res OrderRowQueryResult
-	err := p.service.Do(&res, OrderRowQuery, param)
+	err = order.service.Do(&res, OrderRowQuery, param)
 	return &res, err
 }
 
 // 订单查询接口
 //    文档: https://union.jd.com/openplatform/api/10419
-func (p *OrderServiceImpl) OrderQueryResult(request *OrderQueryRequest) ([]byte, error) {
-	res, err := p.OrderQuery(request)
-	if err != nil {
-		return nil, err
-	}
-	if res.IsSuccess() {
-		return nil, res
-	}
-	return res.GetResult(), nil
+func (order *OrderServiceImpl) OrderQueryResult(request *OrderQueryRequest) ([]byte, error) {
+	res, err := order.OrderQuery(request)
+	return order.service.GetResult(res, err)
 }
 
 // 奖励订单查询接口【申请】
 //    文档: https://union.jd.com/openplatform/api/11781
-func (p *OrderServiceImpl) OrderBonusQueryResult(request *OrderBonusQueryRequest) ([]byte, error) {
-	res, err := p.OrderBonusQuery(request)
-	if err != nil {
-		return nil, err
-	}
-	if res.IsSuccess() {
-		return nil, res
-	}
-	return res.GetResult(), nil
+func (order *OrderServiceImpl) OrderBonusQueryResult(request *OrderBonusQueryRequest) ([]byte, error) {
+	res, err := order.OrderBonusQuery(request)
+	return order.service.GetResult(res, err)
 }
 
 // 订单行查询接口
 //    文档: https://union.jd.com/openplatform/api/12707
-func (p *OrderServiceImpl) OrderRowQueryResult(request *OrderRowQueryRequest) ([]byte, error) {
-	res, err := p.OrderRowQuery(request)
-	if err != nil {
-		return nil, err
-	}
-	if res.IsSuccess() {
-		return nil, res
-	}
-	return res.GetResult(), nil
+func (order *OrderServiceImpl) OrderRowQueryResult(request *OrderRowQueryRequest) ([]byte, error) {
+	res, err := order.OrderRowQuery(request)
+	return order.service.GetResult(res, err)
 }
 
 // 订单查询接口
 //    文档: https://union.jd.com/openplatform/api/10419
-func (p *OrderServiceImpl) OrderQueryMap(request *OrderQueryRequest) (map[string]interface{}, error) {
+func (order *OrderServiceImpl) OrderQueryMap(request *OrderQueryRequest) (map[string]interface{}, error) {
+	err := order.service.CheckRequiredParameters(request)
+	if err != nil {
+		return nil, err
+	}
 	param := map[string]interface{}{}
 	param["orderReq"] = request
 	var res map[string]interface{}
-	err := p.service.Do(&res, OrderQuery, param)
-	return res, err
+	err = order.service.Do(&res, OrderQuery, param)
+	if err != nil {
+		return nil, err
+	}
+	var key ResponseKey
+	if order.service.GetRouteApi() == JosRootEndpoint {
+		key = OrderQueryResponce
+	} else {
+		key = OrderQueryResponse
+	}
+	return order.service.ParseResult(res, key)
 }
 
 // 奖励订单查询接口【申请】
 //    文档: https://union.jd.com/openplatform/api/11781
-func (p *OrderServiceImpl) OrderBonusQueryMap(request *OrderBonusQueryRequest) (map[string]interface{}, error) {
+func (order *OrderServiceImpl) OrderBonusQueryMap(request *OrderBonusQueryRequest) (map[string]interface{}, error) {
+	err := order.service.CheckRequiredParameters(request)
+	if err != nil {
+		return nil, err
+	}
 	param := map[string]interface{}{}
 	param["orderReq"] = request
 	var res map[string]interface{}
-	err := p.service.Do(&res, OrderBonusQuery, param)
-	return res, err
+	err = order.service.Do(&res, OrderBonusQuery, param)
+	if err != nil {
+		return nil, err
+	}
+	var key ResponseKey
+	if order.service.GetRouteApi() == JosRootEndpoint {
+		key = OrderBonusQueryResponce
+	} else {
+		key = OrderBonusQueryResponse
+	}
+	return order.service.ParseResult(res, key)
 }
 
 // 订单行查询接口
 //    文档: https://union.jd.com/openplatform/api/12707
-func (p *OrderServiceImpl) OrderRowQueryMap(request *OrderRowQueryRequest) (map[string]interface{}, error) {
+func (order *OrderServiceImpl) OrderRowQueryMap(request *OrderRowQueryRequest) (map[string]interface{}, error) {
+	err := order.service.CheckRequiredParameters(request)
+	if err != nil {
+		return nil, err
+	}
 	param := map[string]interface{}{}
 	param["orderReq"] = request
 	var res map[string]interface{}
-	err := p.service.Do(&res, OrderRowQuery, param)
-	return res, err
+	err = order.service.Do(&res, OrderRowQuery, param)
+	if err != nil {
+		return nil, err
+	}
+	var key ResponseKey
+	if order.service.GetRouteApi() == JosRootEndpoint {
+		key = OrderRowQueryResponce
+	} else {
+		key = OrderRowQueryResponse
+	}
+	return order.service.ParseResult(res, key)
 }

@@ -44,99 +44,128 @@ func newPositionService(service Service) PositionService {
 
 // 查询推广位【申请】
 //    文档: https://union.jd.com/openplatform/api/10428
-func (o *PositionServiceImpl) PositionQuery(request *PositionQueryRequest) (*PositionQueryResult, error) {
+func (pos *PositionServiceImpl) PositionQuery(request *PositionQueryRequest) (*PositionQueryResult, error) {
+	err := pos.service.CheckRequiredParameters(request)
+	if err != nil {
+		return nil, err
+	}
 	param := map[string]interface{}{}
 	param["positionReq"] = request
 	var res PositionQueryResult
-	err := o.service.Do(&res, PositionQuery, param)
+	err = pos.service.Do(&res, PositionQuery, param)
 	return &res, err
 }
 
 // 创建推广位【申请】
 //    文档: https://union.jd.com/openplatform/api/10429
-func (o *PositionServiceImpl) PositionCreate(request *PositionCreateRequest) (*PositionCreateResult, error) {
+func (pos *PositionServiceImpl) PositionCreate(request *PositionCreateRequest) (*PositionCreateResult, error) {
+	err := pos.service.CheckRequiredParameters(request)
+	if err != nil {
+		return nil, err
+	}
 	param := map[string]interface{}{}
 	param["positionReq"] = request
 	var res PositionCreateResult
-	err := o.service.Do(&res, PositionCreate, param)
+	err = pos.service.Do(&res, PositionCreate, param)
 	return &res, err
 }
 
 // 获取PID【申请】
 //    文档: https://union.jd.com/openplatform/api/10430
-func (o *PositionServiceImpl) UserPidGet(request *UserPidGetRequest) (*UserPidGetResult, error) {
+func (pos *PositionServiceImpl) UserPidGet(request *UserPidGetRequest) (*UserPidGetResult, error) {
+	err := pos.service.CheckRequiredParameters(request)
+	if err != nil {
+		return nil, err
+	}
 	param := map[string]interface{}{}
 	param["pidReq"] = request
 	var res UserPidGetResult
-	err := o.service.Do(&res, UserPidGet, param)
+	err = pos.service.Do(&res, UserPidGet, param)
 	return &res, err
 }
 
 // 查询推广位【申请】
 //    文档: https://union.jd.com/openplatform/api/10428
-func (o *PositionServiceImpl) PositionQueryResult(request *PositionQueryRequest) ([]byte, error) {
-	res, err := o.PositionQuery(request)
-	if err != nil {
-		return nil, err
-	}
-	if res.IsSuccess() {
-		return nil, res
-	}
-	return res.GetResult(), nil
+func (pos *PositionServiceImpl) PositionQueryResult(request *PositionQueryRequest) ([]byte, error) {
+	res, err := pos.PositionQuery(request)
+	return pos.service.GetResult(res, err)
 }
 
 // 创建推广位【申请】
 //    文档: https://union.jd.com/openplatform/api/10429
-func (o *PositionServiceImpl) PositionCreateResult(request *PositionCreateRequest) ([]byte, error) {
-	res, err := o.PositionCreate(request)
-	if err != nil {
-		return nil, err
-	}
-	if res.IsSuccess() {
-		return nil, res
-	}
-	return res.GetResult(), nil
+func (pos *PositionServiceImpl) PositionCreateResult(request *PositionCreateRequest) ([]byte, error) {
+	res, err := pos.PositionCreate(request)
+	return pos.service.GetResult(res, err)
 }
 
 // 获取PID【申请】
 //    文档: https://union.jd.com/openplatform/api/10430
-func (o *PositionServiceImpl) UserPidGetResult(request *UserPidGetRequest) ([]byte, error) {
-	res, err := o.UserPidGet(request)
-	if err != nil {
-		return nil, err
-	}
-	if res.IsSuccess() {
-		return nil, res
-	}
-	return res.GetResult(), nil
+func (pos *PositionServiceImpl) UserPidGetResult(request *UserPidGetRequest) ([]byte, error) {
+	res, err := pos.UserPidGet(request)
+	return pos.service.GetResult(res, err)
 }
 
 // 查询推广位【申请】
 //    文档: https://union.jd.com/openplatform/api/10428
-func (o *PositionServiceImpl) PositionQueryMap(request *PositionQueryRequest) (map[string]interface{}, error) {
+func (pos *PositionServiceImpl) PositionQueryMap(request *PositionQueryRequest) (map[string]interface{}, error) {
 	param := map[string]interface{}{}
 	param["positionReq"] = request
 	var res map[string]interface{}
-	err := o.service.Do(&res, PositionQuery, param)
-	return res, err
+	err := pos.service.Do(&res, PositionQuery, param)
+	if err != nil {
+		return nil, err
+	}
+	var key ResponseKey
+	if pos.service.GetRouteApi() == JosRootEndpoint {
+		key = PositionQueryResponce
+	} else {
+		key = PositionQueryResponse
+	}
+	return pos.service.ParseResult(res, key)
 }
 
 // 创建推广位【申请】
 //    文档: https://union.jd.com/openplatform/api/10429
-func (o *PositionServiceImpl) PositionCreateMap(request *PositionCreateRequest) (map[string]interface{}, error) {
+func (pos *PositionServiceImpl) PositionCreateMap(request *PositionCreateRequest) (map[string]interface{}, error) {
+	err := pos.service.CheckRequiredParameters(request)
+	if err != nil {
+		return nil, err
+	}
 	param := map[string]interface{}{}
 	param["positionReq"] = request
 	var res map[string]interface{}
-	err := o.service.Do(&res, PositionCreate, param)
-	return res, err
+	err = pos.service.Do(&res, PositionCreate, param)
+	if err != nil {
+		return nil, err
+	}
+	var key ResponseKey
+	if pos.service.GetRouteApi() == JosRootEndpoint {
+		key = PositionCreateResponce
+	} else {
+		key = PositionCreateResponse
+	}
+	return pos.service.ParseResult(res, key)
 }
 
 // 获取PID【申请】
 //    文档: https://union.jd.com/openplatform/api/10430
-func (o *PositionServiceImpl) UserPidGetMap(request *UserPidGetRequest) (map[string]interface{}, error) {
+func (pos *PositionServiceImpl) UserPidGetMap(request *UserPidGetRequest) (map[string]interface{}, error) {
+	err := pos.service.CheckRequiredParameters(request)
+	if err != nil {
+		return nil, err
+	}
 	param := map[string]interface{}{}
 	param["pidReq"] = request
 	var res map[string]interface{}
-	err := o.service.Do(&res, UserPidGet, param)
-	return res, err
+	err = pos.service.Do(&res, UserPidGet, param)
+	if err != nil {
+		return nil, err
+	}
+	var key ResponseKey
+	if pos.service.GetRouteApi() == JosRootEndpoint {
+		key = UserPidGetResponce
+	} else {
+		key = UserPidGetResponse
+	}
+	return pos.service.ParseResult(res, key)
 }
