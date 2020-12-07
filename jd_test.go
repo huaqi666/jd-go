@@ -8,6 +8,7 @@ import (
 	"io/ioutil"
 	"os"
 	"testing"
+	"time"
 )
 
 type LocalConfig struct {
@@ -148,6 +149,7 @@ func TestGoodsServiceImpl_GoodsGigfieldQuery(t *testing.T) {
 func TestGoodsServiceImpl_GoodsJingfenQuery(t *testing.T) {
 	config := GetConfig()
 	service := NewJosService(config.AppKey, config.SecretKey, "")
+	log.FileLog("logs/", "jd-go.log", 7, 1*time.Hour, 24*time.Minute)
 	goodsService := service.GetGoodsService()
 	res, err := goodsService.GoodsJingfenQuery(&GoodsJingfenQueryRequest{
 		EliteId: 33,

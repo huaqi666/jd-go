@@ -9,6 +9,7 @@ import (
 	"github.com/sirupsen/logrus"
 	"os"
 	"path"
+	"runtime"
 	"strings"
 	"time"
 )
@@ -95,6 +96,7 @@ func (l *LoggerImpl) Trace(args ...interface{}) {
 
 func (l *LoggerImpl) Logf(level Level, format string, args ...interface{}) {
 	if l.checkLevel(level) {
+		l.Line()
 		n := strings.Count(format, "%s")
 		le := len(args)
 		for i := 0; i < (le - n); i++ {
@@ -117,6 +119,27 @@ func (l *LoggerImpl) SetLevel(level Level) {
 
 func (l *LoggerImpl) checkLevel(level Level) bool {
 	return uint64(l.Level) >= uint64(level)
+}
+
+func (l LoggerImpl) Line() {
+	_, fullFile, line, ok := runtime.Caller(5) // 5 skip: 指的是跳过多少个引用
+	file := fullFile
+	if file != "" {
+		// Truncate file name at last file name separator.
+		if index := strings.LastIndex(file, "/"); index >= 0 {
+			file = file[index+1:]
+		} else if index = strings.LastIndex(file, "\\"); index >= 0 {
+			file = file[index+1:]
+		}
+	} else {
+		file = "???"
+	}
+	if ok {
+		buf := new(strings.Builder)
+
+		_, _ = fmt.Fprintf(buf, "\033[35m[jd-go]\033[0m: %s:%d", fullFile, line)
+		l.Logger.Log(l.Level, buf.String())
+	}
 }
 
 // record output file log
