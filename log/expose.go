@@ -1,5 +1,7 @@
 package log
 
+import "time"
+
 var (
 	std Logger
 )
@@ -48,4 +50,8 @@ func Log(level Level, args ...interface{}) {
 // 设置是否打印
 func SetLevel(level Level) {
 	std.SetLevel(level)
+}
+
+func FileLog(logPath string, logFileName string, maxNum uint, maxAge, rotationTime time.Duration) {
+	std.FileLog(logPath, logFileName, maxNum, maxAge, rotationTime)
 }

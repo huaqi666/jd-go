@@ -125,8 +125,8 @@ type ServiceImpl struct {
 }
 
 // 默认京东联盟
-func NewJdClient(appKey, secretKey string) Service {
-	return NewJdUnionService(appKey, secretKey, "")
+func NewJdClient(appKey, secretKey, accessToken string) Service {
+	return NewJdUnionService(appKey, secretKey, accessToken)
 }
 
 // 默认京东联盟
