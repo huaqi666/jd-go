@@ -153,6 +153,8 @@ func TestGoodsServiceImpl_GoodsJingfenQuery(t *testing.T) {
 		EliteId: 33,
 	})
 	t.Log(res, err)
+	r, err := res.ResponseBody()
+	t.Log(r, err)
 }
 
 // 根据skuid获取商品详情
