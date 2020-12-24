@@ -3,6 +3,7 @@ package jd
 import (
 	"encoding/json"
 	"fmt"
+	"github.com/cliod/jd-go/common/cmap"
 )
 
 type UnionResult struct {
@@ -81,6 +82,14 @@ type GoodsJingfenQueryRequest struct {
 	ForbidTypes string `json:"forbidTypes,omitempty"` // 10微信京东购物小程序禁售，11微信京喜小程序禁售
 }
 
+func (m GoodsJingfenQueryRequest) Method() string {
+	return GoodsJingfenQuery.String()
+}
+
+func (m GoodsJingfenQueryRequest) Params() cmap.CMap {
+	return cmap.Struct(m)
+}
+
 type GoodsJingfenQueryResult struct {
 	BaseResult
 	JdUnionOpenGoodsJingfenQueryResponse UnionResult    `json:"jd_union_open_goods_jingfen_query_response"`
@@ -149,6 +158,14 @@ type GoodsQueryRequest struct {
 	Isbn                 string   `json:"isbn,omitempty"`                 // 图书编号
 }
 
+func (m GoodsQueryRequest) Method() string {
+	return GoodsQuery.String()
+}
+
+func (m GoodsQueryRequest) Params() cmap.CMap {
+	return cmap.Struct(m)
+}
+
 type GoodsQueryResult struct {
 	BaseResult
 	JdUnionOpenGoodsQueryResponse UnionResult    `json:"jd_union_open_goods_query_response"`
@@ -212,6 +229,14 @@ type CategoryGoodsGetRequest struct {
 	Grade    uint64 `json:"grade"`    // 类目级别(类目级别 0，1，2 代表一、二、三级类目)
 }
 
+func (m CategoryGoodsGetRequest) Method() string {
+	return CategoryGoodsGet.String()
+}
+
+func (m CategoryGoodsGetRequest) Params() cmap.CMap {
+	return cmap.Struct(m)
+}
+
 type CategoryGoodsGetResult struct {
 	BaseResult
 	JdUnionOpenCategoryGoodsGetResponse UnionResult  `json:"jd_union_open_category_goods_get_response"`
@@ -247,6 +272,14 @@ type GoodsGigFieldQueryRequest struct {
 	// 非必填 ...
 
 	Fields []string `json:"fields,omitempty"` // 查询域集合，不填写则查询全部，目目前支持：categoryInfo（类目信息）,imageInfo（图片信息）,baseBigFieldInfo（基础大字段信息）,bookBigFieldInfo（图书大字段信息）,videoBigFieldInfo（影音大字段信息）,detailImages（商详图）
+}
+
+func (m GoodsGigFieldQueryRequest) Method() string {
+	return GoodsGigfieldQuery.String()
+}
+
+func (m GoodsGigFieldQueryRequest) Params() cmap.CMap {
+	return cmap.Struct(m)
 }
 
 type GoodsGigFieldQueryResult struct {
@@ -293,6 +326,14 @@ type PromoteCommonGetRequest struct {
 	GiftCouponKey string `json:"giftCouponKey,omitempty"` // 礼金批次号
 }
 
+func (m PromoteCommonGetRequest) Method() string {
+	return PromotionCommonGet.String()
+}
+
+func (m PromoteCommonGetRequest) Params() cmap.CMap {
+	return cmap.Struct(m)
+}
+
 type PromoteCommonGetResult struct {
 	BaseResult
 	JdUnionOpenPromoteCommonGetResponse UnionResult  `json:"jd_union_open_promotion_common_get_response"`
@@ -333,6 +374,14 @@ type PromotionBysubunionidGetRequest struct {
 	CouponUrl     string `json:"couponUrl,omitempty"`     // 优惠券领取链接，在使用优惠券、商品二合一功能时入参，且materialId须为商品详情页链接
 	ChainType     uint64 `json:"chainType,omitempty"`     // 转链类型，1：长链， 2 ：短链 ，3： 长链+短链，默认短链，短链有效期60天
 	GiftCouponKey string `json:"giftCouponKey,omitempty"` // 礼金批次号
+}
+
+func (m PromotionBysubunionidGetRequest) Method() string {
+	return PromotionBysubunionidGet.String()
+}
+
+func (m PromotionBysubunionidGetRequest) Params() cmap.CMap {
+	return cmap.Struct(m)
 }
 
 type PromotionBysubunionidGetResult struct {
@@ -377,6 +426,14 @@ type PromotionByunionidGetRequest struct {
 	ChainType  uint64 `json:"chainType,omitempty"`  // 转链类型，1：长链， 2 ：短链 ，3： 长链+短链，默认短链，短链有效期60天
 }
 
+func (m PromotionByunionidGetRequest) Method() string {
+	return PromotionByunionidGet.String()
+}
+
+func (m PromotionByunionidGetRequest) Params() cmap.CMap {
+	return cmap.Struct(m)
+}
+
 type PromotionByunionidGetResult struct {
 	BaseResult
 	JdUnionOpenPromotionBysubunionidGetResponse UnionResult  `json:"jd_union_open_promotion_bysubunionid_get_response"`
@@ -417,6 +474,14 @@ type PromotionAppletGetRequest struct {
 	ActivityType uint64 `json:"activity_type,omitempty"` // 活动落地页类型，1：新人优惠券、2：新人专享价、3：商品推荐集合页，默认1
 }
 
+func (m PromotionAppletGetRequest) Method() string {
+	return PromotionAppletGet.String()
+}
+
+func (m PromotionAppletGetRequest) Params() cmap.CMap {
+	return cmap.Struct(m)
+}
+
 type PromotionAppletGetResult struct {
 	BaseResult
 	JdUnionOpenPromotionAppletGetResponse UnionResult  `json:"jd_union_open_promotion_applet_get_response"`
@@ -449,6 +514,14 @@ type CouponQueryRequest struct {
 	// 必填...
 
 	CouponUrl string `json:"couponUrl"` // 优惠券链接
+}
+
+func (m CouponQueryRequest) Method() string {
+	return CouponQuery.String()
+}
+
+func (m CouponQueryRequest) Params() cmap.CMap {
+	return cmap.Struct(m)
 }
 
 type CouponQueryResult struct {
@@ -487,6 +560,14 @@ type PositionQueryRequest struct {
 	UnionType uint64 `json:"unionType"` // 3：私域推广位，上限5000个，不在联盟后台展示，无对应 PID；4：联盟后台推广位，上限500个，会在推客联盟后台展示，可用于内容平台推广
 	PageIndex uint64 `json:"pageIndex"` // 页码，上限100
 	PageSize  uint64 `json:"pageSize"`  // 每页条数，上限100
+}
+
+func (m PositionQueryRequest) Method() string {
+	return PositionQuery.String()
+}
+
+func (m PositionQueryRequest) Params() cmap.CMap {
+	return cmap.Struct(m)
 }
 
 type PositionQueryResult struct {
@@ -530,6 +611,14 @@ type PositionCreateRequest struct {
 	SiteId uint64 `json:"siteId,omitempty"` // 站点ID：网站的ID/app ID/snsID 。当type非4(聊天工具)时，siteId必填
 }
 
+func (m PositionCreateRequest) Method() string {
+	return PositionCreate.String()
+}
+
+func (m PositionCreateRequest) Params() cmap.CMap {
+	return cmap.Struct(m)
+}
+
 type PositionCreateResult struct {
 	BaseResult
 	JdUnionOpenPositionCreateResponse UnionResult     `json:"jd_union_open_position_create_response"`
@@ -570,6 +659,14 @@ type UserPidGetRequest struct {
 	PositionName string `json:"positionName,omitempty"` // 子站长的推广位名称，如不存在则创建，不填则由联盟根据母账号信息创建
 }
 
+func (m UserPidGetRequest) Method() string {
+	return UserPidGet.String()
+}
+
+func (m UserPidGetRequest) Params() cmap.CMap {
+	return cmap.Struct(m)
+}
+
 type UserPidGetResult struct {
 	BaseResult
 	JdUnionOpenUserPidGetResponse UnionResult  `json:"jd_union_open_user_pid_get_response"`
@@ -605,6 +702,14 @@ type ActivityQueryRequest struct {
 	PageSize   uint64 `json:"pageSize,omitempty"`   // 每页数量，默认20，上限50
 	PoolId     uint64 `json:"poolId,omitempty"`     // 活动物料ID，1：营销日历热门会场；2：营销日历热门榜单；6：PC站长端官方活动
 	ActiveDate uint64 `json:"activeDate,omitempty"` // 按单个日期查询活动，查询日期范围为过去或未来15天。建议按日期依次查询当天及未来的活动
+}
+
+func (m ActivityQueryRequest) Method() string {
+	return ActivityQuery.String()
+}
+
+func (m ActivityQueryRequest) Params() cmap.CMap {
+	return cmap.Struct(m)
 }
 
 type ActivityQueryResult struct {
@@ -646,6 +751,14 @@ type StatisticsRedpacketQueryRequest struct {
 
 	ActId      uint64 `json:"actId,omitempty"`      // 京享红包活动Id，如不传则查询全部京享红包活动
 	PositionId uint64 `json:"positionId,omitempty"` // 推广位ID，支持联盟后台推广位和API创建的私域推广位
+}
+
+func (m StatisticsRedpacketQueryRequest) Method() string {
+	return StatisticsRedpacketQuery.String()
+}
+
+func (m StatisticsRedpacketQueryRequest) Params() cmap.CMap {
+	return cmap.Struct(m)
 }
 
 type StatisticsRedpacketQueryResult struct {
@@ -695,6 +808,14 @@ type CouponGiftGetRequest struct {
 	ContentMatch  uint64 `json:"contentMatch,omitempty"`  // 是否允许通过内容平台推广，0：不允许，1：允许；默认为0
 }
 
+func (m CouponGiftGetRequest) Method() string {
+	return CouponGiftGet.String()
+}
+
+func (m CouponGiftGetRequest) Params() cmap.CMap {
+	return cmap.Struct(m)
+}
+
 type CouponGiftGetResult struct {
 	BaseResult
 	JdUnionOpenCouponGiftGetResponse UnionResult  `json:"jd_union_open_coupon_gift_get_response"`
@@ -727,6 +848,14 @@ type CouponGiftStopRequest struct {
 	// 必填 ...
 
 	GiftCouponKey string `json:"giftCouponKey"` // 礼金批次ID
+}
+
+func (m CouponGiftStopRequest) Method() string {
+	return CouponGiftStop.String()
+}
+
+func (m CouponGiftStopRequest) Params() cmap.CMap {
+	return cmap.Struct(m)
 }
 
 type CouponGiftStopResult struct {
@@ -764,6 +893,14 @@ type StatisticGiftCouponQueryRequest struct {
 	GiftCouponKey string `json:"giftCouponKey"` // 根据礼金批次ID精确查询礼金信息，请勿和createTime同时传入。 skuId和giftCouponKey二选一，不可同时入参。
 	CreateTime    string `json:"createTime"`    // 可查询此日期及以后创建的礼金，如不传则不限日期。 格式：yyyy-MM-dd
 	StartTime     string `json:"startTime"`     // 可查询此日期及以后下单的礼金效果数据，如不传则不限日期。 格式：yyyy-MM-dd
+}
+
+func (m StatisticGiftCouponQueryRequest) Method() string {
+	return StatisticGiftCouponQuery.String()
+}
+
+func (m StatisticGiftCouponQueryRequest) Params() cmap.CMap {
+	return cmap.Struct(m)
 }
 
 type StatisticGiftCouponQueryResult struct {
@@ -807,6 +944,14 @@ type OrderQueryRequest struct {
 	Key          string `json:"key,omitempty"`          // 工具商传入推客的授权key，可帮助该推客查询订单，注意不可和childUnionid同时传入。（需联系运营开通工具商权限才能拿到数据）
 }
 
+func (m OrderQueryRequest) Method() string {
+	return OrderQuery.String()
+}
+
+func (m OrderQueryRequest) Params() cmap.CMap {
+	return cmap.Struct(m)
+}
+
 type OrderQueryResult struct {
 	BaseResult
 	JdUnionOpenOrderQueryResponse UnionResult    `json:"jd_union_open_order_query_response"`
@@ -846,6 +991,14 @@ type OrderBonusQueryRequest struct {
 
 	PageNo    uint64 `json:"pageNo,omitempty"`    // 页码，默认值为1
 	SortValue string `json:"sortValue,omitempty"` // 时间类型按'下单'查询时，和pageSize组合使用。获取最后一条记录的sortValue，指定拉取条数（pageSize），以此方式查询数据。
+}
+
+func (m OrderBonusQueryRequest) Method() string {
+	return OrderBonusQuery.String()
+}
+
+func (m OrderBonusQueryRequest) Params() cmap.CMap {
+	return cmap.Struct(m)
 }
 
 type OrderBonusQueryResult struct {
@@ -889,6 +1042,14 @@ type OrderRowQueryRequest struct {
 	ChildUnionId uint64 `json:"childUnionId,omitempty"` // 子推客unionID，传入该值可查询子推客的订单，注意不可和key同时传入。（需联系运营开通PID权限才能拿到数据）
 	Key          string `json:"key,omitempty"`          // 工具商传入推客的授权key，可帮助该推客查询订单，注意不可和childUnionid同时传入。（需联系运营开通工具商权限才能拿到数据）
 	Fields       string `json:"fields,omitempty"`       // 支持出参数据筛选，逗号','分隔，目前可用：goodsInfo（商品信息）,categoryInfo(类目信息）
+}
+
+func (m OrderRowQueryRequest) Method() string {
+	return OrderRowQuery.String()
+}
+
+func (m OrderRowQueryRequest) Params() cmap.CMap {
+	return cmap.Struct(m)
 }
 
 type OrderRowQueryResult struct {

@@ -83,7 +83,7 @@ type Service interface {
 	// method 请求路由方法
 	// 业务参数
 	// 可通过 Request 方法执行其他未封装的京东联盟API
-	Request(v interface{}, method Method, param map[string]interface{}) error
+	Request(v interface{}, param IParam) error
 
 	// 参数校验
 	CheckRequiredParameters(v interface{}) error
@@ -274,8 +274,16 @@ func (ser *ServiceImpl) Sign(method Method, param map[string]interface{}) (*Para
 	return NewParam(parameter), err
 }
 
-func (ser *ServiceImpl) Request(v interface{}, method Method, param map[string]interface{}) error {
-	p, err := ser.Sign(method, param)
+func (ser *ServiceImpl) Request(v interface{}, param IParam) error {
+	var (
+		method Method
+		params map[string]interface{}
+	)
+
+	method = Method(param.Method())
+	params = param.Params().ToMap()
+
+	p, err := ser.Sign(method, params)
 	if err != nil {
 		log.Error("Sign:", err)
 		return err
@@ -321,8 +329,9 @@ func (ser *ServiceImpl) CheckRequiredParameters(v interface{}) error {
 }
 
 // Deprecated: 使用新接口: Request
-func (ser *ServiceImpl) Do(v interface{}, method Method, param map[string]interface{}) error {
-	return ser.Request(v, method, param)
+func (ser *ServiceImpl) Do(v interface{}, method Method, params map[string]interface{}) error {
+	param := NewTParam(method, params)
+	return ser.Request(v, param)
 }
 
 func (ser *ServiceImpl) GetResult(res Result, err error) ([]byte, error) {
