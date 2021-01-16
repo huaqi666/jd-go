@@ -1,2 +1,13 @@
 .idea
 config.json
+.vscode
+.project
+.classpath
+.c9/
+*.launch
+.settings/
+*.sublime-workspace
+*.a
+*.tmp
+/TODO
+/logs
