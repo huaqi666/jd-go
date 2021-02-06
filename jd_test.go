@@ -8,6 +8,7 @@ import (
 	"io/ioutil"
 	"os"
 	"testing"
+	"time"
 )
 
 type LocalConfig struct {
@@ -147,7 +148,8 @@ func TestGoodsServiceImpl_GoodsGigfieldQuery(t *testing.T) {
 // 获取商品列表
 func TestGoodsServiceImpl_GoodsJingfenQuery(t *testing.T) {
 	config := GetConfig()
-	service := NewJosService(config.AppKey, config.SecretKey)
+	service := NewJosService(config.AppKey, config.SecretKey, "")
+	log.FileLog("logs/", "jd-go.log", 7, 1*time.Hour, 24*time.Minute)
 	goodsService := service.GetGoodsService()
 	res, err := goodsService.GoodsJingfenQuery(&GoodsJingfenQueryRequest{
 		EliteId: 33,
@@ -160,7 +162,7 @@ func TestGoodsServiceImpl_GoodsJingfenQuery(t *testing.T) {
 // 根据skuid获取商品详情
 func TestGoodsServiceImpl_GoodsPromotiongoodsinfoQuery(t *testing.T) {
 	config := GetConfig()
-	service := NewJosService(config.AppKey, config.SecretKey)
+	service := NewJosService(config.AppKey, config.SecretKey, "")
 	goodsService := service.GetGoodsService()
 	// 商品详情查询
 	res, err := goodsService.GoodsPromotiongoodsinfoQueryMap(
