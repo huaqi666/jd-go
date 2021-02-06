@@ -171,6 +171,7 @@ func (oth *OtherServiceImpl) UserPidGetMap(request *UserPidGetRequest) (map[stri
 }
 
 // 活动查询接口
+//
 // Deprecated: 使用新接口: ActivityService.ActivityQueryMap
 //    文档: https://union.jd.com/openplatform/api/12667
 func (oth *OtherServiceImpl) ActivityQueryMap(request *ActivityQueryRequest) (map[string]interface{}, error) {

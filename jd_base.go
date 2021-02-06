@@ -3,8 +3,6 @@ package jd
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/cliod/jd-go/common/cmap"
-	"github.com/cliod/jd-go/resp"
 )
 
 type UnionResult struct {
