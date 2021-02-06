@@ -3,6 +3,7 @@ package jd
 import (
 	"encoding/json"
 	"fmt"
+	"github.com/cliod/jd-go/resp"
 )
 
 type UnionResult struct {
@@ -65,6 +66,10 @@ func (b *BaseResult) GetResult() []byte {
 	return res
 }
 
+func (b BaseResult) ResponseBody() ErrorResponse {
+	return b.ErrorResponse
+}
+
 type GoodsJingfenQueryRequest struct {
 	// 必填 ...
 
@@ -111,6 +116,12 @@ func (r *GoodsJingfenQueryResult) GetResult() []byte {
 		return r.BaseResult.GetResult()
 	}
 	return []byte(str)
+}
+
+func (r *GoodsJingfenQueryResult) ResponseBody() (*resp.GoodsJingfenQueryResponse, error) {
+	var res resp.GoodsJingfenQueryResponse
+	err := json.Unmarshal(r.GetResult(), &res)
+	return &res, err
 }
 
 type GoodsQueryRequest struct {
