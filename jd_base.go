@@ -6,41 +6,51 @@ import (
 	"github.com/cliod/jd-go/resp"
 )
 
+// 联盟结果封装
 type UnionResult struct {
 	Code   string `json:"code"`
 	Result string `json:"result"`
 }
 
+// 宙斯查询结果封装
 type JosQueryResult struct {
 	Code        string `json:"code"`
 	QueryResult string `json:"queryResult"`
 }
 
+// 宙斯查询结果封装
 type JosGetResult struct {
 	Code      string `json:"code"`
 	GetResult string `json:"getResult"`
 }
 
+// 宙斯结果封装
 type JosStopResult struct {
 	Code       string `json:"code"`
 	StopResult string `json:"stopResult"`
 }
 
+// 宙斯创建结果封装
 type JosCreateResult struct {
 	Code         string `json:"code"`
 	CreateResult string `json:"createResult"`
 }
 
+// 基础错误响应
 type ErrorResponse struct {
 	Code   string `json:"code"`
 	ZhDesc string `json:"zh_desc"`
 	EnDesc string `json:"en_desc"`
 }
 
+// 统一结果抽象接口
 type Result interface {
 	error
+	// 转字符串
 	String() string
+	// 请求结果判断是否请求成功
 	IsSuccess() bool
+	// 请求结果
 	GetResult() []byte
 }
 
@@ -126,6 +136,7 @@ func (r *GoodsJingfenQueryResult) ResponseBody() (*resp.GoodsJingfenQueryRespons
 
 type GoodsQueryRequest struct {
 	// 必填 ...
+
 	// 非必填 ...
 
 	Cid1                 uint64   `json:"cid1,omitempty"`                 // 一级类目id
